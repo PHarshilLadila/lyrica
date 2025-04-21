@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "105774403592",
+    "project_id": "lyrica-35d7c",
+    "storage_bucket": "lyrica-35d7c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:105774403592:android:51479655a9a4beb8a801bd",
+        "android_client_info": {
+          "package_name": "com.example.lyrica"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "105774403592-ujvj63jl9aceac9qpn9rlgr475n2f1pg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.lyrica",
+            "certificate_hash": "33af7aa4e92dcff8c351aab6ff384b6d386be72c"
+          }
+        },
+        {
+          "client_id": "105774403592-ns1khmno03qkhbaorm0c2jqi8e37fto8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkL79hdIique_k10M-Clhfxpeqocfj3UU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "105774403592-ns1khmno03qkhbaorm0c2jqi8e37fto8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
