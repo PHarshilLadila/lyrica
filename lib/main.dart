@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lyrica/modules/auth/view/google_login_screen.dart';
@@ -16,6 +17,7 @@ Future<void> getUserid() async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await dotenv.load(fileName: ".env");
   getUserid();
   runApp(ProviderScope(child: const MyApp()));
 }
@@ -45,8 +47,3 @@ class MyApp extends ConsumerWidget {
     );
   }
 }
-
-// https://api.jamendo.com/v3.0/tracks/?client_id=540fd4db&format=json&limit=200
-
-// firebase firestore permission rules
-//       allow read, write: if request.time < timestamp.date(2025, 5, 18);

@@ -9,6 +9,7 @@ import 'package:lyrica/common/widget/app_text.dart';
 import 'package:lyrica/core/constant/app_colors.dart';
 import 'package:lyrica/core/constant/app_images.dart';
 import 'package:lyrica/core/providers/provider.dart';
+import 'package:lyrica/modules/music%20player/view/music_player.dart';
 
 class MusicTrackList extends ConsumerWidget {
   const MusicTrackList({super.key});
@@ -79,78 +80,89 @@ class MusicTrackList extends ConsumerWidget {
 
                         return Card(
                           color: Colors.transparent,
-                          margin: const EdgeInsets.symmetric(vertical: 8),
-                          child: ListTile(
-                            tileColor: Colors.transparent,
-                            leading:
-                                track.albumImage != null
-                                    ? ClipRRect(
-                                      borderRadius: BorderRadius.circular(3),
-                                      child: Image.network(
-                                        track.albumImage ?? '',
-                                        fit: BoxFit.cover,
-                                      ),
-                                    )
-                                    : const Icon(Icons.music_note),
-                            title: AppText(
-                              textName: track.name ?? 'No Title',
-                              fontSize: 14.sp,
-                              fontWidth: FontWeight.bold,
-                              textColor: Color(AppColors.blueThird),
-                            ),
-                            subtitleTextStyle: GoogleFonts.poppins(
-                              color: Colors.grey,
-                            ),
-
-                            dense: true,
-                            hoverColor: Colors.transparent,
-
-                            subtitle: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        AppText(
-                                          textName:
-                                              track.albumName ??
-                                              'Unknown album name',
-                                          fontSize: 12.sp,
-                                          textColor: Color(
-                                            AppColors.blueExtraLight,
-                                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: ListTile(
+                              tileColor: Colors.transparent,
+                              leading:
+                                  track.albumImage != null
+                                      ? ClipRRect(
+                                        borderRadius: BorderRadius.circular(3),
+                                        child: Image.network(
+                                          track.albumImage ?? '',
+                                          fit: BoxFit.cover,
                                         ),
-                                        AppText(
-                                          textName:
-                                              track.artistName ??
-                                              "Unknown artist name",
-                                          fontSize: 12.sp,
-                                          textColor: Color(
-                                            AppColors.blueExtraLight,
+                                      )
+                                      : const Icon(Icons.music_note),
+                              title: AppText(
+                                textName: track.name ?? 'No Title',
+                                fontSize: 14.sp,
+                                fontWidth: FontWeight.bold,
+                                textColor: Color(AppColors.blueThird),
+                              ),
+                              subtitleTextStyle: GoogleFonts.poppins(
+                                color: Colors.grey,
+                              ),
+
+                              dense: true,
+                              hoverColor: Colors.transparent,
+
+                              subtitle: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          AppText(
+                                            textName:
+                                                track.albumName ??
+                                                'Unknown album name',
+                                            fontSize: 12.sp,
+                                            textColor: Color(
+                                              AppColors.blueExtraLight,
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    AppText(
-                                      textName: formattedTime(
-                                        timeInSecond: track.duration!.toInt(),
+                                          AppText(
+                                            textName:
+                                                track.artistName ??
+                                                "Unknown artist name",
+                                            fontSize: 12.sp,
+                                            textColor: Color(
+                                              AppColors.blueExtraLight,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      fontSize: 14.sp,
-                                      textColor: Color(AppColors.blueLight),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                                      AppText(
+                                        textName: formattedTime(
+                                          timeInSecond: track.duration!.toInt(),
+                                        ),
+                                        fontSize: 14.sp,
+                                        textColor: Color(AppColors.blueLight),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder:
+                                        (context) =>
+                                            MusicPlayer(results: track),
+                                  ),
+                                );
+                              },
                             ),
-                            onTap: () {},
                           ),
                         );
                       },
