@@ -9,7 +9,7 @@ import 'package:lyrica/common/widget/app_main_button.dart';
 import 'package:lyrica/core/constant/app_colors.dart';
 import 'package:lyrica/core/constant/app_images.dart';
 import 'package:lyrica/core/constant/app_string.dart';
-import 'package:lyrica/core/provider.dart';
+import 'package:lyrica/core/providers/provider.dart';
 import 'package:lyrica/modules/auth/view/login_screen.dart';
 import 'package:lyrica/modules/auth/view/register_screen.dart';
 import 'package:lyrica/modules/bottom%20sheet/view/bottom_sheet_screen.dart';

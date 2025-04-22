@@ -24,8 +24,12 @@ class CustomBottomBar extends StatelessWidget {
       selectedItemColor: Colors.white,
       unselectedItemColor: Colors.white54,
       showSelectedLabels: false,
-      unselectedLabelStyle: GoogleFonts.poppins(color: Color(AppColors.lightText)),
-      selectedLabelStyle: GoogleFonts.poppins(color: Color(AppColors.lightText)),
+      unselectedLabelStyle: GoogleFonts.poppins(
+        color: Color(AppColors.lightText),
+      ),
+      selectedLabelStyle: GoogleFonts.poppins(
+        color: Color(AppColors.lightText),
+      ),
       showUnselectedLabels: false,
       currentIndex: currentIndex,
       onTap: onTap,
@@ -39,7 +43,7 @@ class CustomBottomBar extends StatelessWidget {
           label: 'Explore',
         ),
         BottomNavigationBarItem(
-          icon: _buildIcon(CupertinoIcons.profile_circled, 2),
+          icon: _buildIcon(CupertinoIcons.book, 2),
           label: 'Library',
         ),
       ],

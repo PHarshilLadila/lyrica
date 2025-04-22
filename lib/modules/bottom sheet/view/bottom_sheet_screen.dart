@@ -16,9 +16,9 @@ class _BottomSheetScreenState extends ConsumerState<BottomSheetScreen> {
   int _currentIndex = 0;
 
   final List<Widget> _screens = [
-    const HomeScreen(),
+    HomeScreen(),
     const SearchScreen(),
-    const LibraryScreen(),
+    LibraryScreen(),
   ];
 
   @override

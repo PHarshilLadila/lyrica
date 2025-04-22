@@ -10,8 +10,9 @@ import 'package:lyrica/common/utils/utils.dart';
 import 'package:lyrica/common/widget/app_main_button.dart';
 import 'package:lyrica/core/constant/app_colors.dart';
 import 'package:lyrica/core/constant/app_images.dart';
-import 'package:lyrica/core/provider.dart';
+import 'package:lyrica/core/providers/provider.dart';
 import 'package:lyrica/modules/auth/view/google_login_screen.dart';
+import 'package:lyrica/modules/music%20track/view/music_track_list.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -44,7 +45,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     data: (userModel) {
                       if (userModel == null) {
                         return Text(
-                          "No user data",
+                          user.displayName?[0] ?? "",
                           style: GoogleFonts.poppins(
                             color: Color(AppColors.lightText),
                             fontSize: 14.sp,
@@ -61,12 +62,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         ),
                       );
                     },
-                    loading:
-                        () => const SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        ),
+                    loading: () => SizedBox(),
+
                     error:
                         (e, _) => Text(
                           "Error loading user",
@@ -97,7 +94,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     data: (userModel) {
                       if (userModel == null) {
                         return Text(
-                          "No user data",
+                          user.displayName ?? "",
                           style: GoogleFonts.poppins(
                             color: Color(AppColors.lightText),
                             fontSize: 14.sp,
@@ -114,12 +111,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         ),
                       );
                     },
-                    loading:
-                        () => const SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        ),
+                    loading: () => SizedBox(),
                     error:
                         (e, _) => Text(
                           "Error loading user",
@@ -239,7 +231,14 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           itemCount: mixSongList.length,
                           itemBuilder: (context, index) {
                             return GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => MusicTrackList(),
+                                  ),
+                                );
+                              },
                               child: Container(
                                 decoration: BoxDecoration(
                                   color: Colors.white12,

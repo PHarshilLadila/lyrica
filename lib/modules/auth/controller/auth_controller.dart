@@ -3,21 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:lyrica/core/provider.dart';
+import 'package:lyrica/core/providers/provider.dart';
 import 'package:lyrica/model/user_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthController {
   final Ref _ref;
- 
-  AuthController(this._ref, );
+
+  AuthController(this._ref);
 
   FirebaseAuth get _auth => _ref.read(firebaseAuthProvider);
 
   Stream<User?> get authStateChanges => _auth.authStateChanges();
-final QuerySnapshot<Map<String, dynamic>> _userData = {} as QuerySnapshot<Map<String, dynamic>>;
-QuerySnapshot<Map<String, dynamic>> get userData => _userData;
+  // final QuerySnapshot<Map<String, dynamic>> _userData =
+  //     {} as QuerySnapshot<Map<String, dynamic>>;
+  // QuerySnapshot<Map<String, dynamic>> get userData => _userData;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
- 
 
   Future<UserCredential?> register(
     String userName,
@@ -25,12 +26,15 @@ QuerySnapshot<Map<String, dynamic>> get userData => _userData;
     String number,
     String password,
   ) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
     final appUser = firestore.collection("users");
     try {
       final credential = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
+      await preferences.setString("userUID", credential.user!.uid);
 
       await appUser.doc(credential.user!.uid).set({
         "username": userName,
@@ -47,11 +51,17 @@ QuerySnapshot<Map<String, dynamic>> get userData => _userData;
   }
 
   Future<User?> login(String email, String password) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
     try {
       final userCredential = await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
+
+      final result = userCredential.user;
+      await preferences.setString("userUID", result!.uid);
+
       return userCredential.user;
     } on FirebaseAuthException catch (e) {
       debugPrint('Login error: ${e.message}');
@@ -63,6 +73,8 @@ QuerySnapshot<Map<String, dynamic>> get userData => _userData;
   }
 
   Future<User?> signInWithGoogle() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
     try {
       final googleUser = await GoogleSignIn().signIn();
       if (googleUser == null) return null;
@@ -74,6 +86,7 @@ QuerySnapshot<Map<String, dynamic>> get userData => _userData;
       );
 
       final userCredential = await _auth.signInWithCredential(credential);
+      await preferences.setString("userUID", userCredential.user!.uid);
       return userCredential.user;
     } catch (e) {
       debugPrint('Google sign-in error: $e');
@@ -81,7 +94,7 @@ QuerySnapshot<Map<String, dynamic>> get userData => _userData;
     }
   }
 
-Future<UserModel?> getUser() async {
+  Future<UserModel?> getUser() async {
     try {
       final currentUser = _auth.currentUser;
       if (currentUser == null) return null;
@@ -101,7 +114,6 @@ Future<UserModel?> getUser() async {
       return null;
     }
   }
-
 
   Future<void> signOut() async {
     await _auth.signOut();

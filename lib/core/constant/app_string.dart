@@ -22,3 +22,5 @@ class AppString {
   static const String forgotPassword = "Forgot your password?";
   static const String remember = "Remember me";
 }
+
+
