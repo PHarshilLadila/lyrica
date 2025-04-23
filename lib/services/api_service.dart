@@ -27,10 +27,22 @@ class ApiServices {
       throw Exception("Failed to load music: $e");
     }
   }
-}
 
+ Future<List<Results>> getMusicByGenre(String tag) async {
+    try {
+      final response = await http.get(
+        Uri.parse("$baseApiKey&format=json&tags=$tag"),
+      );
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> jsonData = json.decode(response.body);
+        final music = MusicModel.fromJson(jsonData);
+        return music.results ?? [];
+      } else {
+        debugPrint("Failed to fetch data: ${response.statusCode}");
+        return [];
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }}
 final apiProvider = Provider((ref) => ApiServices());
-
-
-//   final String baseUrl = 
-    //  "https://api.jamendo.com/v3.0/tracks/?client_id=540fd4db";

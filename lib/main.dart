@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,12 +15,23 @@ Future<void> getUserid() async {
   userUid = result;
 }
 
+// MyAudioHandler audioHandler = MyAudioHandler();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+  // audioHandler = await AudioService.init(
+  //   builder: () => MyAudioHandler(),
+  //   config: AudioServiceConfig(
+  //     androidNotificationChannelId: 'com.example.lyrica',
+  //     androidNotificationChannelName: "Lyrica",
+  //     androidNotificationOngoing: true,
+  //   ),
+  // );
   await dotenv.load(fileName: ".env");
   getUserid();
   runApp(ProviderScope(child: const MyApp()));
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 }
 
 class MyApp extends ConsumerWidget {

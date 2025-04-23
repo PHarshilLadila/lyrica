@@ -1,7 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,10 +23,55 @@ class HomeScreen extends ConsumerStatefulWidget {
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  Future<void> checkDeviceConnectivity() async {
+    final result = await Connectivity().checkConnectivity();
+    setState(() => "Internet Checking..");
+    switch (result as ConnectivityResult) {
+      case ConnectivityResult.mobile:
+        setState(() {
+          showSnackBar(context, "Connected to mobile network");
+        });
+        break;
+
+      case ConnectivityResult.bluetooth:
+        setState(() {
+          showSnackBar(context, "Connected to mobile bluetooth");
+        });
+        break;
+      case ConnectivityResult.wifi:
+        setState(() {
+          showSnackBar(context, "Connected to mobile wifi");
+        });
+        break;
+      case ConnectivityResult.ethernet:
+        setState(() {
+          showSnackBar(context, "Connected to mobile ethernet");
+        });
+        break;
+      case ConnectivityResult.none:
+        showSnackBar(context, "Please Connect with your Internet..!");
+        break;
+      case ConnectivityResult.vpn:
+        debugPrint("Connected to mobile vpn");
+        break;
+      case ConnectivityResult.other:
+        setState(() {
+          showSnackBar(context, "");
+        });
+        break;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final auth = ref.read(authControllerProvider);
     final userAsync = ref.watch(authStateProvider);
     final userModelAsync = ref.watch(userModelProvider);
+    // final musicAsyncValue = ref.watch(musicDataProvider);
 
     return userAsync.when(
       data: (user) {
@@ -235,7 +280,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                    builder: (context) => MusicTrackList(),
+                                    builder:
+                                        (context) => MusicTrackList(
+                                          musicType: 1,
+                                          genre: '',
+                                        ),
                                   ),
                                 );
                               },
