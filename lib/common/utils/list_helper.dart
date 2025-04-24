@@ -24,9 +24,23 @@ List<Map<String, dynamic>> categorieBox = [
     "name": "Hip hop",
     "color": AppColors.darkMideumPurple,
   },
-  {"image": AppImages.cat5, "name": "Funk", "color": AppColors.darkPink},
-  {"image": AppImages.cat6, "name": "Dance", "color": AppColors.darkOrange},
-  // {"image": AppImages.cat3, "name": "Road Trip", "color": AppColors.darkMaroon},
-  // {"image": AppImages.cat5, "name": "Rock", "color": AppColors.darkMediumGreen},
-  // {"image": AppImages.cat2, "name": "Love", "color": AppColors.darkYellow},
+  {"image": AppImages.cat5, "name": "Funk", "color": AppColors.darkOrange},
+  {"image": AppImages.cat6, "name": "Dance", "color": AppColors.darkGreen},
+  {"image": AppImages.cat1, "name": "Romantic", "color": AppColors.darkPink},
+  {"image": AppImages.cat2, "name": "Lofi", "color": AppColors.darkMediumGreen},
+  {"image": AppImages.cat3, "name": "Disco", "color": AppColors.darkPurple},
+  {"image": AppImages.cat4, "name": "Sad", "color": AppColors.darkMideumPurple},
+  {
+    "image": AppImages.cat5,
+    "name": "Gospel Blues",
+    "color": AppColors.darkMediumGreen,
+  },
+  {"image": AppImages.cat1, "name": "Love", "color": AppColors.darkPink},
+
+  {
+    "image": AppImages.cat2,
+    "name": "Electronic",
+    "color": AppColors.darkYellow,
+  },
+  {"image": AppImages.cat3, "name": "Latin", "color": AppColors.darkBlue},
 ];

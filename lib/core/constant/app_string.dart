@@ -21,6 +21,10 @@ class AppString {
   static const String password = "Password";
   static const String forgotPassword = "Forgot your password?";
   static const String remember = "Remember me";
+
+  static const String defaultMusicLogo =
+      "https://png.pngtree.com/png-clipart/20220112/ourmid/pngtree-music-icon-staff-rest-hand-drawn-color-png-image_4154149.png";
+
+      static const String defaultImageLogo =
+      "https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg";
 }
-
-

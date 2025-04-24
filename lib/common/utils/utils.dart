@@ -1,6 +1,6 @@
 // ignore_for_file: deprecated_member_use
 
- import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:lyrica/core/constant/app_colors.dart';
@@ -58,7 +58,7 @@ void showLoader(BuildContext context) {
   showDialog(
     context: context,
     barrierDismissible: false,
-    builder: (_) => Center(child: CircularProgressIndicator()),
+    builder: (_) => Center(child: appLoader()),
   );
 }
 
@@ -70,4 +70,6 @@ void showSnackBar(BuildContext context, String msg) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
 }
 
-
+void myPushNavigator(BuildContext context, Widget widget) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => widget));
+}

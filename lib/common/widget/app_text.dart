@@ -5,14 +5,14 @@ class AppText extends StatelessWidget {
   final String? textName;
   final Color? textColor;
   final double? fontSize;
-  final FontWeight? fontWidth;
+  final FontWeight? fontWeight;
 
   const AppText({
     super.key,
     this.textName,
     this.textColor,
     this.fontSize,
-    this.fontWidth,
+    this.fontWeight,
   });
 
   @override
@@ -22,8 +22,10 @@ class AppText extends StatelessWidget {
       style: GoogleFonts.poppins(
         color: textColor,
         fontSize: fontSize,
-        fontWeight: fontWidth,
+        fontWeight: fontWeight,
       ),
+      overflow: TextOverflow.ellipsis,
+      maxLines: 1,
     );
   }
 }

@@ -10,7 +10,7 @@ class AppColors {
   static const int darkText = 0xff8A9A9D;
   static const int errorColor = 0xffFF0000;
   static const int successColor = 0xff22bb33;
-
+  // dark colors
   static const int darkGreen = 0xff75C922;
   static const int darkPurple = 0xff6F259C;
   static const int darkPink = 0xffCF25A0;

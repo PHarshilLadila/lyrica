@@ -8,10 +8,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lyrica/common/utils/list_helper.dart';
 import 'package:lyrica/common/utils/utils.dart';
 import 'package:lyrica/common/widget/app_main_button.dart';
+import 'package:lyrica/common/widget/app_text.dart';
 import 'package:lyrica/core/constant/app_colors.dart';
 import 'package:lyrica/core/constant/app_images.dart';
 import 'package:lyrica/core/providers/provider.dart';
 import 'package:lyrica/modules/auth/view/google_login_screen.dart';
+import 'package:lyrica/modules/home/view/artist_list.dart';
 import 'package:lyrica/modules/music%20track/view/music_track_list.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
@@ -72,6 +74,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final userAsync = ref.watch(authStateProvider);
     final userModelAsync = ref.watch(userModelProvider);
     // final musicAsyncValue = ref.watch(musicDataProvider);
+    final artisAsync = ref.watch(artistDataProvider);
 
     return userAsync.when(
       data: (user) {
@@ -282,6 +285,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   MaterialPageRoute(
                                     builder:
                                         (context) => MusicTrackList(
+                                          "All",
                                           musicType: 1,
                                           genre: '',
                                         ),
@@ -314,6 +318,93 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           },
                         ),
                       ),
+                      SizedBox(height: 16.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          AppText(
+                            fontSize: 18.sp,
+                            textName: "Artist",
+                            fontWeight: FontWeight.w500,
+                            textColor: Color(AppColors.lightText),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              debugPrint("onTap()");
+                              myPushNavigator(context, ArtistList());
+                            },
+                            child: AppText(
+                              fontSize: 14.sp,
+                              textName: "View all",
+                              fontWeight: FontWeight.w500,
+                              textColor: Color(AppColors.secondaryColor),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 12.h),
+                      artisAsync.when(
+                        data: (artist) {
+                          return SizedBox(
+                            height: 150.h,
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount:
+                                  artist.length >= 10 ? 10 : artist.length,
+                              scrollDirection: Axis.horizontal,
+                              itemBuilder: (context, index) {
+                                String? imageUrl = artist[index].image;
+                                if (artist[index].image == "") {
+                                  imageUrl =
+                                      "https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg";
+                                } else {
+                                  imageUrl = artist[index].image;
+                                }
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Column(
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(
+                                          100,
+                                        ),
+                                        child: Image.network(
+                                          imageUrl ??
+                                              "https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg",
+                                          fit: BoxFit.cover,
+                                          height: 80.h,
+                                          width: 90.w,
+                                        ),
+                                      ),
+                                      SizedBox(height: 10.h),
+                                      AppText(
+                                        fontSize: 18.sp,
+                                        textName: artist[index].name ?? "",
+                                        textColor: Color(AppColors.lightText),
+                                      ),
+                                      AppText(
+                                        fontSize: 14.sp,
+                                        textName: artist[index].joindate ?? "",
+                                        textColor: Color(AppColors.lightText),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              },
+                            ),
+                          );
+                        },
+                        loading: () => SizedBox(),
+                        error:
+                            (e, _) => Text(
+                              "Error loading user",
+                              style: GoogleFonts.poppins(
+                                color: Colors.redAccent,
+                                fontSize: 11.sp,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                      ),
                       SizedBox(height: 20.h),
                       AppMainButton(
                         borderRadius: BorderRadius.circular(12),
@@ -342,6 +433,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                           ),
                         ),
                       ),
+                      SizedBox(height: 60.h),
                     ],
                   ),
                 ),
@@ -350,7 +442,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           ),
         );
       },
-      loading: () => const Center(child: CircularProgressIndicator()),
+      loading: () => Center(child: appLoader()),
       error: (e, _) => Center(child: Text("Error: $e")),
     );
   }

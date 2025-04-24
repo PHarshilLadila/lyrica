@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:lyrica/model/artist_model.dart';
 import 'package:lyrica/model/music_model.dart';
 import 'package:lyrica/model/user_model.dart';
 import 'package:lyrica/modules/auth/controller/auth_controller.dart';
@@ -32,6 +33,10 @@ final genreMusicProvider = FutureProvider.family<List<Results>, String>((
   genre,
 ) async {
   return ref.watch(apiProvider).getMusicByGenre(genre);
+});
+
+final artistDataProvider = FutureProvider<List<ArtistResults>>((ref) async {
+  return ref.watch(apiProvider).getArtistList();
 });
 
 // music player provider

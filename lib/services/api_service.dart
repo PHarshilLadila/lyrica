@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
+import 'package:lyrica/model/artist_model.dart';
 import 'package:lyrica/model/music_model.dart';
 
 class ApiServices {
   final String? baseApiKey = dotenv.env['BASE_URL_API_KEY'];
+  final String? artistApi = dotenv.env['ARTIST_API_KEY'];
 
   Future<List<Results>> getMusicList() async {
     try {
@@ -28,7 +30,7 @@ class ApiServices {
     }
   }
 
- Future<List<Results>> getMusicByGenre(String tag) async {
+  Future<List<Results>> getMusicByGenre(String tag) async {
     try {
       final response = await http.get(
         Uri.parse("$baseApiKey&format=json&tags=$tag"),
@@ -44,5 +46,23 @@ class ApiServices {
     } catch (e) {
       throw Exception(e.toString());
     }
-  }}
+  }
+
+  Future<List<ArtistResults>> getArtistList() async {
+    try {
+      final response = await http.get(Uri.parse("$artistApi"));
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> jsonData = json.decode(response.body);
+        final music = ArtistModel.fromJson(jsonData);
+        return music.results ?? [];
+      } else {
+        debugPrint("Failed to fetch data: ${response.statusCode}");
+        return [];
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+}
+
 final apiProvider = Provider((ref) => ApiServices());

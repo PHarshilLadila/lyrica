@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lyrica/common/utils/utils.dart';
+import 'package:lyrica/common/widget/app_back_button.dart';
 import 'package:lyrica/common/widget/app_text.dart';
 import 'package:lyrica/core/constant/app_colors.dart';
 import 'package:lyrica/core/constant/app_images.dart';
@@ -110,13 +111,7 @@ class _MusicPlayerState extends ConsumerState<MusicPlayer> {
       child: Scaffold(
         backgroundColor: const Color.fromARGB(221, 39, 39, 39),
         appBar: AppBar(
-          leading: Padding(
-            padding: const EdgeInsets.only(left: 10.0),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Image.asset(AppImages.logoWithoutBG),
-            ),
-          ),
+          leading: AppBackButton(),
           elevation: 0,
           toolbarHeight: 90,
           backgroundColor: Colors.transparent,
@@ -127,7 +122,7 @@ class _MusicPlayerState extends ConsumerState<MusicPlayer> {
                 textName: "Now Playing",
                 fontSize: 20.sp,
                 textColor: Color(AppColors.lightText),
-                fontWidth: FontWeight.w500,
+                fontWeight: FontWeight.w500,
               ),
             ],
           ),
@@ -166,7 +161,7 @@ class _MusicPlayerState extends ConsumerState<MusicPlayer> {
                 textName: "By - ${currentSong.artistName ?? ""}",
                 textColor: Colors.white54,
                 fontSize: 14.sp,
-                fontWidth: FontWeight.bold,
+                fontWeight: FontWeight.bold,
               ),
               SizedBox(height: 15.h),
               StreamBuilder<Duration>(

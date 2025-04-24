@@ -3,18 +3,22 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lyrica/common/utils/utils.dart';
+import 'package:lyrica/common/widget/app_back_button.dart';
 import 'package:lyrica/common/widget/app_text.dart';
 import 'package:lyrica/core/constant/app_colors.dart';
 import 'package:lyrica/core/constant/app_images.dart';
+import 'package:lyrica/core/constant/app_string.dart';
 import 'package:lyrica/core/providers/provider.dart';
 import 'package:lyrica/model/music_model.dart';
 import 'package:lyrica/modules/music%20player/view/music_player.dart';
 
 class MusicTrackList extends ConsumerWidget {
+  final String? appBarTitle;
   final int musicType;
   final String genre;
 
-  const MusicTrackList({
+  const MusicTrackList(
+    this.appBarTitle, {
     super.key,
     required this.musicType,
     required this.genre,
@@ -32,13 +36,7 @@ class MusicTrackList extends ConsumerWidget {
       child: Scaffold(
         backgroundColor: const Color.fromARGB(221, 39, 39, 39),
         appBar: AppBar(
-          leading: Padding(
-            padding: const EdgeInsets.only(left: 10.0),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Image.asset(AppImages.logoWithoutBG),
-            ),
-          ),
+          leading: AppBackButton(),
           elevation: 0,
           toolbarHeight: 90,
           backgroundColor: Colors.transparent,
@@ -46,10 +44,10 @@ class MusicTrackList extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AppText(
-                textName: "Musics",
+                textName: "$appBarTitle Songs",
                 fontSize: 20.sp,
                 textColor: Color(AppColors.lightText),
-                fontWidth: FontWeight.w500,
+                fontWeight: FontWeight.w500,
               ),
             ],
           ),
@@ -64,7 +62,7 @@ class MusicTrackList extends ConsumerWidget {
                   AppText(
                     textName: "Item Songs",
                     fontSize: 18.sp,
-                    fontWidth: FontWeight.w500,
+                    fontWeight: FontWeight.w500,
                     textColor: Color(AppColors.lightText),
                   ),
                   SizedBox(height: 8.h),
@@ -83,6 +81,14 @@ class MusicTrackList extends ConsumerWidget {
                           return "$minute : $second";
                         }
 
+                        String? imageUrl = track.albumImage;
+
+                        if (track.albumImage == "") {
+                          imageUrl =
+                              "https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg";
+                        } else {
+                          imageUrl = track.albumImage;
+                        }
                         return Card(
                           color: Colors.transparent,
                           child: Padding(
@@ -94,15 +100,17 @@ class MusicTrackList extends ConsumerWidget {
                                       ? ClipRRect(
                                         borderRadius: BorderRadius.circular(3),
                                         child: Image.network(
-                                          track.albumImage ?? '',
+                                          imageUrl ??
+                                              AppString.defaultMusicLogo,
                                           fit: BoxFit.cover,
+                                          width: 60.w,
                                         ),
                                       )
                                       : const Icon(Icons.music_note),
                               title: AppText(
-                                textName: track.name ?? 'No Title',
+                                textName: track.name ?? 'N/A',
                                 fontSize: 14.sp,
-                                fontWidth: FontWeight.bold,
+                                fontWeight: FontWeight.bold,
                                 textColor: Color(AppColors.blueThird),
                               ),
                               subtitleTextStyle: GoogleFonts.poppins(
@@ -117,29 +125,31 @@ class MusicTrackList extends ConsumerWidget {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          AppText(
-                                            textName:
-                                                track.albumName ??
-                                                'Unknown album name',
-                                            fontSize: 12.sp,
-                                            textColor: Color(
-                                              AppColors.blueExtraLight,
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            AppText(
+                                              textName:
+                                                  track.albumName ??
+                                                  'Unknown album name',
+                                              fontSize: 12.sp,
+                                              textColor: Color(
+                                                AppColors.blueExtraLight,
+                                              ),
                                             ),
-                                          ),
-                                          AppText(
-                                            textName:
-                                                track.artistName ??
-                                                "Unknown artist name",
-                                            fontSize: 12.sp,
-                                            textColor: Color(
-                                              AppColors.blueExtraLight,
+                                            AppText(
+                                              textName:
+                                                  track.artistName ??
+                                                  "Unknown artist name",
+                                              fontSize: 12.sp,
+                                              textColor: Color(
+                                                AppColors.blueExtraLight,
+                                              ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                       AppText(
                                         textName: formattedTime(

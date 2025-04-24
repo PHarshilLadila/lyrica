@@ -18,11 +18,11 @@ class CustomBottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      backgroundColor: Colors.transparent,
+      backgroundColor: Colors.black54,
       type: BottomNavigationBarType.fixed,
-      elevation: 0,
+      elevation: 5,
       selectedItemColor: Colors.white,
-      unselectedItemColor: Colors.white54,
+      unselectedItemColor: Colors.white60,
       showSelectedLabels: false,
       unselectedLabelStyle: GoogleFonts.poppins(
         color: Color(AppColors.lightText),
