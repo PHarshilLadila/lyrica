@@ -85,16 +85,16 @@ class ApiServices {
     }
   }
 
-  Future<List<Track>> searchTracks(String query) async {
+  Future<List<Results>> searchTracks(String query) async {
     final response = await http.get(
-      Uri.parse('$trackApi&format=json&limit=25&namesearch=$query'),
+      Uri.parse('$trackApi&format=json&limit=200&namesearch=$query'),
     );
 
     if (response.statusCode == 200) {
-      final jsonData = json.decode(response.body);
-      return (jsonData['results'] as List)
-          .map((e) => Track.fromJson(e))
-          .toList();
+      final Map<String, dynamic> jsonData = json.decode(response.body);
+      final music = MusicModel.fromJson(jsonData);
+      return music.results ?? [];
+      
     } else {
       throw Exception('Failed to load tracks');
     }

@@ -160,7 +160,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                   MusicTrackList(
                                     "${categorieBox[index]['name']}",
                                     musicType: -1,
-                                    genre: "format=json&tags=rock&limit=50",
+                                    genre: "format=json&tags=rock&limit=200",
                                   ),
                                 );
                               } else if (index == 1) {
@@ -169,7 +169,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                   MusicTrackList(
                                     "${categorieBox[index]['name']}",
                                     musicType: -1,
-                                    genre: "format=json&tags=pop&limit=50",
+                                    genre: "format=json&tags=pop&limit=200",
                                   ),
                                 );
                               } else if (index == 2) {
@@ -178,7 +178,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                   MusicTrackList(
                                     "${categorieBox[index]['name']}",
                                     musicType: -1,
-                                    genre: "format=json&tags=jazz&limit=50",
+                                    genre: "format=json&tags=jazz&limit=200",
                                   ),
                                 );
                               } else if (index == 3) {
@@ -187,7 +187,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                   MusicTrackList(
                                     "${categorieBox[index]['name']}",
                                     musicType: -1,
-                                    genre: "format=json&tags=hiphop&limit=50",
+                                    genre: "format=json&tags=hiphop&limit=200",
                                   ),
                                 );
                               } else if (index == 4) {
@@ -196,7 +196,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                   MusicTrackList(
                                     "${categorieBox[index]['name']}",
                                     musicType: -1,
-                                    genre: "format=json&tags=funk&limit=50",
+                                    genre: "format=json&tags=funk&limit=200",
                                   ),
                                 );
                               } else if (index == 5) {
@@ -205,7 +205,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                   MusicTrackList(
                                     "${categorieBox[index]['name']}",
                                     musicType: -1,
-                                    genre: "format=json&tags=dance",
+                                    genre: "format=json&tags=dance&limit=200",
                                   ),
                                 );
                               } else if (index == 6) {
@@ -214,7 +214,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                   MusicTrackList(
                                     "${categorieBox[index]['name']}",
                                     musicType: -1,
-                                    genre: "format=json&tags=romantic&limit=50",
+                                    genre: "format=json&tags=romantic&limit=200",
                                   ),
                                 );
                               } else if (index == 7) {
@@ -223,7 +223,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                   MusicTrackList(
                                     "${categorieBox[index]['name']}",
                                     musicType: -1,
-                                    genre: "format=json&tags=lofi&limit=50",
+                                    genre: "format=json&tags=lofi&limit=200",
                                   ),
                                 );
                               } else if (index == 8) {
@@ -232,7 +232,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                   MusicTrackList(
                                     "${categorieBox[index]['name']}",
                                     musicType: -1,
-                                    genre: "format=json&tags=disco&limit=50",
+                                    genre: "format=json&tags=disco&limit=200",
                                   ),
                                 );
                               } else if (index == 9) {
@@ -241,7 +241,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                   MusicTrackList(
                                     "${categorieBox[index]['name']}",
                                     musicType: -1,
-                                    genre: "format=json&tags=sad&limit=50",
+                                    genre: "format=json&tags=sad&limit=200",
                                   ),
                                 );
                               } else if (index == 10) {
@@ -250,7 +250,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                   MusicTrackList(
                                     "${categorieBox[index]['name']}",
                                     musicType: -1,
-                                    genre: "format=json&tags=gospel&limit=50",
+                                    genre: "format=json&tags=gospel&limit=200",
                                   ),
                                 );
                               } else if (index == 11) {
@@ -259,7 +259,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                   MusicTrackList(
                                     "${categorieBox[index]['name']}",
                                     musicType: -1,
-                                    genre: "format=json&tags=love&limit=50",
+                                    genre: "format=json&tags=love&limit=200",
                                   ),
                                 );
                               } else if (index == 12) {
@@ -269,7 +269,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                     "${categorieBox[index]['name']}",
                                     musicType: -1,
                                     genre:
-                                        "format=json&tags=electronic&limit=50",
+                                        "format=json&tags=electronic&limit=200",
                                   ),
                                 );
                               } else if (index == 13) {
@@ -278,7 +278,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                   MusicTrackList(
                                     "${categorieBox[index]['name']}",
                                     musicType: -1,
-                                    genre: "format=json&tags=latin&limit=50",
+                                    genre: "format=json&tags=latin&limit=200",
                                   ),
                                 );
                               }
@@ -382,7 +382,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                               12,
                                             ),
                                             child: Image.network(
-                                              track.albumImage,
+                                              track.albumImage ?? "",
                                               width: 50,
                                               errorBuilder:
                                                   (_, __, ___) => const Icon(
@@ -390,15 +390,17 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                                   ),
                                             ),
                                           ),
-                                          title: Text(track.name),
-                                          subtitle: Text(track.artistName),
+                                          title: Text(track.name ?? ""),
+                                          subtitle: Text(
+                                            track.artistName ?? "",
+                                          ),
                                           trailing: IconButton(
                                             icon: const Icon(Icons.play_arrow),
                                             onPressed: () {
                                               myPushNavigator(
                                                 context,
                                                 MusicPlayer(
-                                                  songList: [],
+                                                  songList: tracks,
                                                   initialIndex: index,
                                                 ),
                                               );

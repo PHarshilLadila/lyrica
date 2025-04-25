@@ -64,6 +64,8 @@ dependencies:
   sleek_circular_slider: ^2.0.1
   miniplayer: ^1.0.1
   url_launcher: 
+  waveform_flutter: ^1.2.0
+  audio_waveforms: ^1.3.0
  
 dev_dependencies:
   flutter_test:

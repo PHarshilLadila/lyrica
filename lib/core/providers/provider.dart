@@ -59,7 +59,7 @@ final hindiSongDataProvider = FutureProvider<List<Results>>((ref) async {
 // search query provider
 final searchQueryProvider = StateProvider<String>((ref) => '');
 
-final searchResultsProvider = FutureProvider.autoDispose<List<Track>>((
+final searchResultsProvider = FutureProvider.autoDispose<List<Results>>((
   ref,
 ) async {
   final query = ref.watch(searchQueryProvider);
