@@ -24,21 +24,14 @@ class _BottomSheetScreenState extends ConsumerState<BottomSheetScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          _screens[_currentIndex],
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: CustomBottomBar(
-              currentIndex: _currentIndex,
-              onTap: (index) {
-                setState(() {
-                  _currentIndex = index;
-                });
-              },
-            ),
-          ),
-        ],
+      body: _screens[_currentIndex],  
+      bottomNavigationBar: CustomBottomBar(
+        currentIndex: _currentIndex,
+        onTap: (index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
       ),
     );
   }

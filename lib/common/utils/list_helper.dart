@@ -6,7 +6,7 @@ List<Map<String, dynamic>> continueListeningList = [
   {"image": "assets/image/cl/cl2.png", "name": "RELEASED"},
   {"image": "assets/image/cl/cl3.png", "name": "Anything Goes"},
   {"image": "assets/image/cl/cl4.png", "name": "Anime OSTs"},
-  {"image": "assets/image/cl/cl5.png", "name": "Harry’s House"},
+  {"image": "assets/image/cl/cl5.png", "name": "Hindi Songs"},
   {"image": "assets/image/cl/cl6.png", "name": "Lo-Fi Beats"},
 ];
 List<Map<String, dynamic>> mixSongList = [

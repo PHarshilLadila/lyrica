@@ -9,8 +9,8 @@ import 'package:lyrica/common/utils/utils.dart';
 import 'package:lyrica/common/widget/app_back_button.dart';
 import 'package:lyrica/common/widget/app_text.dart';
 import 'package:lyrica/core/constant/app_colors.dart';
-import 'package:lyrica/core/constant/app_images.dart';
 import 'package:lyrica/model/music_model.dart';
+import 'package:miniplayer/miniplayer.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 final audioPlayerProvider = Provider<AudioPlayer>((ref) => AudioPlayer());
@@ -106,147 +106,152 @@ class _MusicPlayerState extends ConsumerState<MusicPlayer> {
   Widget build(BuildContext context) {
     final currentSong = widget.songList[currentIndex];
 
-    return Container(
-      decoration: BoxDecoration(gradient: backgroundGradient()),
-      child: Scaffold(
-        backgroundColor: const Color.fromARGB(221, 39, 39, 39),
-        appBar: AppBar(
-          leading: AppBackButton(),
-          elevation: 0,
-          toolbarHeight: 90,
-          backgroundColor: Colors.transparent,
-          title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              AppText(
-                textName: "Now Playing",
-                fontSize: 20.sp,
-                textColor: Color(AppColors.lightText),
-                fontWeight: FontWeight.w500,
-              ),
-            ],
-          ),
-        ),
-        body: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(height: 50.h),
-
-              ClipRRect(
-                borderRadius: BorderRadius.circular(15),
-                child: Image.network(
-                  currentSong.image ?? "",
-                  width: 280.w,
-                  fit: BoxFit.cover,
+    return MiniplayerWillPopScope(
+      onWillPop: () async {
+        return true;
+      },
+      child: Container(
+        decoration: BoxDecoration(gradient: backgroundGradient()),
+        child: Scaffold(
+          backgroundColor: const Color.fromARGB(221, 39, 39, 39),
+          appBar: AppBar(
+            leading: AppBackButton(),
+            elevation: 0,
+            toolbarHeight: 90,
+            backgroundColor: Colors.transparent,
+            title: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                AppText(
+                  textName: "Now Playing",
+                  fontSize: 20.sp,
+                  textColor: Color(AppColors.lightText),
+                  fontWeight: FontWeight.w500,
                 ),
-              ),
-              SizedBox(height: 10.h),
-              GradientText(
-                currentSong.name ?? "",
-                textAlign: TextAlign.center,
-                style: GoogleFonts.poppins(fontSize: 24.sp),
-                gradientType: GradientType.radial,
-                radius: 5.5,
-                colors: [
-                  Color(AppColors.blueLight),
-                  Color(AppColors.blueThird),
-                  Color(AppColors.blueLight),
-                  Color(AppColors.secondaryColor),
-                ],
-              ),
-              SizedBox(height: 5.h),
-              AppText(
-                textName: "By - ${currentSong.artistName ?? ""}",
-                textColor: Colors.white54,
-                fontSize: 14.sp,
-                fontWeight: FontWeight.bold,
-              ),
-              SizedBox(height: 15.h),
-              StreamBuilder<Duration>(
-                stream: positionStream,
-                builder: (context, snapshot) {
-                  final position = snapshot.data ?? Duration.zero;
-                  final duration = audioPlayer.duration ?? Duration.zero;
+              ],
+            ),
+          ),
+          body: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(height: 50.h),
 
-                  return Column(
-                    children: [
-                      Slider(
-                        min: 0,
-                        max: duration.inSeconds.toDouble(),
-                        value:
-                            position.inSeconds
-                                .clamp(0, duration.inSeconds)
-                                .toDouble(),
-                        onChanged: _seek,
-                        activeColor: Color(AppColors.primaryColor),
-                        inactiveColor: Colors.white24,
-                      ),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: Image.network(
+                    currentSong.image ?? "",
+                    width: 280.w,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                SizedBox(height: 10.h),
+                GradientText(
+                  currentSong.name ?? "",
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.poppins(fontSize: 24.sp),
+                  gradientType: GradientType.radial,
+                  radius: 5.5,
+                  colors: [
+                    Color(AppColors.blueLight),
+                    Color(AppColors.blueThird),
+                    Color(AppColors.blueLight),
+                    Color(AppColors.secondaryColor),
+                  ],
+                ),
+                SizedBox(height: 5.h),
+                AppText(
+                  textName: "By - ${currentSong.artistName ?? ""}",
+                  textColor: Colors.white54,
+                  fontSize: 14.sp,
+                  fontWeight: FontWeight.bold,
+                ),
+                SizedBox(height: 15.h),
+                StreamBuilder<Duration>(
+                  stream: positionStream,
+                  builder: (context, snapshot) {
+                    final position = snapshot.data ?? Duration.zero;
+                    final duration = audioPlayer.duration ?? Duration.zero;
 
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              _formatDuration(position),
-                              style: TextStyle(color: Colors.white70),
-                            ),
-                            Text(
-                              _formatDuration(duration),
-                              style: TextStyle(color: Colors.white70),
-                            ),
+                    return Column(
+                      children: [
+                        Slider(
+                          min: 0,
+                          max: duration.inSeconds.toDouble(),
+                          value:
+                              position.inSeconds
+                                  .clamp(0, duration.inSeconds)
+                                  .toDouble(),
+                          onChanged: _seek,
+                          activeColor: Color(AppColors.primaryColor),
+                          inactiveColor: Colors.white24,
+                        ),
+
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                _formatDuration(position),
+                                style: TextStyle(color: Colors.white70),
+                              ),
+                              Text(
+                                _formatDuration(duration),
+                                style: TextStyle(color: Colors.white70),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+                SizedBox(height: 20.h),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    IconButton(
+                      icon: FaIcon(FontAwesomeIcons.backward),
+                      iconSize: 50,
+                      color: Color.fromARGB(255, 218, 250, 255),
+                      onPressed: _previousSong,
+                    ),
+                    SizedBox(width: 30.w),
+                    Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        gradient: LinearGradient(
+                          colors: [
+                            Color(AppColors.primaryColor),
+                            Color(AppColors.blueLight),
                           ],
                         ),
                       ),
-                    ],
-                  );
-                },
-              ),
-              SizedBox(height: 20.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                    icon: FaIcon(FontAwesomeIcons.backward),
-                    iconSize: 50,
-                    color: Color.fromARGB(255, 218, 250, 255),
-                    onPressed: _previousSong,
-                  ),
-                  SizedBox(width: 30.w),
-                  Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      gradient: LinearGradient(
-                        colors: [
-                          Color(AppColors.primaryColor),
-                          Color(AppColors.blueLight),
-                        ],
-                      ),
-                    ),
-                    child: IconButton(
-                      icon: Icon(
-                        !audioPlayer.playing
-                            ? (CupertinoIcons.pause_circle)
-                            : (CupertinoIcons.play_circle),
-                      ),
+                      child: IconButton(
+                        icon: Icon(
+                          !audioPlayer.playing
+                              ? (CupertinoIcons.pause_circle)
+                              : (CupertinoIcons.play_circle),
+                        ),
 
-                      iconSize: 50,
-                      color: Colors.white,
-                      onPressed: _playPause,
+                        iconSize: 50,
+                        color: Colors.white,
+                        onPressed: _playPause,
+                      ),
                     ),
-                  ),
-                  SizedBox(width: 30.w),
-                  IconButton(
-                    icon: FaIcon(FontAwesomeIcons.forward),
-                    iconSize: 50,
-                    color: Color.fromARGB(255, 218, 250, 255),
-                    onPressed: _nextSong,
-                  ),
-                ],
-              ),
-            ],
+                    SizedBox(width: 30.w),
+                    IconButton(
+                      icon: FaIcon(FontAwesomeIcons.forward),
+                      iconSize: 50,
+                      color: Color.fromARGB(255, 218, 250, 255),
+                      onPressed: _nextSong,
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

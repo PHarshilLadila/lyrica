@@ -29,7 +29,7 @@ class AppBackButton extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: FaIcon(
-                FontAwesomeIcons.leftLong,
+                FontAwesomeIcons.arrowLeft,
                 color: Color(AppColors.whiteBackground),
               ),
             ),

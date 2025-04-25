@@ -53,7 +53,7 @@ class AppCustomTextFormField extends StatelessWidget {
       initialValue: initialValues,
       controller: textEditingController,
       keyboardType: keyboradType,
-      style: const TextStyle(color: Colors.white),
+      style: TextStyle(color: Colors.white, decoration: TextDecoration.none, ),
       autocorrect: true,
       obscureText: obscureText!,
       decoration: InputDecoration(

@@ -6,7 +6,6 @@ import 'package:lyrica/common/utils/utils.dart';
 import 'package:lyrica/common/widget/app_back_button.dart';
 import 'package:lyrica/common/widget/app_text.dart';
 import 'package:lyrica/core/constant/app_colors.dart';
-import 'package:lyrica/core/constant/app_images.dart';
 import 'package:lyrica/core/constant/app_string.dart';
 import 'package:lyrica/core/providers/provider.dart';
 import 'package:lyrica/model/music_model.dart';
