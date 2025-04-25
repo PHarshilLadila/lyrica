@@ -32,7 +32,6 @@ LinearGradient backgroundGradient() {
       Color.fromARGB(255, 1, 29, 29),
       Color.fromARGB(255, 1, 29, 29),
 
-
       Color(AppColors.blackBackground),
     ],
   );
@@ -70,8 +69,17 @@ void hideLoader(BuildContext context) {
   Navigator.of(context).pop();
 }
 
-void showSnackBar(BuildContext context, String msg) {
-  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+void showSnackBar(BuildContext context, String msg, Color bgColor) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      behavior: SnackBarBehavior.floating,
+      elevation: 30,
+      duration: Duration(seconds: 4),
+      margin: EdgeInsets.all(10),
+      content: Text(msg),
+      backgroundColor: bgColor,
+    ),
+  );
 }
 
 void myPushNavigator(BuildContext context, Widget widget) {

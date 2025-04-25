@@ -14,7 +14,7 @@ import 'package:lyrica/core/constant/app_string.dart';
 import 'package:lyrica/core/providers/provider.dart';
 import 'package:lyrica/modules/auth/view/login_screen.dart';
 import 'package:lyrica/modules/bottom%20sheet/view/bottom_sheet_screen.dart';
- 
+
 class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});
 
@@ -52,235 +52,247 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         context,
         MaterialPageRoute(builder: (_) => BottomSheetScreen()),
       );
+      showSnackBar(
+        context,
+        'Registration successfully..!',
+        Color(AppColors.successColor),
+      );
     } else {
-      showSnackBar(context, '');
+      showSnackBar(
+        context,
+        'Registration faield, try again..',
+        Color(AppColors.errorColor),
+      );
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(AppColors.blackBackground),
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                SizedBox(height: 35.h),
-                Image.asset(AppImages.logoWithoutBG, height: 130.h),
-                SizedBox(height: 10.h),
-                Text(
-                  AppString.appName,
-                  style: GoogleFonts.hiMelody(
-                    fontSize: 40.sp,
-                    fontWeight: FontWeight.bold,
-                    color: Color(AppColors.primaryColor),
-                  ),
-                ),
-                Text(
-                  AppString.appTagline,
-                  style: GoogleFonts.poppins(
-                    fontSize: 14.sp,
-                    fontWeight: FontWeight.w500,
-                    color: Color(AppColors.blueExtraLight),
-                  ),
-                ),
-                SizedBox(height: 20.h),
-                Text(
-                  AppString.registerTitle,
-                  style: GoogleFonts.poppins(
-                    fontSize: 25.sp,
-                    fontWeight: FontWeight.bold,
-                    color: Color(AppColors.lightText),
-                  ),
-                ),
-                SizedBox(height: 15.h),
-
-                // User Name
-                AppCustomTextFormField(
-                  textEditingController: userNameController,
-                  keyboradType: TextInputType.name,
-                  borderColor: Color(AppColors.primaryColor),
-                  enabledColor: Color(AppColors.secondaryColor),
-                  fillColor: Colors.white10,
-                  focusedColor: Color(AppColors.primaryColor),
-                  hintcolors: Color(AppColors.whiteBackground),
-                  disabledColor: Color(AppColors.whiteBackground),
-                  hintText: AppString.userName,
-                  prefixIcon: Padding(
-                    padding: EdgeInsets.only(left: 10.w, top: 8.h),
-                    child: FaIcon(
-                      FontAwesomeIcons.user,
-                      color: Color(AppColors.blueExtraLight),
-                    ),
-                  ),
-                  obscureText: false,
-                ),
-                SizedBox(height: 15.h),
-
-                // Email
-                AppCustomTextFormField(
-                  textEditingController: emailController,
-                  keyboradType: TextInputType.emailAddress,
-                  borderColor: Color(AppColors.primaryColor),
-                  enabledColor: Color(AppColors.secondaryColor),
-                  fillColor: Colors.white10,
-                  focusedColor: Color(AppColors.primaryColor),
-                  hintcolors: Color(AppColors.whiteBackground),
-                  disabledColor: Color(AppColors.whiteBackground),
-                  hintText: AppString.email,
-                  prefixIcon: Padding(
-                    padding: EdgeInsets.only(left: 10.w, top: 8.h),
-                    child: FaIcon(
-                      FontAwesomeIcons.envelope,
-                      color: Color(AppColors.blueExtraLight),
-                    ),
-                  ),
-                  obscureText: false,
-                ),
-                SizedBox(height: 15.h),
-                AppCustomTextFormField(
-                  textEditingController: mobileController,
-                  keyboradType: TextInputType.number,
-                  borderColor: Color(AppColors.primaryColor),
-                  enabledColor: Color(AppColors.secondaryColor),
-                  fillColor: Colors.white10,
-                  focusedColor: Color(AppColors.primaryColor),
-                  hintcolors: Color(AppColors.whiteBackground),
-                  disabledColor: Color(AppColors.whiteBackground),
-                  hintText: AppString.mobileNumber,
-                  prefixIcon: Padding(
-                    padding: EdgeInsets.only(left: 10.w, top: 8.h),
-                    child: FaIcon(
-                      FontAwesomeIcons.phone,
-                      color: Color(AppColors.blueExtraLight),
-                    ),
-                  ),
-                  obscureText: false,
-                ),
-                SizedBox(height: 15.h),
-                // Password
-                AppCustomTextFormField(
-                  textEditingController: passwordController,
-                  keyboradType: TextInputType.visiblePassword,
-                  borderColor: Color(AppColors.primaryColor),
-                  enabledColor: Color(AppColors.secondaryColor),
-                  fillColor: Colors.white10,
-                  focusedColor: Color(AppColors.primaryColor),
-                  hintcolors: Color(AppColors.whiteBackground),
-                  disabledColor: Color(AppColors.whiteBackground),
-                  hintText: AppString.password,
-                  obscureText: !showPassword,
-                  maxline: 1,
-                  sufixIcon: IconButton(
-                    onPressed: toggleShowPassword,
-                    icon: Icon(
-                      showPassword ? Icons.visibility : Icons.visibility_off,
+    return Container(
+      decoration: BoxDecoration(gradient: backgroundGradient()),
+      child: Scaffold(
+        backgroundColor: const Color.fromARGB(221, 39, 39, 39),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(height: 35.h),
+                  Image.asset(AppImages.logoWithoutBG, height: 130.h),
+                  SizedBox(height: 10.h),
+                  Text(
+                    AppString.appName,
+                    style: GoogleFonts.hiMelody(
+                      fontSize: 40.sp,
+                      fontWeight: FontWeight.bold,
                       color: Color(AppColors.primaryColor),
                     ),
                   ),
-                  prefixIcon: Padding(
-                    padding: EdgeInsets.only(left: 10.w, top: 8.h),
-                    child: FaIcon(
-                      FontAwesomeIcons.key,
+                  Text(
+                    AppString.appTagline,
+                    style: GoogleFonts.poppins(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w500,
                       color: Color(AppColors.blueExtraLight),
                     ),
                   ),
-                ),
-                SizedBox(height: 15.h),
-
-                // Remember me
-                Row(
-                  children: [
-                    Checkbox(
-                      checkColor: Color(AppColors.whiteBackground),
-                      activeColor: Color(AppColors.primaryColor),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5.r),
-                      ),
-                      side: const BorderSide(
-                        color: Color.fromARGB(75, 29, 178, 183),
-                        width: 1.5,
-                      ),
-                      value: ref.watch(valueProvider),
-                      onChanged: (bool? newValue) {
-                        ref.read(valueProvider.notifier).state = newValue;
-                      },
+                  SizedBox(height: 20.h),
+                  Text(
+                    AppString.registerTitle,
+                    style: GoogleFonts.poppins(
+                      fontSize: 25.sp,
+                      fontWeight: FontWeight.bold,
+                      color: Color(AppColors.lightText),
                     ),
-                    Text(
-                      AppString.remember,
-                      style: GoogleFonts.poppins(
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w500,
-                        color: Color(AppColors.whiteBackground),
+                  ),
+                  SizedBox(height: 15.h),
+
+                  // User Name
+                  AppCustomTextFormField(
+                    textEditingController: userNameController,
+                    keyboradType: TextInputType.name,
+                    borderColor: Color(AppColors.primaryColor),
+                    enabledColor: Color(AppColors.secondaryColor),
+                    fillColor: Colors.white10,
+                    focusedColor: Color(AppColors.primaryColor),
+                    hintcolors: Color(AppColors.whiteBackground),
+                    disabledColor: Color(AppColors.whiteBackground),
+                    hintText: AppString.userName,
+                    prefixIcon: Padding(
+                      padding: EdgeInsets.only(left: 10.w, top: 8.h),
+                      child: FaIcon(
+                        FontAwesomeIcons.user,
+                        color: Color(AppColors.blueExtraLight),
                       ),
                     ),
-                  ],
-                ),
-                SizedBox(height: 15.h),
+                    obscureText: false,
+                  ),
+                  SizedBox(height: 15.h),
 
-                AppMainButton(
-                  height: 40.h,
-                  borderRadius: BorderRadius.circular(20.r),
-                  gradient: const LinearGradient(
-                    colors: [
-                      Color(AppColors.blueLight),
-                      Color(AppColors.primaryColor),
+                  // Email
+                  AppCustomTextFormField(
+                    textEditingController: emailController,
+                    keyboradType: TextInputType.emailAddress,
+                    borderColor: Color(AppColors.primaryColor),
+                    enabledColor: Color(AppColors.secondaryColor),
+                    fillColor: Colors.white10,
+                    focusedColor: Color(AppColors.primaryColor),
+                    hintcolors: Color(AppColors.whiteBackground),
+                    disabledColor: Color(AppColors.whiteBackground),
+                    hintText: AppString.email,
+                    prefixIcon: Padding(
+                      padding: EdgeInsets.only(left: 10.w, top: 8.h),
+                      child: FaIcon(
+                        FontAwesomeIcons.envelope,
+                        color: Color(AppColors.blueExtraLight),
+                      ),
+                    ),
+                    obscureText: false,
+                  ),
+                  SizedBox(height: 15.h),
+                  AppCustomTextFormField(
+                    textEditingController: mobileController,
+                    keyboradType: TextInputType.number,
+                    borderColor: Color(AppColors.primaryColor),
+                    enabledColor: Color(AppColors.secondaryColor),
+                    fillColor: Colors.white10,
+                    focusedColor: Color(AppColors.primaryColor),
+                    hintcolors: Color(AppColors.whiteBackground),
+                    disabledColor: Color(AppColors.whiteBackground),
+                    hintText: AppString.mobileNumber,
+                    prefixIcon: Padding(
+                      padding: EdgeInsets.only(left: 10.w, top: 8.h),
+                      child: FaIcon(
+                        FontAwesomeIcons.phone,
+                        color: Color(AppColors.blueExtraLight),
+                      ),
+                    ),
+                    obscureText: false,
+                  ),
+                  SizedBox(height: 15.h),
+                  // Password
+                  AppCustomTextFormField(
+                    textEditingController: passwordController,
+                    keyboradType: TextInputType.visiblePassword,
+                    borderColor: Color(AppColors.primaryColor),
+                    enabledColor: Color(AppColors.secondaryColor),
+                    fillColor: Colors.white10,
+                    focusedColor: Color(AppColors.primaryColor),
+                    hintcolors: Color(AppColors.whiteBackground),
+                    disabledColor: Color(AppColors.whiteBackground),
+                    hintText: AppString.password,
+                    obscureText: !showPassword,
+                    maxline: 1,
+                    sufixIcon: IconButton(
+                      onPressed: toggleShowPassword,
+                      icon: Icon(
+                        showPassword ? Icons.visibility : Icons.visibility_off,
+                        color: Color(AppColors.primaryColor),
+                      ),
+                    ),
+                    prefixIcon: Padding(
+                      padding: EdgeInsets.only(left: 10.w, top: 8.h),
+                      child: FaIcon(
+                        FontAwesomeIcons.key,
+                        color: Color(AppColors.blueExtraLight),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 15.h),
+
+                  // Remember me
+                  Row(
+                    children: [
+                      Checkbox(
+                        checkColor: Color(AppColors.whiteBackground),
+                        activeColor: Color(AppColors.primaryColor),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(5.r),
+                        ),
+                        side: const BorderSide(
+                          color: Color.fromARGB(75, 29, 178, 183),
+                          width: 1.5,
+                        ),
+                        value: ref.watch(valueProvider),
+                        onChanged: (bool? newValue) {
+                          ref.read(valueProvider.notifier).state = newValue;
+                        },
+                      ),
+                      Text(
+                        AppString.remember,
+                        style: GoogleFonts.poppins(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Color(AppColors.whiteBackground),
+                        ),
+                      ),
                     ],
                   ),
-                  width: double.infinity,
-                  onPressed: () {
-                    register(context, ref);
+                  SizedBox(height: 15.h),
 
-                    debugPrint("BUTTON CLICKED ---");
-                  },
-
-                  child: Text(
-                    AppString.createAccount,
-                    style: GoogleFonts.poppins(
-                      color: Color(AppColors.lightText),
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.bold,
+                  AppMainButton(
+                    height: 40.h,
+                    borderRadius: BorderRadius.circular(20.r),
+                    gradient: const LinearGradient(
+                      colors: [
+                        Color(AppColors.blueLight),
+                        Color(AppColors.primaryColor),
+                      ],
                     ),
-                  ),
-                ),
-                SizedBox(height: 10.h),
+                    width: double.infinity,
+                    onPressed: () {
+                      register(context, ref);
 
-                // Already have account
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      AppString.haveAccount,
+                      debugPrint("BUTTON CLICKED ---");
+                    },
+
+                    child: Text(
+                      AppString.createAccount,
                       style: GoogleFonts.poppins(
                         color: Color(AppColors.lightText),
                         fontSize: 14.sp,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const LoginScreen(),
-                          ),
-                        );
-                      },
-                      child: Text(
-                        AppString.signIn,
+                  ),
+                  SizedBox(height: 10.h),
+
+                  // Already have account
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        AppString.haveAccount,
                         style: GoogleFonts.poppins(
-                          color: Color(AppColors.secondaryColor),
+                          color: Color(AppColors.lightText),
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginScreen(),
+                            ),
+                          );
+                        },
+                        child: Text(
+                          AppString.signIn,
+                          style: GoogleFonts.poppins(
+                            color: Color(AppColors.secondaryColor),
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),

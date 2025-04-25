@@ -29,6 +29,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    Future.microtask(() {
+      // ignore: unused_result
+      ref.refresh(userModelProvider);
+    });
   }
 
   Future<void> checkDeviceConnectivity() async {
@@ -37,34 +41,58 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     switch (result as ConnectivityResult) {
       case ConnectivityResult.mobile:
         setState(() {
-          showSnackBar(context, "Connected to mobile network");
+          showSnackBar(
+            context,
+            "Connected to mobile network",
+            Color(AppColors.darkYellow),
+          );
         });
         break;
 
       case ConnectivityResult.bluetooth:
         setState(() {
-          showSnackBar(context, "Connected to mobile bluetooth");
+          showSnackBar(
+            context,
+            "Connected to mobile bluetooth",
+            Color(AppColors.errorColor),
+          );
         });
         break;
       case ConnectivityResult.wifi:
         setState(() {
-          showSnackBar(context, "Connected to mobile wifi");
+          showSnackBar(
+            context,
+            "Connected to mobile wifi",
+            Color(AppColors.errorColor),
+          );
         });
         break;
       case ConnectivityResult.ethernet:
         setState(() {
-          showSnackBar(context, "Connected to mobile ethernet");
+          showSnackBar(
+            context,
+            "Connected to mobile ethernet",
+            Color(AppColors.errorColor),
+          );
         });
         break;
       case ConnectivityResult.none:
-        showSnackBar(context, "Please Connect with your Internet..!");
+        showSnackBar(
+          context,
+          "Please Connect with your Internet..!",
+          Color(AppColors.successColor),
+        );
         break;
       case ConnectivityResult.vpn:
         debugPrint("Connected to mobile vpn");
         break;
       case ConnectivityResult.other:
         setState(() {
-          showSnackBar(context, "");
+          showSnackBar(
+            context,
+            "error in connectivity",
+            Color(AppColors.errorColor),
+          );
         });
         break;
     }
@@ -72,10 +100,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final auth = ref.read(authControllerProvider);
     final userAsync = ref.watch(authStateProvider);
     final userModelAsync = ref.watch(userModelProvider);
-    // final musicAsyncValue = ref.watch(musicDataProvider);
     final artisAsync = ref.watch(artistDataProvider);
     final hindiSongAsync = ref.watch(hindiSongDataProvider);
 
@@ -94,18 +120,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   backgroundColor: Color(AppColors.primaryColor),
                   child: userModelAsync.when(
                     data: (userModel) {
-                      if (userModel == null) {
-                        return Text(
-                          user.displayName?[0] ?? "",
-                          style: GoogleFonts.poppins(
-                            color: Color(AppColors.lightText),
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        );
-                      }
                       return Text(
-                        user.displayName ?? userModel.username[0],
+                        userModel == null
+                            ? user.displayName ??
+                                userModel?.username[0] ??
+                                "N12"
+                            : userModel.username[0],
+                        // user.displayName ?? "123",
                         style: GoogleFonts.poppins(
                           color: Color(AppColors.lightText),
                           fontSize: 18.sp,
@@ -145,7 +166,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     data: (userModel) {
                       if (userModel == null) {
                         return Text(
-                          user.displayName ?? "",
+                          user.displayName ?? "N/A",
                           style: GoogleFonts.poppins(
                             color: Color(AppColors.lightText),
                             fontSize: 14.sp,

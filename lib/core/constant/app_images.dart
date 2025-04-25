@@ -13,4 +13,8 @@ class AppImages {
   static const String cat4 = 'assets/image/music_categories/night.png';
   static const String cat5 = 'assets/image/music_categories/pop.png';
   static const String cat6 = 'assets/image/music_categories/rNb.png';
+  static const String logout = 'assets/icons/logout.png';
+  static const String logout2 = 'assets/icons/logout2.png';
+  static const String logout3 = 'assets/icons/logout3.png';
+  static const String logout4 = 'assets/icons/logout4.png';
 }

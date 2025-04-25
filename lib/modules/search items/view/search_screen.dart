@@ -48,10 +48,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             toolbarHeight: 90,
             backgroundColor: Colors.transparent,
             title: Text(
-              "Explore Categories",
+              "Search & Explore",
               style: GoogleFonts.poppins(
                 color: Color(AppColors.lightText),
-                fontSize: 18.sp,
+                fontSize: 22.sp,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -64,6 +64,11 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                     MaterialPageRoute(
                       builder: (_) => const GoogleLoginScreen(),
                     ),
+                  );
+                  showSnackBar(
+                    context,
+                    "Sign out Successfully..!",
+                    Color(AppColors.successColor),
                   );
                 },
                 icon: Image.asset(AppImages.barIcon, width: 25.w),
@@ -214,7 +219,8 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                   MusicTrackList(
                                     "${categorieBox[index]['name']}",
                                     musicType: -1,
-                                    genre: "format=json&tags=romantic&limit=200",
+                                    genre:
+                                        "format=json&tags=romantic&limit=200",
                                   ),
                                 );
                               } else if (index == 7) {

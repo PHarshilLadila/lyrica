@@ -15,9 +15,7 @@ class AuthController {
   FirebaseAuth get _auth => _ref.read(firebaseAuthProvider);
 
   Stream<User?> get authStateChanges => _auth.authStateChanges();
-  // final QuerySnapshot<Map<String, dynamic>> _userData =
-  //     {} as QuerySnapshot<Map<String, dynamic>>;
-  // QuerySnapshot<Map<String, dynamic>> get userData => _userData;
+  
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   Future<UserCredential?> register(
@@ -94,7 +92,7 @@ class AuthController {
     }
   }
 
-  Future<UserModel?> getUser() async {
+    Future<UserModel?> getUser() async {
     try {
       final currentUser = _auth.currentUser;
       if (currentUser == null) return null;
@@ -114,6 +112,27 @@ class AuthController {
       return null;
     }
   }
+
+  // Future<UserModel?> getUser() async {
+  //   try {
+  //     final currentUser = _auth.currentUser;
+  //     if (currentUser == null) return null;
+
+  //     final docSnapshot =
+  //         await firestore.collection("users").doc(currentUser.uid).get();
+
+  //     if (docSnapshot.exists) {
+  //       final data = docSnapshot.data();
+  //       if (data != null) {
+  //         return UserModel.fromMap(data);
+  //       }
+  //     }
+  //     return null;
+  //   } catch (e) {
+  //     debugPrint('Error fetching user: $e');
+  //     return null;
+  //   }
+  // }
 
   Future<void> signOut() async {
     await _auth.signOut();
