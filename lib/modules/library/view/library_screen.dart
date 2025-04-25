@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, deprecated_member_use
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,10 +6,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lyrica/common/utils/utils.dart';
-import 'package:lyrica/common/widget/app_back_button.dart';
-import 'package:lyrica/common/widget/app_main_button.dart';
-import 'package:lyrica/common/widget/app_text.dart';
-import 'package:lyrica/core/constant/app_colors.dart';
+ import 'package:lyrica/common/widget/app_main_button.dart';
+ import 'package:lyrica/core/constant/app_colors.dart';
 import 'package:lyrica/core/constant/app_images.dart';
 import 'package:lyrica/core/providers/provider.dart';
 import 'package:lyrica/modules/auth/view/google_login_screen.dart';

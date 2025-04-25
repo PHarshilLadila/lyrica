@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -10,6 +11,7 @@ import 'package:lyrica/common/widget/app_text.dart';
 import 'package:lyrica/core/constant/app_colors.dart';
 import 'package:lyrica/core/providers/provider.dart';
 import 'package:lyrica/modules/music%20player/view/music_player.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ArtistDetails extends ConsumerStatefulWidget {
   final String? id;
@@ -128,7 +130,155 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
                   ),
                 ),
                 SizedBox(height: 20.h),
+                Container(
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(153, 167, 251, 255).withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 15.h,
+                      horizontal: 10.w,
+                    ),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: AppText(
+                                textName: "Website Url ",
+                                fontSize: 14.sp,
+                                textColor: Colors.white,
+                              ),
+                            ),
+                            Expanded(
+                              child: GestureDetector(
+                                onLongPress: () {
+                                  Clipboard.setData(
+                                    ClipboardData(text: widget.website ?? ""),
+                                  ).then((value) {
+                                    showSnackBar(
+                                      context,
+                                      "Website link copied Successfully",
+                                      Color(AppColors.successColor),
+                                    );
+                                  });
+                                },
+                                onTap: () async {
+                                  final Uri url = Uri.parse(
+                                    widget.website ?? "",
+                                  );
+                                  if (!await launchUrl(url)) {
+                                    throw Exception(
+                                      'Could not launch ${widget.website ?? ""}',
+                                    );
+                                  }
+                                },
+                                child: AppText(
+                                  textName:
+                                      widget.website ??
+                                      "No description available.",
+                                  fontSize: 14.sp,
+                                  textColor: Color(AppColors.primaryColor),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 15.h),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
+                          children: [
+                            Expanded(
+                              child: AppText(
+                                textName: "Short Url ",
+                                fontSize: 14.sp,
+                                textColor: Colors.white,
+                              ),
+                            ),
+                            Expanded(
+                              child: GestureDetector(
+                                onLongPress: () {
+                                  Clipboard.setData(
+                                    ClipboardData(text: widget.short ?? ""),
+                                  ).then((value) {
+                                    showSnackBar(
+                                      context,
+                                      "Website link copied Successfully",
+                                      Color(AppColors.successColor),
+                                    );
+                                  });
+                                },
+                                onTap: () async {
+                                  final Uri url = Uri.parse(widget.short ?? "");
+                                  if (!await launchUrl(url)) {
+                                    throw Exception(
+                                      'Could not launch ${widget.short ?? ""}',
+                                    );
+                                  }
+                                },
+                                child: AppText(
+                                  textName:
+                                      widget.short ??
+                                      "No description available.",
+                                  fontSize: 14.sp,
+                                  textColor: Color(AppColors.primaryColor),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 15.h),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                          children: [
+                            Expanded(
+                              child: AppText(
+                                textName: "Share Url ",
+                                fontSize: 14.sp,
+                                textColor: Colors.white,
+                              ),
+                            ),
+                            Expanded(
+                              child: GestureDetector(
+                                onLongPress: () {
+                                  Clipboard.setData(
+                                    ClipboardData(text: widget.share ?? ""),
+                                  ).then((value) {
+                                    showSnackBar(
+                                      context,
+                                      "Website link copied Successfully",
+                                      Color(AppColors.successColor),
+                                    );
+                                  });
+                                },
+                                onTap: () async {
+                                  final Uri url = Uri.parse(widget.share ?? "");
+                                  if (!await launchUrl(url)) {
+                                    throw Exception(
+                                      'Could not launch ${widget.share ?? ""}',
+                                    );
+                                  }
+                                },
+                                child: AppText(
+                                  textName:
+                                      widget.share ??
+                                      "No description available.",
+                                  fontSize: 14.sp,
+                                  textColor: Color(AppColors.primaryColor),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10.h),
                 // Artist Songs Section
                 AppText(
                   textName: "${widget.name}'s Songs",
