@@ -1,8 +1,12 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, use_build_context_synchronously
+
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lyrica/common/utils/utils.dart';
 import 'package:lyrica/common/widget/app_back_button.dart';
 import 'package:lyrica/common/widget/app_text.dart';
@@ -36,11 +40,43 @@ class ArtistDetails extends ConsumerStatefulWidget {
 }
 
 class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
+  ScrollController scrollController = ScrollController();
+  bool showbtn = false;
+
+  @override
+  void initState() {
+    super.initState();
+    scrollController.addListener(() {
+      double showoffset = 5.0;
+
+      if (scrollController.offset > showoffset) {
+        if (!showbtn) {
+          setState(() {
+            showbtn = true;
+          });
+        }
+      } else {
+        if (showbtn) {
+          setState(() {
+            showbtn = false;
+          });
+        }
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     final artistMusicDataProviderSync = ref.watch(
       artistMusicDataProvider(widget.id ?? ""),
     );
+
     return Container(
       decoration: BoxDecoration(gradient: backgroundGradient()),
       child: Scaffold(
@@ -52,17 +88,16 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
           backgroundColor: Colors.transparent,
           title: AppText(
             textName: widget.name ?? "",
-
             fontSize: 20.sp,
             textColor: Color(AppColors.lightText),
             fontWeight: FontWeight.w500,
           ),
         ),
         body: SingleChildScrollView(
+          controller: scrollController,
           child: Padding(
             padding: const EdgeInsets.all(12.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(
@@ -77,7 +112,6 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
                   ),
                 ),
                 SizedBox(height: 15.h),
-
                 Align(
                   alignment: Alignment.center,
                   child: AppText(
@@ -88,10 +122,8 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
                   ),
                 ),
                 SizedBox(height: 1.h),
-
                 Align(
                   alignment: Alignment.center,
-
                   child: AppText(
                     textName: "From : ${widget.date ?? "N/A"}",
                     fontSize: 16.sp,
@@ -101,124 +133,9 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
                 ),
                 SizedBox(height: 20.h),
 
-                Container(
-                  decoration: BoxDecoration(
-                    color: Color.fromARGB(153, 167, 251, 255).withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                      vertical: 15.h,
-                      horizontal: 10.w,
-                    ),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: AppText(
-                                textName: "Website Url ",
-                                fontSize: 14.sp,
-                                textColor: Colors.white,
-                              ),
-                            ),
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () async {
-                                  final Uri url = Uri.parse(
-                                    widget.website ?? "",
-                                  );
-                                  if (!await launchUrl(url)) {
-                                    throw Exception(
-                                      'Could not launch ${widget.website ?? ""}',
-                                    );
-                                  }
-                                },
-                                child: AppText(
-                                  textName:
-                                      widget.website ??
-                                      "No description available.",
-                                  fontSize: 14.sp,
-                                  textColor: Color(AppColors.primaryColor),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 15.h),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                          children: [
-                            Expanded(
-                              child: AppText(
-                                textName: "Short Url ",
-                                fontSize: 14.sp,
-                                textColor: Colors.white,
-                              ),
-                            ),
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () async {
-                                  final Uri url = Uri.parse(widget.short ?? "");
-                                  if (!await launchUrl(url)) {
-                                    throw Exception(
-                                      'Could not launch ${widget.short ?? ""}',
-                                    );
-                                  }
-                                },
-                                child: AppText(
-                                  textName:
-                                      widget.short ??
-                                      "No description available.",
-                                  fontSize: 14.sp,
-                                  textColor: Color(AppColors.primaryColor),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 15.h),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-
-                          children: [
-                            Expanded(
-                              child: AppText(
-                                textName: "Share Url ",
-                                fontSize: 14.sp,
-                                textColor: Colors.white,
-                              ),
-                            ),
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: () async {
-                                  final Uri url = Uri.parse(widget.share ?? "");
-                                  if (!await launchUrl(url)) {
-                                    throw Exception(
-                                      'Could not launch ${widget.share ?? ""}',
-                                    );
-                                  }
-                                },
-                                child: AppText(
-                                  textName:
-                                      widget.share ??
-                                      "No description available.",
-                                  fontSize: 14.sp,
-                                  textColor: Color(AppColors.primaryColor),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(height: 10.h),
+                // Artist Songs Section
                 AppText(
-                  textName: "${widget.name}' Songs",
+                  textName: "${widget.name}'s Songs",
                   fontSize: 20.sp,
                   textColor: Color(AppColors.lightText),
                   fontWeight: FontWeight.bold,
@@ -239,7 +156,7 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
                       ),
                       child: ListView.builder(
                         shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
+                        physics: const NeverScrollableScrollPhysics(),
                         itemCount: artistDetails.length,
                         itemBuilder: (context, index) {
                           final song = artistDetails[index];
@@ -248,7 +165,7 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
                               myPushNavigator(
                                 context,
                                 MusicPlayer(
-                                   songList: artistDetails,
+                                  songList: artistDetails,
                                   initialIndex: index,
                                 ),
                               );
@@ -257,6 +174,17 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
                               color: Colors.black12,
                               elevation: 0,
                               child: ListTile(
+                                trailing: FaIcon(
+                                  FontAwesomeIcons.circlePlay,
+                                  color: Color(AppColors.blueLight),
+                                  shadows: [
+                                    BoxShadow(
+                                      color: Color(AppColors.blueLight),
+                                      offset: Offset(1, 5),
+                                      blurRadius: 30,
+                                    ),
+                                  ],
+                                ),
                                 leading: ClipRRect(
                                   borderRadius: BorderRadius.circular(8),
                                   child: Image.network(
@@ -284,7 +212,7 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
                     );
                   },
                   error: (Object error, StackTrace stackTrace) {
-                    return Text("Something went to wrong..!");
+                    return const Center(child: Text("Something went wrong!"));
                   },
                   loading: () {
                     return Center(child: appLoader());
@@ -292,6 +220,47 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
                 ),
                 SizedBox(height: 60.h),
               ],
+            ),
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: AnimatedOpacity(
+          opacity: showbtn ? 1.0 : 0.0,
+          duration: const Duration(milliseconds: 300),
+          child: GestureDetector(
+            onTap: () {
+              scrollController.animateTo(
+                0,
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeInOut,
+              );
+            },
+            child: Container(
+              height: 50.h,
+              width: 50.w,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topRight,
+                  end: Alignment.bottomLeft,
+                  colors: [
+                    Color.fromARGB(255, 23, 106, 109),
+                    Color.fromARGB(255, 29, 178, 183),
+                    Color.fromARGB(255, 29, 178, 183),
+                    Color.fromARGB(255, 23, 106, 109),
+                  ],
+                ),
+                border: Border.all(color: Colors.white54, width: 0.5),
+                shape: BoxShape.circle,
+              ),
+              child: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: FaIcon(
+                    FontAwesomeIcons.arrowUpLong,
+                    color: Color(AppColors.whiteBackground),
+                  ),
+                ),
+              ),
             ),
           ),
         ),

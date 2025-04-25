@@ -7,16 +7,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lyrica/common/utils/list_helper.dart';
 import 'package:lyrica/common/utils/utils.dart';
- import 'package:lyrica/common/widget/app_text.dart';
+import 'package:lyrica/common/widget/app_text.dart';
 import 'package:lyrica/core/constant/app_colors.dart';
 import 'package:lyrica/core/constant/app_images.dart';
 import 'package:lyrica/core/constant/app_string.dart';
 import 'package:lyrica/core/providers/provider.dart';
- import 'package:lyrica/modules/home/view/artist_details.dart';
+import 'package:lyrica/modules/home/music/view/hindi_music_list.dart';
+import 'package:lyrica/modules/home/view/artist_details.dart';
 import 'package:lyrica/modules/home/view/artist_list.dart';
 import 'package:lyrica/modules/music%20player/view/music_player.dart';
 import 'package:lyrica/modules/music%20track/view/music_track_list.dart';
- 
+
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
@@ -197,18 +198,36 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Hindi Version",
-                        style: GoogleFonts.poppins(
-                          color: Color(AppColors.lightText),
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.w500,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "Hindi Version",
+                            style: GoogleFonts.poppins(
+                              color: Color(AppColors.lightText),
+                              fontSize: 18.sp,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              debugPrint("onTap() of view all hindi song");
+                              myPushNavigator(context, HindiMusicList());
+                            },
+                            child: AppText(
+                              fontSize: 14.sp,
+                              textName: "View all",
+                              fontWeight: FontWeight.w500,
+                              textColor: Color(AppColors.secondaryColor),
+                            ),
+                          ),
+                        ],
                       ),
+                      SizedBox(height: 10.h),
                       hindiSongAsync.when(
                         data: (hindiSong) {
                           return SizedBox(
-                            height: 140.h,
+                            height: 125.h,
                             child: ListView.builder(
                               shrinkWrap: true,
 
@@ -325,7 +344,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                           MaterialPageRoute(
                                             builder:
                                                 (context) => MusicPlayer(
-                                                   songList: hindiSong,
+                                                  songList: hindiSong,
                                                   initialIndex: index,
                                                 ),
                                           ),
@@ -347,82 +366,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                               ),
                             ),
                       ),
+                      SizedBox(height: 10.h),
 
-                      Text(
-                        "Continue Listening",
-                        style: GoogleFonts.poppins(
-                          color: Color(AppColors.lightText),
-                          fontSize: 18.sp,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      SizedBox(height: 12.h),
-                      GridView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              childAspectRatio: 3.5,
-                              crossAxisSpacing: 8,
-                              mainAxisSpacing: 8,
-                            ),
-                        itemCount: continueListeningList.length,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder:
-                                      (context) => MusicTrackList(
-                                        "All",
-                                        musicType: 1,
-                                        genre: '',
-                                      ),
-                                ),
-                              );
-                            },
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white12,
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Row(
-                                children: [
-                                  Container(
-                                    width: 50.w,
-                                    decoration: BoxDecoration(
-                                      color: Colors.transparent,
-                                      borderRadius: BorderRadius.only(
-                                        bottomLeft: Radius.circular(12),
-                                        topLeft: Radius.circular(12),
-                                      ),
-                                    ),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(5),
-                                      child: Image.asset(
-                                        "${continueListeningList[index]['image']}",
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(width: 15.w),
-                                  Text(
-                                    "${continueListeningList[index]['name']}",
-                                    style: GoogleFonts.poppins(
-                                      color: Color(AppColors.lightText),
-                                      fontSize: 14.sp,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                      SizedBox(height: 16.h),
                       Text(
                         "Your Top Mixes",
                         style: GoogleFonts.poppins(

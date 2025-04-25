@@ -23,11 +23,15 @@ LinearGradient backgroundGradient() {
     end: Alignment.bottomCenter,
     colors: [
       Color.fromARGB(255, 9, 226, 255),
+      Color.fromARGB(255, 9, 193, 218), Color.fromARGB(255, 9, 193, 218),
       Color.fromARGB(255, 9, 193, 218),
+
       //  Color.fromARGB(255, 8, 137, 146),
       Color(0xff102B2D),
       Color(0xff0E0E0E),
-      Color(0xff0E0E0E),
+      Color.fromARGB(255, 1, 29, 29),
+      Color.fromARGB(255, 1, 29, 29),
+
 
       Color(AppColors.blackBackground),
     ],

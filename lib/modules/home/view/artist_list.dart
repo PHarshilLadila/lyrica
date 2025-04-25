@@ -47,6 +47,8 @@ class _ArtistListState extends ConsumerState<ArtistList> {
           data: (artist) {
             return SafeArea(
               child: GridView.builder(
+                physics: ScrollPhysics(),
+                shrinkWrap: true,
                 padding: const EdgeInsets.all(8.0),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,

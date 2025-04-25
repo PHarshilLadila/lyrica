@@ -78,7 +78,25 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
               ),
             ],
             bottom: TabBar(
-              dividerColor: Colors.transparent,
+              indicatorAnimation: TabIndicatorAnimation.linear,
+              mouseCursor: MouseCursor.defer,
+              indicator: BoxDecoration(
+                borderRadius: BorderRadius.circular(12),
+                gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: [
+                    Color(AppColors.primaryColor),
+                    Color.fromARGB(255, 67, 255, 246),
+                    Color(AppColors.secondaryColor),
+                    Color.fromARGB(255, 67, 255, 246),
+                    Color(AppColors.primaryColor),
+                  ],
+                ),
+              ),
+
+              dividerColor: Colors.pinkAccent,
+              indicatorSize: TabBarIndicatorSize.tab,
               indicatorColor: Color(AppColors.primaryColor),
               tabs: [
                 Tab(

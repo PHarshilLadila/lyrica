@@ -6,6 +6,8 @@ class AppText extends StatelessWidget {
   final Color? textColor;
   final double? fontSize;
   final FontWeight? fontWeight;
+  final TextDecoration? textUnderline;
+  final Color? underlineColor;
 
   const AppText({
     super.key,
@@ -13,6 +15,8 @@ class AppText extends StatelessWidget {
     this.textColor,
     this.fontSize,
     this.fontWeight,
+    this.textUnderline,
+    this.underlineColor,
   });
 
   @override
@@ -23,6 +27,8 @@ class AppText extends StatelessWidget {
         color: textColor,
         fontSize: fontSize,
         fontWeight: fontWeight,
+        decoration: textUnderline,
+        decorationColor: underlineColor,
       ),
       overflow: TextOverflow.ellipsis,
       maxLines: 1,
