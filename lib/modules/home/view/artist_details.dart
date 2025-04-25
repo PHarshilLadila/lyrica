@@ -1,10 +1,8 @@
 // ignore_for_file: deprecated_member_use, use_build_context_synchronously
 
-import 'dart:math' as math;
-
+ 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lyrica/common/utils/utils.dart';
@@ -13,7 +11,6 @@ import 'package:lyrica/common/widget/app_text.dart';
 import 'package:lyrica/core/constant/app_colors.dart';
 import 'package:lyrica/core/providers/provider.dart';
 import 'package:lyrica/modules/music%20player/view/music_player.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class ArtistDetails extends ConsumerStatefulWidget {
   final String? id;

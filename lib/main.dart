@@ -4,14 +4,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:lyrica/core/constant/app_colors.dart';
-import 'package:lyrica/modules/auth/view/google_login_screen.dart';
+ import 'package:lyrica/modules/auth/view/google_login_screen.dart';
 import 'package:lyrica/modules/bottom%20sheet/view/bottom_sheet_screen.dart';
-import 'package:miniplayer/miniplayer.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+ import 'package:shared_preferences/shared_preferences.dart';
 
-final _navigatorKey = GlobalKey();
-
+ 
 String? userUid = "";
 Future<void> getUserid() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
