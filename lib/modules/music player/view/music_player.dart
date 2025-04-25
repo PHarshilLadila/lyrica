@@ -10,7 +10,6 @@ import 'package:lyrica/common/widget/app_back_button.dart';
 import 'package:lyrica/common/widget/app_text.dart';
 import 'package:lyrica/core/constant/app_colors.dart';
 import 'package:lyrica/model/music_model.dart';
-import 'package:miniplayer/miniplayer.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:waveform_flutter/waveform_flutter.dart';
 

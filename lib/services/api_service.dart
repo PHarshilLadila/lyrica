@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:lyrica/model/artist_model.dart';
 import 'package:lyrica/model/music_model.dart';
-import 'package:lyrica/model/track_model.dart';
 
 class ApiServices {
   final String? baseApiKey = dotenv.env['BASE_URL_API_KEY'];
@@ -94,12 +93,11 @@ class ApiServices {
       final Map<String, dynamic> jsonData = json.decode(response.body);
       final music = MusicModel.fromJson(jsonData);
       return music.results ?? [];
-      
     } else {
       throw Exception('Failed to load tracks');
     }
   }
-  
+
   Future<List<Results>> getHindiSongsList() async {
     try {
       final response = await http.get(Uri.parse("$hindiSongApi"));

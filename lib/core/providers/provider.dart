@@ -3,8 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:lyrica/model/artist_model.dart';
 import 'package:lyrica/model/music_model.dart';
-import 'package:lyrica/model/track_model.dart';
-import 'package:lyrica/model/user_model.dart';
+ import 'package:lyrica/model/user_model.dart';
 import 'package:lyrica/modules/auth/controller/auth_controller.dart';
 import 'package:lyrica/services/api_service.dart';
  
