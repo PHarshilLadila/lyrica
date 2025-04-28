@@ -206,7 +206,7 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
                                   ).then((value) {
                                     showSnackBar(
                                       context,
-                                      "Website link copied Successfully",
+                                      "Short link copied Successfully",
                                       Color(AppColors.successColor),
                                     );
                                   });
@@ -250,7 +250,7 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
                                   ).then((value) {
                                     showSnackBar(
                                       context,
-                                      "Website link copied Successfully",
+                                      "Share link copied Successfully",
                                       Color(AppColors.successColor),
                                     );
                                   });
