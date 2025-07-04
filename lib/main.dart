@@ -4,11 +4,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
- import 'package:lyrica/modules/auth/view/google_login_screen.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:lyrica/modules/auth/view/google_login_screen.dart';
 import 'package:lyrica/modules/bottom%20sheet/view/bottom_sheet_screen.dart';
- import 'package:shared_preferences/shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
- 
 String? userUid = "";
 Future<void> getUserid() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
@@ -19,8 +19,16 @@ Future<void> getUserid() async {
 // MyAudioHandler audioHandler = MyAudioHandler();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  MobileAds.instance.initialize();
+  try {
+    await Firebase.initializeApp();
+  } catch (e, s) {
+    debugPrint("Firebase init error: $e\n$s");
+  }
 
+  // MobileAds.instance.updateRequestConfiguration(
+  //   RequestConfiguration(testDeviceIds: ['B41DC894DFE5C61603E677AE10B23567']),
+  // );
   // audioHandler = await AudioService.init(
   //   builder: () => MyAudioHandler(),
   //   config: AudioServiceConfig(
@@ -55,9 +63,14 @@ class MyApp extends ConsumerWidget {
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
           ),
           // ignore: unnecessary_null_comparison
-          home: userUid != null ? BottomSheetScreen() : GoogleLoginScreen(),
+          home:
+              userUid != null
+                  ? BottomSheetScreen(key: bottomNavKey)
+                  : GoogleLoginScreen(),
         );
       },
     );
   }
 }
+
+// https://api.jamendo.com/v3.0/albums?client_id=540fd4db&format=json&limit=200

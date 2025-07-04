@@ -287,6 +287,109 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                     genre: "format=json&tags=latin&limit=200",
                                   ),
                                 );
+                              } else if (index == 14) {
+                                myPushNavigator(
+                                  context,
+                                  MusicTrackList(
+                                    "${categorieBox[index]['name']}",
+                                    musicType: -1,
+                                    genre:
+                                        "format=json&tags=classical&limit=200",
+                                  ),
+                                );
+                              } else if (index == 15) {
+                                myPushNavigator(
+                                  context,
+                                  MusicTrackList(
+                                    "${categorieBox[index]['name']}",
+                                    musicType: -1,
+                                    genre: "format=json&tags=ambient&limit=200",
+                                  ),
+                                );
+                              } else if (index == 16) {
+                                myPushNavigator(
+                                  context,
+                                  MusicTrackList(
+                                    "${categorieBox[index]['name']}",
+                                    musicType: -1,
+                                    genre: "format=json&tags=metal&limit=200",
+                                  ),
+                                );
+                              } else if (index == 17) {
+                                myPushNavigator(
+                                  context,
+                                  MusicTrackList(
+                                    "${categorieBox[index]['name']}",
+                                    musicType: -1,
+                                    genre:
+                                        "format=json&tags=acoustic&limit=200",
+                                  ),
+                                );
+                              } else if (index == 18) {
+                                myPushNavigator(
+                                  context,
+                                  MusicTrackList(
+                                    "${categorieBox[index]['name']}",
+                                    musicType: -1,
+                                    genre: "format=json&tags=reggae&limit=200",
+                                  ),
+                                );
+                              } else if (index == 19) {
+                                myPushNavigator(
+                                  context,
+                                  MusicTrackList(
+                                    "${categorieBox[index]['name']}",
+                                    musicType: -1,
+                                    genre: "format=json&tags=techno&limit=200",
+                                  ),
+                                );
+                              } else if (index == 20) {
+                                myPushNavigator(
+                                  context,
+                                  MusicTrackList(
+                                    "${categorieBox[index]['name']}",
+                                    musicType: -1,
+                                    genre: "format=json&tags=dubstep&limit=200",
+                                  ),
+                                );
+                              } else if (index == 21) {
+                                myPushNavigator(
+                                  context,
+                                  MusicTrackList(
+                                    "${categorieBox[index]['name']}",
+                                    musicType: -1,
+                                    genre:
+                                        "format=json&tags=chillout&limit=200",
+                                  ),
+                                );
+                              } else if (index == 22) {
+                                myPushNavigator(
+                                  context,
+                                  MusicTrackList(
+                                    "${categorieBox[index]['name']}",
+                                    musicType: -1,
+                                    genre:
+                                        "format=json&tags=instrumental&limit=200",
+                                  ),
+                                );
+                              } else if (index == 23) {
+                                myPushNavigator(
+                                  context,
+                                  MusicTrackList(
+                                    "${categorieBox[index]['name']}",
+                                    musicType: -1,
+                                    genre: "format=json&tags=indie&limit=200",
+                                  ),
+                                );
+                              } else if (index == 24) {
+                                myPushNavigator(
+                                  context,
+                                  MusicTrackList(
+                                    "${categorieBox[index]['name']}",
+                                    musicType: -1,
+                                    genre: "format=json&tags=world&limit=200",
+                                  ),
+                                );
                               }
 
                               debugPrint('$index');

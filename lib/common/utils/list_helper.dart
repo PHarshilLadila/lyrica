@@ -43,4 +43,28 @@ List<Map<String, dynamic>> categorieBox = [
     "color": AppColors.darkYellow,
   },
   {"image": AppImages.cat3, "name": "Latin", "color": AppColors.darkBlue},
+  //--
+  {"image": AppImages.cat4, "name": "Classical", "color": AppColors.darkOrange},
+  {"image": AppImages.cat5, "name": "Ambient", "color": AppColors.darkGreen},
+  {"image": AppImages.cat6, "name": "Metal", "color": AppColors.darkPink},
+  {
+    "image": AppImages.cat1,
+    "name": "Acoustic",
+    "color": AppColors.darkMediumGreen,
+  },
+  {"image": AppImages.cat2, "name": "Reggae", "color": AppColors.darkPurple},
+  {
+    "image": AppImages.cat3,
+    "name": "Techno",
+    "color": AppColors.darkMideumPurple,
+  },
+  {"image": AppImages.cat4, "name": "Dubstep", "color": AppColors.darkPink},
+  {"image": AppImages.cat5, "name": "Chillout", "color": AppColors.darkYellow},
+  {
+    "image": AppImages.cat6,
+    "name": "Instrumental",
+    "color": AppColors.darkMideumPurple,
+  },
+  {"image": AppImages.cat1, "name": "Indie", "color": AppColors.darkOrange},
+  {"image": AppImages.cat2, "name": "World", "color": AppColors.darkGreen},
 ];
