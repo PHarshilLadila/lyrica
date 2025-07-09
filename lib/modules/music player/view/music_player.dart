@@ -919,6 +919,8 @@
 //       oldDelegate.amplitude != amplitude;
 // }
 
+// ignore_for_file: deprecated_member_use
+
 import 'dart:async';
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
@@ -933,8 +935,7 @@ import 'package:lyrica/common/widget/app_back_button.dart';
 import 'package:lyrica/common/widget/app_text.dart';
 import 'package:lyrica/core/constant/app_colors.dart';
 import 'package:lyrica/model/music_model.dart';
-import 'package:lyrica/modules/bottom%20sheet/view/bottom_sheet_screen.dart';
-import 'package:simple_gradient_text/simple_gradient_text.dart';
+ import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:lyrica/core/providers/provider.dart';
 import 'package:lyrica/modules/library/view/library_screen.dart';
@@ -1080,11 +1081,12 @@ class _MusicPlayerState extends ConsumerState<MusicPlayer> {
     _lastDeductedMinute = 0;
 
     _rewardTimer = Timer.periodic(const Duration(seconds: 1), (timer) async {
-      if (!mounted || !audioPlayer.playing || _dialogShown || _isSkipping)
+      if (!mounted || !audioPlayer.playing || _dialogShown || _isSkipping) {
         return;
+      }
 
       try {
-        final position = await audioPlayer.position;
+        final position = audioPlayer.position;
         final playedMinutes = position.inMinutes;
 
         if (playedMinutes > _lastDeductedMinute) {

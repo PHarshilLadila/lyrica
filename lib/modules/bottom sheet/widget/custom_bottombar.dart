@@ -53,6 +53,8 @@
 //   Widget _buildIcon(IconData icon, int index) {
 //     bool isSelected = currentIndex == index;
 
+// ignore_for_file: deprecated_member_use
+
 //     return Container(
 //       decoration: BoxDecoration(
 //         color: Colors.transparent,
@@ -86,8 +88,7 @@
 // }
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:lyrica/core/constant/app_colors.dart';
+ import 'package:lyrica/core/constant/app_colors.dart';
 
 class CustomBottomBar extends StatelessWidget {
   final int currentIndex;

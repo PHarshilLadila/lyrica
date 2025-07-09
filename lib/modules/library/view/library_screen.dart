@@ -248,8 +248,7 @@
 // //   //               '🎉 You earned ${rewardItem.amount.toInt()} music minute(s)!',
 // //   //               Color(AppColors.successColor),
 // //   //             );
-// //   //             // TODO: Add reward points to user state or storage
-// //   //           },
+ // //   //           },
 // //   //         );
 // //   //       },
 // //   //       onAdFailedToLoad: (error) {
@@ -896,8 +895,9 @@
 //     );
 //   }
 // }
-import 'dart:io';
 
+ // ignore_for_file: use_build_context_synchronously, deprecated_member_use
+ 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

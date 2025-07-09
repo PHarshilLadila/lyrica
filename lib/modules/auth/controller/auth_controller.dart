@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -15,7 +16,7 @@ class AuthController {
   FirebaseAuth get _auth => _ref.read(firebaseAuthProvider);
 
   Stream<User?> get authStateChanges => _auth.authStateChanges();
-  
+
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   Future<UserCredential?> register(
@@ -92,7 +93,7 @@ class AuthController {
     }
   }
 
-    Future<UserModel?> getUser() async {
+  Future<UserModel?> getUser() async {
     try {
       final currentUser = _auth.currentUser;
       if (currentUser == null) return null;
@@ -110,6 +111,31 @@ class AuthController {
     } catch (e) {
       debugPrint('Error fetching user: $e');
       return null;
+    }
+  }
+
+  Future<bool> facebookLogin() async {
+    debugPrint('Facebook Login ======');
+    final LoginResult result = await FacebookAuth.instance.login(
+      permissions: ["public_profile", "email"],
+    ); // by default we request the email and the public profile
+    if (result.status == LoginStatus.success) {
+      debugPrint('TOken -->  ${result.accessToken.toString()}');
+      // get the user data
+      // by default we get the userId, email,name and picture
+      var userData = await FacebookAuth.instance.getUserData();
+      // final userData = await FacebookAuth.instance.getUserData(fields: "email");
+      debugPrint('User Profile --->}');
+      debugPrint('User Profile ---> ${userData.toString()}');
+      debugPrint('User Profile ---> ${userData['email']}');
+      debugPrint('User Profile ---> ${userData.length}');
+
+      userData = userData;
+      return true;
+    } else {
+      debugPrint("${result.status}");
+      debugPrint(result.message);
+      return false;
     }
   }
 

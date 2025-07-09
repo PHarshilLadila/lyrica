@@ -1,7 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -95,6 +97,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           );
         });
         break;
+    }
+  }
+
+  Future<void> signOutFromFacebook() async {
+    try {
+      await FacebookAuth.instance.logOut();
+      await FirebaseAuth.instance.signOut();
+      debugPrint("✅ Facebook & Firebase Sign-Out successful");
+    } catch (e) {
+      debugPrint("❌ Sign-Out Error: $e");
     }
   }
 
@@ -197,6 +209,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ],
               ),
               actions: [
+                IconButton(
+                  onPressed: () {
+                    signOutFromFacebook();
+                  },
+                  icon: Image.asset(AppImages.logout4, width: 25.w),
+                ),
                 IconButton(
                   onPressed: () {},
                   icon: Image.asset(AppImages.barIcon, width: 25.w),
