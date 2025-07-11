@@ -1,37 +1,3 @@
-// class InstagramConstant {
-//   static InstagramConstant? _instance;
-//   static InstagramConstant get instance {
-//     _instance ??= InstagramConstant._init();
-//     return _instance!;
-//   }
-
-//   InstagramConstant._init();
-
-//   // static const String clientID = '377289444572944'; //'718353975697969';
-//   static const String clientID = '582295874936894'; //'718353975697969';
-//   // static const String appSecret =
-//   //     'a04e27281d98a14fc90b317b1c8c8cc3';  ;
-//   static const String appSecret =
-//       'c9e9918cfcf3d82e2092af2887df5942';  ;
-//   // static const String redirectUri =
-//   //     'https://lyrica-88a25.firebaseapp.com/__/auth/handler';
-//   static const String redirectUri =
-//       'https://lyrica-35d7c.firebaseapp.com/__/auth/handler';
-//   // 'https://www.example.com/';
-//   static const String scope = 'user_profile,user_media';
-//   static const String responseType = 'code';
-//   // final String url =
-//   //     'https://api.instagram.com/oauth/authorize?client_id=$clientID&redirect_uri=$redirectUri&scope=user_profile,user_media&response_type=$responseType';
-
-//   final String url = Uri.encodeFull(
-//     'https://api.instagram.com/oauth/authorize'
-//     '?client_id=$clientID'
-//     '&redirect_uri=$redirectUri'
-//     '&scope=$scope'
-//     '&response_type=$responseType',
-//   );
-// }
-
 class InstagramConstant {
   static const String clientID = '1225775395543198';
   static const String appSecret = '7dd6f089bb1cc52b2fe849c8abc89f73';

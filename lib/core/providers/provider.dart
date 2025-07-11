@@ -26,10 +26,6 @@ final userModelProvider = FutureProvider<UserModel?>((ref) async {
   return user;
 });
 
-
-
- 
-
 // music api provider
 
 final musicDataProvider = FutureProvider<List<Results>>((ref) async {

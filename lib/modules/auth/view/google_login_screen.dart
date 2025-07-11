@@ -1,8 +1,6 @@
 // ignore_for_file: use_build_context_synchronously, deprecated_member_use
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,7 +14,6 @@ import 'package:lyrica/modules/auth/instagram/instagram_login.dart';
 import 'package:lyrica/modules/auth/view/login_screen.dart';
 import 'package:lyrica/modules/auth/view/register_screen.dart';
 import 'package:lyrica/modules/bottom%20sheet/view/bottom_sheet_screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class GoogleLoginScreen extends ConsumerStatefulWidget {
   const GoogleLoginScreen({super.key});

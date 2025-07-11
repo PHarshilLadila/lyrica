@@ -8,7 +8,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:lyrica/common/utils/utils.dart';
-import 'package:lyrica/common/widget/app_main_button.dart';
 import 'package:lyrica/core/constant/app_colors.dart';
 import 'package:lyrica/core/constant/app_images.dart';
 import 'package:lyrica/core/providers/provider.dart';
