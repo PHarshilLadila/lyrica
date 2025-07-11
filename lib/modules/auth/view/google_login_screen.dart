@@ -12,9 +12,11 @@ import 'package:lyrica/core/constant/app_colors.dart';
 import 'package:lyrica/core/constant/app_images.dart';
 import 'package:lyrica/core/constant/app_string.dart';
 import 'package:lyrica/core/providers/provider.dart';
+import 'package:lyrica/modules/auth/instagram/instagram_login.dart';
 import 'package:lyrica/modules/auth/view/login_screen.dart';
 import 'package:lyrica/modules/auth/view/register_screen.dart';
 import 'package:lyrica/modules/bottom%20sheet/view/bottom_sheet_screen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class GoogleLoginScreen extends ConsumerStatefulWidget {
   const GoogleLoginScreen({super.key});
@@ -106,8 +108,7 @@ class _GoogleLoginScreenState extends ConsumerState<GoogleLoginScreen> {
                     ),
                     width: double.infinity,
                     onPressed: () {
-                      // facebookLogin(context);
-                      signInWithFacebook(context);
+                      facebookLogin(context);
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -125,43 +126,39 @@ class _GoogleLoginScreenState extends ConsumerState<GoogleLoginScreen> {
                       ],
                     ),
                   ),
-                  // SizedBox(height: 15.h),
-                  // AppMainButton(
-                  //   height: 45.h,
-                  //   borderRadius: BorderRadius.circular(12.r),
-                  //   gradient: const LinearGradient(
-                  //     colors: [Colors.white12, Colors.white12],
-                  //   ),
-                  //   width: double.infinity,
-                  //   onPressed: () {
-                  //     Navigator.pushAndRemoveUntil(
-                  //       context,
-                  //       MaterialPageRoute(
-                  //         builder: (context) => const BottomSheetScreen(),
-                  //       ),
-                  //       (route) => false,
-                  //     );
-                  //   },
-                  //   child: Row(
-                  //     mainAxisAlignment: MainAxisAlignment.center,
-                  //     children: [
-                  //       Image.asset(
-                  //         AppImages.skipLogin,
-                  //         height: 30.h,
-                  //         color: const Color(AppColors.secondaryColor),
-                  //       ),
-                  //       SizedBox(width: 10.w),
-                  //       Text(
-                  //         AppString.witoutLogin,
-                  //         style: GoogleFonts.poppins(
-                  //           color: const Color(AppColors.lightText),
-                  //           fontSize: 14.sp,
-                  //           fontWeight: FontWeight.w500,
-                  //         ),
-                  //       ),
-                  //     ],
-                  //   ),
-                  // ),
+                  SizedBox(height: 15.h),
+                  AppMainButton(
+                    height: 45.h,
+                    borderRadius: BorderRadius.circular(12.r),
+                    gradient: const LinearGradient(
+                      colors: [Colors.white12, Colors.white12],
+                    ),
+                    width: double.infinity,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => InstagramView(),
+                        ),
+                      );
+                    },
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(AppImages.instagram, height: 30.h),
+                        SizedBox(width: 10.w),
+                        Text(
+                          "Login with Instagram",
+                          style: GoogleFonts.poppins(
+                            color: const Color(AppColors.lightText),
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
                   SizedBox(height: 30.h),
                   Row(
                     children: [
@@ -303,123 +300,86 @@ class _GoogleLoginScreenState extends ConsumerState<GoogleLoginScreen> {
       );
     }
   }
+
+  Future<void> facebookLogin(BuildContext context) async {
+    showLoader(context);
+    final auth = ref.read(authControllerProvider);
+    final user = await auth.facebookLogin();
+    hideLoader(context);
+
+    if (user != null) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const BottomSheetScreen()),
+      );
+      showSnackBar(
+        context,
+        'Facebook sign-in successfully..!',
+        Color(AppColors.successColor),
+      );
+    } else {
+      showSnackBar(
+        context,
+        'Facebook sign-in failed. Please try again.',
+        Color(AppColors.errorColor),
+      );
+    }
+  }
 }
 
-// Future<void> facebookLogin(BuildContext context) async {
-//   showLoader(context);
-
+// Future<void> signInWithFacebook(BuildContext context) async {
 //   try {
-//     final LoginResult result = await FacebookAuth.instance.login(
-//       permissions: ["public_profile", "email"],
+//     final LoginResult loginResult = await FacebookAuth.instance.login(
+//       permissions: ['public_profile', 'email'],
 //     );
 
-//     if (result.status == LoginStatus.success) {
-//       final accessToken = result.accessToken!;
-//       debugPrint('Facebook Access Token: ${accessToken.token}');
+//     if (loginResult.status == LoginStatus.success) {
+//       final accessToken = loginResult.accessToken!;
+//       debugPrint("✅ Facebook Access Token: ${accessToken.token}");
 
-//       final userData = await FacebookAuth.instance.getUserData(
-//         fields: "email,name,picture.width(200)",
+//       final OAuthCredential credential = FacebookAuthProvider.credential(
+//         accessToken.token,
 //       );
 
-//       debugPrint('📘 Facebook User Data: $userData');
-//       debugPrint('📘📘📘 Facebook User Data:');
-//       userData.forEach((key, value) {
-//         debugPrint('🔹 $key: $value');
-//       });
+//       final UserCredential userCredential = await FirebaseAuth.instance
+//           .signInWithCredential(credential);
 
-//       final credential = FacebookAuthProvider.credential(accessToken.token);
-//       await FirebaseAuth.instance.signInWithCredential(credential);
+//       final userData = await FacebookAuth.instance.getUserData(
+//         fields: "name,email,picture.width(200)",
+//       );
+//       SharedPreferences preferences = await SharedPreferences.getInstance();
 
+//       await preferences.setString("userUID", userCredential.user?.uid ?? "N/A");
+//       await preferences.setString(
+//         "userName",
+//         userCredential.user?.displayName ?? "N/A",
+//       );
+//       debugPrint("👤 User: ${userCredential.user?.displayName}");
+//       debugPrint("📧 Email: ${userData['email']}");
+//       debugPrint("🖼️ Picture: ${userData['picture']['data']['url']}");
+
+//       // Navigate to BottomNavBarScreen
 //       Navigator.pushReplacement(
 //         context,
 //         MaterialPageRoute(builder: (_) => const BottomSheetScreen()),
 //       );
 
-//       showSnackBar(
+//       ScaffoldMessenger.of(
 //         context,
-//         'Facebook sign-in successful!',
-//         Color(AppColors.successColor),
-//       );
+//       ).showSnackBar(SnackBar(content: Text("✅ Facebook login successful!")));
 //     } else {
-//       debugPrint('Facebook login failed: ${result.status}');
-//       showSnackBar(
-//         context,
-//         'Facebook sign-in failed: ${result.message}',
-//         Color(AppColors.errorColor),
+//       debugPrint("❌ Facebook login failed: ${loginResult.status}");
+//       debugPrint("ℹ️ Message: ${loginResult.message}");
+//       ScaffoldMessenger.of(context).showSnackBar(
+//         SnackBar(
+//           content: Text("Facebook login failed: ${loginResult.message}"),
+//         ),
 //       );
 //     }
 //   } catch (e) {
-//     debugPrint('Facebook login exception: $e');
-//     showSnackBar(
+//     debugPrint("🔥 Exception during Facebook login: $e");
+//     ScaffoldMessenger.of(
 //       context,
-//       'Something went wrong during Facebook login. $e',
-
-//       Color(AppColors.errorColor),
-//     );
-//   } finally {
-//     hideLoader(context);
+//     ).showSnackBar(SnackBar(content: Text("Something went wrong: $e")));
 //   }
 // }
-// Future<UserCredential> signInWithFacebook() async {
-//   // Trigger the sign-in flow
-//   final LoginResult loginResult = await FacebookAuth.instance.login();
-
-//   // Create a credential from the access token
-//   final OAuthCredential facebookAuthCredential =
-//       FacebookAuthProvider.credential("${loginResult.accessToken?.token}");
-//   debugPrint("Facebook Auth Credential: $facebookAuthCredential");
-
-//   // Once signed in, return the UserCredential
-//   return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
-// }
-
-Future<void> signInWithFacebook(BuildContext context) async {
-  try {
-    final LoginResult loginResult = await FacebookAuth.instance.login(
-      permissions: ['public_profile', 'email'],
-    );
-
-    if (loginResult.status == LoginStatus.success) {
-      final accessToken = loginResult.accessToken!;
-      debugPrint("✅ Facebook Access Token: ${accessToken.token}");
-
-      final OAuthCredential credential = FacebookAuthProvider.credential(
-        accessToken.token,
-      );
-
-      final UserCredential userCredential = await FirebaseAuth.instance
-          .signInWithCredential(credential);
-
-      final userData = await FacebookAuth.instance.getUserData(
-        fields: "name,email,picture.width(200)",
-      );
-
-      debugPrint("👤 User: ${userCredential.user?.displayName}");
-      debugPrint("📧 Email: ${userData['email']}");
-      debugPrint("🖼️ Picture: ${userData['picture']['data']['url']}");
-
-      // Navigate to BottomNavBarScreen
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const BottomSheetScreen()),
-      );
-
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("✅ Facebook login successful!")));
-    } else {
-      debugPrint("❌ Facebook login failed: ${loginResult.status}");
-      debugPrint("ℹ️ Message: ${loginResult.message}");
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text("Facebook login failed: ${loginResult.message}"),
-        ),
-      );
-    }
-  } catch (e) {
-    debugPrint("🔥 Exception during Facebook login: $e");
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text("Something went wrong: $e")));
-  }
-}

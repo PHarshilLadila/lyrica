@@ -935,7 +935,7 @@ import 'package:lyrica/common/widget/app_back_button.dart';
 import 'package:lyrica/common/widget/app_text.dart';
 import 'package:lyrica/core/constant/app_colors.dart';
 import 'package:lyrica/model/music_model.dart';
- import 'package:simple_gradient_text/simple_gradient_text.dart';
+import 'package:simple_gradient_text/simple_gradient_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:lyrica/core/providers/provider.dart';
 import 'package:lyrica/modules/library/view/library_screen.dart';
@@ -1367,8 +1367,9 @@ class _MusicPlayerState extends ConsumerState<MusicPlayer> {
           ),
           actions: [
             Container(
-              margin: const EdgeInsets.only(right: 24, top: 24),
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+              padding: EdgeInsets.only(right: 16.w, left: 16.w),
+              margin: EdgeInsets.only(top: 20.h, bottom: 20.h, right: 12.w),
+
               decoration: BoxDecoration(
                 color: Color(AppColors.primaryColor),
                 borderRadius: BorderRadius.circular(30),

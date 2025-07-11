@@ -19,18 +19,36 @@ import 'package:lyrica/modules/home/view/artist_details.dart';
 import 'package:lyrica/modules/home/view/artist_list.dart';
 import 'package:lyrica/modules/music%20player/view/music_player.dart';
 import 'package:lyrica/modules/music%20track/view/music_track_list.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
-  const HomeScreen({super.key});
+  final String name;
+  final String token;
+  const HomeScreen(this.name, this.token, {super.key});
 
   @override
   ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends ConsumerState<HomeScreen> {
+  String userLocalId = "";
+  String userLocalName = "";
+  void getUserId() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    final id = preferences.getString("userUID");
+    final name = preferences.getString("userName");
+    setState(() {
+      userLocalId = id ?? "N/A";
+      userLocalName = name ?? "N/A";
+      debugPrint("User Local Name: $userLocalName");
+      debugPrint("User Local ID: $userLocalId");
+    });
+  }
+
   @override
   void initState() {
     super.initState();
+    getUserId();
     Future.microtask(() {
       // ignore: unused_result
       ref.refresh(userModelProvider);
@@ -100,16 +118,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     }
   }
 
-  Future<void> signOutFromFacebook() async {
-    try {
-      await FacebookAuth.instance.logOut();
-      await FirebaseAuth.instance.signOut();
-      debugPrint("✅ Facebook & Firebase Sign-Out successful");
-    } catch (e) {
-      debugPrint("❌ Sign-Out Error: $e");
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     final userAsync = ref.watch(authStateProvider);
@@ -132,13 +140,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   backgroundColor: Color(AppColors.primaryColor),
                   child: userModelAsync.when(
                     data: (userModel) {
+                      final displayInitial =
+                          (user.displayName != null &&
+                                  user.displayName!.isNotEmpty)
+                              ? user.displayName![0]
+                              : (userModel?.username.isNotEmpty == true)
+                              ? userModel!.username[0]
+                              : "N";
                       return Text(
-                        userModel == null
-                            ? user.displayName ??
-                                userModel?.username[0] ??
-                                "N12"
-                            : userModel.username[0],
-                        // user.displayName ?? "123",
+                        displayInitial,
                         style: GoogleFonts.poppins(
                           color: Color(AppColors.lightText),
                           fontSize: 18.sp,
@@ -176,18 +186,20 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   ),
                   userModelAsync.when(
                     data: (userModel) {
-                      if (userModel == null) {
-                        return Text(
-                          user.displayName ?? "N/A",
-                          style: GoogleFonts.poppins(
-                            color: Color(AppColors.lightText),
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        );
-                      }
+                      final displayName = user.displayName;
+                      final username = userModel?.username;
+
+                      final displayText =
+                          (displayName != null && displayName.isNotEmpty)
+                              ? displayName
+                              : (username != null && username.isNotEmpty)
+                              ? username
+                              : "N/A";
+
+                      debugPrint("Display Name => $displayText");
+
                       return Text(
-                        user.displayName ?? userModel.username,
+                        displayText,
                         style: GoogleFonts.poppins(
                           color: Color(AppColors.lightText),
                           fontSize: 14.sp,
@@ -195,7 +207,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         ),
                       );
                     },
-                    loading: () => SizedBox(),
+                    loading: () => const SizedBox(),
                     error:
                         (e, _) => Text(
                           "Error loading user",
@@ -209,12 +221,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 ],
               ),
               actions: [
-                IconButton(
-                  onPressed: () {
-                    signOutFromFacebook();
-                  },
-                  icon: Image.asset(AppImages.logout4, width: 25.w),
-                ),
                 IconButton(
                   onPressed: () {},
                   icon: Image.asset(AppImages.barIcon, width: 25.w),

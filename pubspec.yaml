@@ -68,6 +68,9 @@ dependencies:
   audio_waveforms: ^1.3.0
   google_mobile_ads: ^6.0.0
   flutter_facebook_auth: ^6.0.4
+  # flutter_webview_plugin: ^0.4.0
+  webview_flutter: ^4.13.0
+  flutter_web_auth_2: ^4.1.0
 
 dev_dependencies:
   flutter_test:
