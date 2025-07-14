@@ -6,6 +6,7 @@ import 'package:lyrica/common/utils/utils.dart';
 import 'package:lyrica/common/widget/app_back_button.dart';
 import 'package:lyrica/common/widget/app_text.dart';
 import 'package:lyrica/core/constant/app_colors.dart';
+import 'package:lyrica/core/constant/app_string.dart';
 import 'package:lyrica/core/providers/provider.dart';
 import 'package:lyrica/modules/home/view/artist_details.dart';
 
@@ -25,7 +26,7 @@ class _ArtistListState extends ConsumerState<ArtistList> {
       decoration: BoxDecoration(gradient: backgroundGradient()),
 
       child: Scaffold(
-        backgroundColor: const Color.fromARGB(221, 39, 39, 39),
+        backgroundColor: const Color.fromARGB(197, 0, 43, 53),
         appBar: AppBar(
           leading: AppBackButton(),
           elevation: 0,
@@ -61,8 +62,8 @@ class _ArtistListState extends ConsumerState<ArtistList> {
                   final data = artist[index];
                   String? imageUrl = artist[index].image;
                   if (artist[index].image == "") {
-                    imageUrl =
-                        "https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg";
+                    imageUrl = AppString.defaultImageLogo;
+                    // "https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg";
                   } else {
                     imageUrl = artist[index].image;
                   }
@@ -87,10 +88,10 @@ class _ArtistListState extends ConsumerState<ArtistList> {
                     child: Column(
                       children: [
                         ClipRRect(
-                          borderRadius: BorderRadius.circular(100),
+                          borderRadius: BorderRadius.circular(12.sp),
                           child: Image.network(
-                            imageUrl ??
-                                "https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg",
+                            imageUrl ?? AppString.defaultImageLogo,
+                            // "https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg",
                             fit: BoxFit.cover,
                             height: 80.h,
                             width: 90.w,

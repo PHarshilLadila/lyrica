@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -33,7 +35,7 @@ class MusicTrackList extends ConsumerWidget {
     return Container(
       decoration: BoxDecoration(gradient: backgroundGradient()),
       child: Scaffold(
-        backgroundColor: const Color.fromARGB(221, 39, 39, 39),
+        backgroundColor: const Color.fromARGB(197, 0, 43, 53),
         appBar: AppBar(
           leading: AppBackButton(),
           elevation: 0,
@@ -83,13 +85,21 @@ class MusicTrackList extends ConsumerWidget {
                         String? imageUrl = track.albumImage;
 
                         if (track.albumImage == "") {
-                          imageUrl =
-                              "https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg";
+                          imageUrl = AppString.defaultImageLogo;
+                          // "https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg";
                         } else {
                           imageUrl = track.albumImage;
                         }
                         return Card(
-                          color: Colors.transparent,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8.sp),
+                          ),
+                          color: const Color.fromARGB(
+                            255,
+                            0,
+                            27,
+                            31,
+                          ).withOpacity(0.2),
                           child: Padding(
                             padding: EdgeInsets.symmetric(vertical: 8.0),
                             child: ListTile(
@@ -186,9 +196,7 @@ class MusicTrackList extends ConsumerWidget {
           },
           loading: () => Center(child: appLoader()),
           error:
-              (err, stack) => Center(
-                child: Text('Error: $err', style: GoogleFonts.poppins()),
-              ),
+              (err, stack) => Center(child: AppText(textName: 'Error: $err')),
         ),
       ),
     );

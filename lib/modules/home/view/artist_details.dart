@@ -9,6 +9,8 @@ import 'package:lyrica/common/utils/utils.dart';
 import 'package:lyrica/common/widget/app_back_button.dart';
 import 'package:lyrica/common/widget/app_text.dart';
 import 'package:lyrica/core/constant/app_colors.dart';
+import 'package:lyrica/core/constant/app_images.dart';
+import 'package:lyrica/core/constant/app_string.dart';
 import 'package:lyrica/core/providers/provider.dart';
 import 'package:lyrica/modules/music%20player/view/music_player.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -78,7 +80,7 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
     return Container(
       decoration: BoxDecoration(gradient: backgroundGradient()),
       child: Scaffold(
-        backgroundColor: const Color.fromARGB(221, 39, 39, 39),
+        backgroundColor: const Color.fromARGB(197, 0, 43, 53),
         appBar: AppBar(
           leading: AppBackButton(),
           elevation: 0,
@@ -102,8 +104,8 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
                   child: ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     child: Image.network(
-                      widget.image ??
-                          "https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg",
+                      widget.image ?? AppString.defaultImageLogo,
+                      // "https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg",
                       height: 200.h,
                       fit: BoxFit.cover,
                     ),
@@ -278,7 +280,7 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
                     ),
                   ),
                 ),
-                SizedBox(height: 10.h),
+                SizedBox(height: 16.h),
                 // Artist Songs Section
                 AppText(
                   textName: "${widget.name}'s Songs",
@@ -290,7 +292,30 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
 
                 artistMusicDataProviderSync.when(
                   data: (artistDetails) {
+                    if (artistDetails.isEmpty) {
+                      return Center(
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 18.h),
+                          child: Column(
+                            children: [
+                              Image.asset(
+                                AppImages.logoWithoutBG,
+                                height: 80.h,
+                                width: 80.w,
+                              ),
+                              SizedBox(height: 8.h),
+                              AppText(
+                                textName: "No songs available for this artist.",
+                                fontSize: 16.sp,
+                                textColor: Colors.white54,
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }
                     return Container(
+                      padding: EdgeInsets.all(4.sp),
                       decoration: BoxDecoration(
                         color: Color.fromARGB(
                           153,
@@ -301,55 +326,178 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: ListView.builder(
+                        padding: EdgeInsets.only(top: 8.h),
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: artistDetails.length,
                         itemBuilder: (context, index) {
                           final song = artistDetails[index];
-                          return GestureDetector(
-                            onTap: () {
-                              myPushNavigator(
-                                context,
-                                MusicPlayer(
-                                  songList: artistDetails,
-                                  initialIndex: index,
-                                ),
-                              );
-                            },
-                            child: Card(
-                              color: Colors.black12,
-                              elevation: 0,
-                              child: ListTile(
-                                trailing: FaIcon(
-                                  FontAwesomeIcons.circlePlay,
-                                  color: Color(AppColors.blueLight),
-                                  shadows: [
-                                    BoxShadow(
-                                      color: Color(AppColors.blueLight),
-                                      offset: Offset(1, 5),
-                                      blurRadius: 30,
-                                    ),
-                                  ],
-                                ),
-                                leading: ClipRRect(
-                                  borderRadius: BorderRadius.circular(8),
-                                  child: Image.network(
-                                    song.image ??
-                                        "https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg",
-                                    width: 50.w,
-                                    fit: BoxFit.cover,
+                          return Padding(
+                            padding: EdgeInsets.only(
+                              bottom: 12.h,
+                              left: 2.w,
+                              right: 2.w,
+                            ),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.15),
+                                borderRadius: BorderRadius.circular(18),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black26,
+                                    blurRadius: 6,
+                                    offset: Offset(0, 3),
                                   ),
-                                ),
-                                title: AppText(
-                                  textName: song.name ?? "Unknown Song",
-                                  fontSize: 16.sp,
-                                  textColor: Color(AppColors.lightText),
-                                ),
-                                subtitle: AppText(
-                                  textName: song.albumName ?? "N/A",
-                                  fontSize: 12.sp,
-                                  textColor: Colors.white54,
-                                ),
+                                ],
+                              ),
+                              padding: EdgeInsets.symmetric(
+                                vertical: 10.h,
+                                horizontal: 12.w,
+                              ),
+                              child: Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: Image.network(
+                                      song.image ?? AppString.defaultImageLogo,
+                                      width: 60.w,
+                                      height: 75.h,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                  SizedBox(width: 12.w),
+
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        AppText(
+                                          textName: song.name ?? "Unknown Song",
+                                          fontSize: 16.sp,
+                                          fontWeight: FontWeight.bold,
+                                          textColor: Color(AppColors.lightText),
+                                        ),
+                                        SizedBox(height: 4.h),
+                                        AppText(
+                                          textName: song.albumName ?? "N/A",
+                                          fontSize: 12.sp,
+                                          textColor: Colors.white54,
+                                        ),
+                                        SizedBox(height: 12.h),
+
+                                        Container(
+                                          decoration: BoxDecoration(
+                                            gradient: LinearGradient(
+                                              colors: [
+                                                Color(
+                                                  AppColors.primaryColor,
+                                                ).withOpacity(0.3),
+                                                Color(
+                                                  AppColors.blueThird,
+                                                ).withOpacity(0.3),
+                                              ],
+                                              begin: Alignment.centerLeft,
+                                              end: Alignment.centerRight,
+                                            ),
+                                            borderRadius: BorderRadius.circular(
+                                              30,
+                                            ),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Color(
+                                                  AppColors.primaryColor,
+                                                ).withOpacity(0.18),
+                                                blurRadius: 8,
+                                                offset: Offset(0, 4),
+                                              ),
+                                            ],
+                                          ),
+                                          padding: EdgeInsets.symmetric(
+                                            horizontal: 8.w,
+                                            vertical: 6.h,
+                                          ),
+                                          child: Row(
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              FaIcon(
+                                                FontAwesomeIcons.arrowDown,
+                                                color: Color(
+                                                  AppColors.lightText,
+                                                ),
+                                                size: 13.sp,
+                                              ),
+                                              SizedBox(width: 6),
+                                              AppText(
+                                                textName: "Download",
+                                                fontSize: 10.sp,
+                                                fontWeight: FontWeight.bold,
+                                                textColor: Color(
+                                                  AppColors.lightText,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+
+                                  SizedBox(width: 10.w),
+
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      GestureDetector(
+                                        onTap: () {
+                                          debugPrint(
+                                            "Song tapped: ${song.name}",
+                                          );
+                                          myPushNavigator(
+                                            context,
+                                            MusicPlayer(
+                                              songList: artistDetails,
+                                              initialIndex: index,
+                                            ),
+                                          );
+                                        },
+                                        child: Container(
+                                          width: 35.w,
+                                          height: 35.h,
+                                          decoration: BoxDecoration(
+                                            gradient: LinearGradient(
+                                              colors: [
+                                                Color(AppColors.primaryColor),
+                                                Color(AppColors.blueLight),
+                                              ],
+                                              begin: Alignment.topLeft,
+                                              end: Alignment.bottomRight,
+                                            ),
+                                            shape: BoxShape.circle,
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Color(
+                                                  AppColors.primaryColor,
+                                                ).withOpacity(0.4),
+                                                blurRadius: 16,
+                                                spreadRadius: 2,
+                                                offset: Offset(0, 6),
+                                              ),
+                                            ],
+                                          ),
+                                          child: Center(
+                                            child: FaIcon(
+                                              FontAwesomeIcons.play,
+                                              color: Colors.white,
+                                              size: 16.sp,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
                             ),
                           );
@@ -364,6 +512,7 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
                     return Center(child: appLoader());
                   },
                 ),
+
                 SizedBox(height: 60.h),
               ],
             ),

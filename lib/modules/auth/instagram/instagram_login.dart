@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lyrica/common/widget/app_text.dart';
 import 'package:lyrica/modules/auth/instagram/constraint/instagram_constraint.dart';
 import 'package:lyrica/modules/auth/instagram/model/instagram_model.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -133,7 +134,7 @@ class _InstagramViewState extends State<InstagramView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Instagram Login'),
+        title: AppText(textName: 'Instagram Login'),
         actions: [
           IconButton(
             icon: const Icon(Icons.delete_forever),
@@ -156,14 +157,15 @@ class _InstagramViewState extends State<InstagramView> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Text(
-                    'Failed to load Instagram',
-                    style: TextStyle(color: Colors.red, fontSize: 18),
+                  AppText(
+                    textColor: Colors.red,
+                    textName: 'Failed to load Instagram',
+                    fontSize: 18,
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: _reloadWebView,
-                    child: const Text('Try Again'),
+                    child: AppText(textName: 'Try Again'),
                   ),
                 ],
               ),
@@ -195,11 +197,11 @@ class AuthSuccessScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Username: $username', style: const TextStyle(fontSize: 18)),
+            AppText(textName: 'Username: $username', fontSize: 18),
             const SizedBox(height: 10),
-            Text('User ID: $userId', style: const TextStyle(fontSize: 18)),
+            AppText(textName: 'User ID: $userId', fontSize: 18),
             const SizedBox(height: 20),
-            const Text('Access Token:', style: TextStyle(fontSize: 18)),
+            const AppText(textName: 'Access Token:', fontSize: 18),
             SelectableText(
               accessToken,
               style: const TextStyle(fontSize: 14, color: Colors.grey),

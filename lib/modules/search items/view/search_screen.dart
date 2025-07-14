@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:lyrica/common/utils/list_helper.dart';
 import 'package:lyrica/common/utils/utils.dart';
 import 'package:lyrica/common/widget/app_text.dart';
@@ -35,7 +34,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       child: Container(
         decoration: BoxDecoration(gradient: backgroundGradient()),
         child: Scaffold(
-          backgroundColor: const Color.fromARGB(221, 39, 39, 39),
+          backgroundColor: const Color.fromARGB(197, 0, 43, 53),
           appBar: AppBar(
             leading: Padding(
               padding: const EdgeInsets.only(left: 10.0),
@@ -47,13 +46,11 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             elevation: 0,
             toolbarHeight: 90,
             backgroundColor: Colors.transparent,
-            title: Text(
-              "Search & Explore",
-              style: GoogleFonts.poppins(
-                color: Color(AppColors.lightText),
-                fontSize: 22.sp,
-                fontWeight: FontWeight.w500,
-              ),
+            title: AppText(
+              textName: "Search & Explore",
+              fontSize: 22.sp,
+              fontWeight: FontWeight.w500,
+              textColor: Color(AppColors.lightText),
             ),
             actions: [
               IconButton(
@@ -85,6 +82,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             bottom: TabBar(
               indicatorAnimation: TabIndicatorAnimation.linear,
               mouseCursor: MouseCursor.defer,
+
               indicator: BoxDecoration(
                 borderRadius: BorderRadius.circular(12),
                 gradient: LinearGradient(
@@ -92,15 +90,20 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   end: Alignment.bottomRight,
                   colors: [
                     Color(AppColors.primaryColor),
-                    Color.fromARGB(255, 67, 255, 246),
+                    Color.fromARGB(255, 16, 217, 224),
+
                     Color(AppColors.secondaryColor),
-                    Color.fromARGB(255, 67, 255, 246),
+                    Color.fromARGB(255, 16, 217, 224),
+
+                    Color(AppColors.secondaryColor),
+                    Color.fromARGB(255, 16, 217, 224),
+
                     Color(AppColors.primaryColor),
                   ],
                 ),
               ),
 
-              dividerColor: Colors.pinkAccent,
+              dividerColor: Color(AppColors.darkBlue),
               indicatorSize: TabBarIndicatorSize.tab,
               indicatorColor: Color(AppColors.primaryColor),
               tabs: [
@@ -111,6 +114,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   ),
                   child: AppText(
                     textName: "Categories",
+                    fontWeight: FontWeight.w600,
                     textColor: Color(AppColors.lightText),
                   ),
                 ),
@@ -118,6 +122,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   icon: Icon(Icons.search, color: Color(AppColors.lightText)),
                   child: AppText(
                     textName: "Explore Music",
+                    fontWeight: FontWeight.w600,
                     textColor: Color(AppColors.lightText),
                   ),
                 ),
@@ -403,6 +408,14 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                               ),
                               child: Stack(
                                 children: [
+                                  Positioned(
+                                    right: -30,
+                                    bottom: -30,
+                                    child: Image.asset(
+                                      "${categorieBox[index]['image']}",
+                                      width: 120.w,
+                                    ),
+                                  ),
                                   Padding(
                                     padding: const EdgeInsets.only(
                                       left: 15.0,
@@ -414,14 +427,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                       fontSize: 20.sp,
                                       textColor: Color(AppColors.lightText),
                                       fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  Positioned(
-                                    right: -30,
-                                    bottom: -30,
-                                    child: Image.asset(
-                                      "${categorieBox[index]['image']}",
-                                      width: 120.w,
                                     ),
                                   ),
                                 ],
@@ -499,9 +504,11 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                                   ),
                                             ),
                                           ),
-                                          title: Text(track.name ?? ""),
-                                          subtitle: Text(
-                                            track.artistName ?? "",
+                                          title: AppText(
+                                            textName: track.name ?? "",
+                                          ),
+                                          subtitle: AppText(
+                                            textName: track.artistName ?? "",
                                           ),
                                           trailing: IconButton(
                                             icon: const Icon(Icons.play_arrow),
@@ -520,7 +527,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                     },
                                   ),
                               loading: () => Center(child: appLoader()),
-                              error: (e, _) => Center(child: Text('Error: $e')),
+                              error:
+                                  (e, _) => Center(
+                                    child: AppText(textName: 'Error: $e'),
+                                  ),
                             ),
                           )
                           : Center(

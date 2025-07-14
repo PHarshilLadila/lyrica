@@ -5,13 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:lyrica/common/utils/utils.dart';
+import 'package:lyrica/common/widget/app_text.dart';
+
 import 'package:lyrica/core/constant/app_colors.dart';
 import 'package:lyrica/core/constant/app_images.dart';
 import 'package:lyrica/core/providers/provider.dart';
 import 'package:lyrica/modules/auth/view/google_login_screen.dart';
+import 'package:lyrica/modules/in%20app%20purchase/view/in_app_purchase.dart';
 import 'package:lyrica/modules/library/service/ad_mob_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -146,6 +148,29 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
     }
   }
 
+  void modalBottomSheetMenu() {
+    showModalBottomSheet(
+      context: context,
+      builder: (builder) {
+        return Container(
+          height: 350.0,
+          color: Colors.transparent,
+
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: const Radius.circular(10.0),
+                topRight: const Radius.circular(10.0),
+              ),
+            ),
+            child: InApp(),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   void dispose() {
     bannerAd?.dispose();
@@ -159,30 +184,36 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
     final auth = ref.read(authControllerProvider);
     final userAsync = ref.watch(authStateProvider);
     final rewardPointsAsync = ref.watch(rewardPointsProvider);
+    // final userModelAsync = ref.watch(userModelProvider);
 
     return userAsync.when(
       data: (user) {
-        if (user == null) return const Center(child: Text("User not found"));
+        if (user == null) {
+          return const Center(child: AppText(textName: "User not found"));
+        }
 
         return Container(
           decoration: BoxDecoration(gradient: backgroundGradient()),
           child: Scaffold(
-            backgroundColor: const Color.fromARGB(221, 39, 39, 39),
+            backgroundColor: const Color.fromARGB(197, 0, 43, 53),
             appBar: AppBar(
               backgroundColor: Colors.transparent,
               elevation: 0,
               toolbarHeight: 90,
               leading: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.only(
+                  left: 18.0,
+                  right: 8,
+                  bottom: 8,
+                  top: 8,
+                ),
                 child: Image.asset(AppImages.logoWithoutBG),
               ),
-              title: Text(
-                "Your Library",
-                style: GoogleFonts.poppins(
-                  color: Color(AppColors.lightText),
-                  fontSize: 22.sp,
-                  fontWeight: FontWeight.w500,
-                ),
+              title: AppText(
+                textName: "Your Library",
+                fontSize: 22.sp,
+                fontWeight: FontWeight.w500,
+                textColor: Color(AppColors.lightText),
               ),
               actions: [
                 IconButton(
@@ -222,7 +253,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                       border: Border.all(color: Colors.white54, width: 0.5),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 20.0),
+                      padding: EdgeInsets.only(top: 16.h),
                       child: const FaIcon(
                         FontAwesomeIcons.signOutAlt,
                         color: Color(AppColors.whiteBackground),
@@ -233,290 +264,341 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
               ],
             ),
             body: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Stack(
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(
-                          right: 8.w,
-                          left: 8.w,
-                          bottom: 24.h,
-                        ),
-                        child: Container(
-                          margin: EdgeInsets.symmetric(horizontal: 8),
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                Color(AppColors.blueLight).withOpacity(0.15),
-                                Color(
-                                  AppColors.secondaryColor,
-                                ).withOpacity(0.10),
-                              ],
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                            ),
-                            borderRadius: BorderRadius.circular(24),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Color(
-                                  AppColors.darkBlue,
-                                ).withOpacity(0.08),
-                                blurRadius: 16,
-                                offset: Offset(0, 8),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Stack(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 24.h),
+                          child: Container(
+                            margin: EdgeInsets.symmetric(horizontal: 8),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: [
+                                  Color(AppColors.blueLight).withOpacity(0.15),
+                                  Color(
+                                    AppColors.secondaryColor,
+                                  ).withOpacity(0.10),
+                                ],
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
                               ),
-                            ],
-                          ),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                flex: 2,
-                                child: Padding(
-                                  padding: EdgeInsets.symmetric(
-                                    horizontal: 16.w,
-                                    vertical: 24.h,
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Hey $userLocalName,",
-                                        style: GoogleFonts.poppins(
+                              borderRadius: BorderRadius.circular(24),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Color(
+                                    AppColors.darkBlue,
+                                  ).withOpacity(0.08),
+                                  blurRadius: 16,
+                                  offset: Offset(0, 8),
+                                ),
+                              ],
+                            ),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  flex: 2,
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(
+                                      horizontal: 16.w,
+                                      vertical: 24.h,
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        AppText(
+                                          maxLines: 2,
+                                          textName: "Hey $userLocalName,",
                                           fontSize: 26,
-                                          fontWeight: FontWeight.bold,
-                                          color: Color(
+                                          textColor: Color(
                                             AppColors.whiteBackground,
                                           ).withOpacity(0.8),
+                                          fontWeight: FontWeight.bold,
                                         ),
-                                      ),
-                                      SizedBox(height: 8),
-                                      Text(
-                                        "Do you know about rewards?",
-                                        style: GoogleFonts.poppins(
+                                        SizedBox(height: 8),
+                                        AppText(
+                                          maxLines: 2,
+                                          textName:
+                                              "Do you know about rewards?",
                                           fontSize: 18,
-                                          fontWeight: FontWeight.w500,
-                                          color: Color(
+                                          textColor: Color(
                                             AppColors.whiteBackground,
                                           ).withOpacity(0.6),
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                        SizedBox(height: 18),
+                                        ElevatedButton.icon(
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor: Color(
+                                              AppColors.primaryColor,
+                                            ),
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(18),
+                                            ),
+                                            elevation: 0,
+                                          ),
+                                          onPressed: _showRewardedAd,
+                                          icon: Icon(
+                                            Icons.card_giftcard,
+                                            color: Colors.white,
+                                          ),
+                                          label: AppText(
+                                            textName: "Earn Now",
+                                            fontWeight: FontWeight.bold,
+                                            textColor: Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: Stack(
+                                    alignment: Alignment.center,
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.only(
+                                          top: 24,
+                                          bottom: 24,
+                                          right: 8,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(
+                                            20,
+                                          ),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Color(
+                                                AppColors.secondaryColor,
+                                              ).withOpacity(0.1),
+                                              blurRadius: 24,
+                                              offset: Offset(0, 12),
+                                            ),
+                                          ],
+                                        ),
+                                        child: ClipRRect(
+                                          borderRadius: BorderRadius.circular(
+                                            20,
+                                          ),
+                                          child: Image.asset(
+                                            "assets/image/roundedShap.png",
+                                            fit: BoxFit.cover,
+                                            height: 240,
+                                            width: double.infinity,
+                                          ),
                                         ),
                                       ),
-                                      SizedBox(height: 18),
-                                      ElevatedButton.icon(
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Color(
-                                            AppColors.primaryColor,
-                                          ),
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                              18,
+                                      Positioned(
+                                        top: 100,
+                                        child: Column(
+                                          children: [
+                                            Container(
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Color(
+                                                      AppColors.primaryColor,
+                                                    ).withOpacity(0.25),
+                                                    blurRadius: 18,
+                                                    offset: Offset(0, 8),
+                                                  ),
+                                                ],
+                                              ),
+                                              child: Image.asset(
+                                                "assets/image/rewardIcon.png",
+                                                height: 80,
+                                              ),
                                             ),
-                                          ),
-                                          elevation: 0,
-                                        ),
-                                        onPressed: _showRewardedAd,
-                                        icon: Icon(
-                                          Icons.card_giftcard,
-                                          color: Colors.white,
-                                        ),
-                                        label: Text(
-                                          "Earn Now",
-                                          style: GoogleFonts.poppins(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                          ),
+                                          ],
                                         ),
                                       ),
                                     ],
                                   ),
                                 ),
-                              ),
-                              Expanded(
-                                flex: 2,
-                                child: Stack(
-                                  alignment: Alignment.center,
-                                  children: [
-                                    Container(
-                                      margin: EdgeInsets.only(
-                                        top: 24,
-                                        bottom: 24,
-                                        right: 8,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(20),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Color(
-                                              AppColors.secondaryColor,
-                                            ).withOpacity(0.1),
-                                            blurRadius: 24,
-                                            offset: Offset(0, 12),
-                                          ),
-                                        ],
-                                      ),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(20),
-                                        child: Image.asset(
-                                          "assets/image/roundedShap.png",
-                                          fit: BoxFit.cover,
-                                          height: 240,
-                                          width: double.infinity,
-                                        ),
-                                      ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        rewardPointsAsync.when(
+                          data: (points) {
+                            if (points == 0) return SizedBox.shrink();
+                            return Positioned(
+                              bottom: 10.h,
+                              left: 115.w,
+
+                              child: Container(
+                                height: 35.h,
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 18,
+                                  vertical: 8,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: Color(AppColors.primaryColor),
+                                  borderRadius: BorderRadius.circular(30),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Color(
+                                        AppColors.primaryColor,
+                                      ).withOpacity(0.18),
+                                      blurRadius: 12,
+                                      offset: Offset(0, 4),
                                     ),
-                                    Positioned(
-                                      top: 100,
-                                      child: Column(
-                                        children: [
-                                          Container(
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: Color(
-                                                    AppColors.primaryColor,
-                                                  ).withOpacity(0.25),
-                                                  blurRadius: 18,
-                                                  offset: Offset(0, 8),
-                                                ),
-                                              ],
-                                            ),
-                                            child: Image.asset(
-                                              "assets/image/rewardIcon.png",
-                                              height: 80,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
+                                  ],
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      Icons.stars,
+                                      color: Colors.white,
+                                      size: 22,
+                                    ),
+                                    SizedBox(width: 8),
+                                    AppText(
+                                      textName: "$points Points",
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                      textColor: Colors.white,
                                     ),
                                   ],
                                 ),
                               ),
-                            ],
-                          ),
+                            );
+                          },
+                          loading:
+                              () => Padding(
+                                padding: EdgeInsets.only(top: 16),
+                                child: CircularProgressIndicator(
+                                  color: Color(AppColors.primaryColor),
+                                  strokeWidth: 2,
+                                ),
+                              ),
+                          error: (e, _) => SizedBox.shrink(),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 12),
+                    Container(
+                      padding: EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12.sp),
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            Color.fromARGB(106, 29, 178, 183),
+                            Color.fromARGB(255, 13, 164, 184),
+                            Color.fromARGB(106, 23, 106, 109),
+                          ],
                         ),
                       ),
-                      rewardPointsAsync.when(
-                        data: (points) {
-                          if (points == 0) return SizedBox.shrink();
-                          return Positioned(
-                            bottom: 16,
-                            left: 150,
-                            child: Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: 18,
-                                vertical: 8,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Color(AppColors.primaryColor),
-                                borderRadius: BorderRadius.circular(30),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Color(
-                                      AppColors.primaryColor,
-                                    ).withOpacity(0.18),
-                                    blurRadius: 12,
-                                    offset: Offset(0, 4),
-                                  ),
-                                ],
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Icon(
-                                    Icons.stars,
-                                    color: Colors.white,
-                                    size: 22,
-                                  ),
-                                  SizedBox(width: 8),
-                                  Text(
-                                    "$points Points",
-                                    style: GoogleFonts.poppins(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                        loading:
-                            () => Padding(
-                              padding: EdgeInsets.only(top: 16),
-                              child: CircularProgressIndicator(
-                                color: Color(AppColors.primaryColor),
-                                strokeWidth: 2,
-                              ),
-                            ),
-                        error: (e, _) => SizedBox.shrink(),
-                      ),
-                    ],
-                  ),
-
-                  // AppMainButton(
-                  //   width: 200.w,
-                  //   borderRadius: BorderRadius.circular(12),
-                  //   onPressed: _showRewardedAd,
-                  //   gradient: const LinearGradient(
-                  //     colors: [Color(0xFF4CAF50), Color(0xFF81C784)],
-                  //   ),
-                  //   child: const Text(
-                  //     "Watch Ad to Earn Reward",
-                  //     style: TextStyle(color: Colors.white),
-                  //   ),
-                  // ),
-                  // const SizedBox(height: 12),
-                  // AppMainButton(
-                  //   width: 200.w,
-                  //   borderRadius: BorderRadius.circular(12),
-                  //   onPressed: () async {
-                  //     await auth.signOut();
-                  //     Navigator.pushReplacement(
-                  //       context,
-                  //       MaterialPageRoute(
-                  //         builder: (_) => const GoogleLoginScreen(),
-                  //       ),
-                  //     );
-                  //     showSnackBar(
-                  //       context,
-                  //       "Signed out successfully!",
-                  //       Color(AppColors.successColor),
-                  //     );
-                  //   },
-                  //   gradient: const LinearGradient(
-                  //     colors: [
-                  //       Color(AppColors.blueThird),
-                  //       Color(AppColors.blueLight),
-                  //       Color(AppColors.secondaryColor),
-                  //     ],
-                  //   ),
-                  //   child: const Text(
-                  //     "Sign Out",
-                  //     style: TextStyle(color: Color(AppColors.blackBackground)),
-                  //   ),
-                  // ),
-                  SizedBox(height: 240.h),
-                  if (bannerAd != null)
-                    RotatedBox(
-                      quarterTurns: 0,
-                      child: SizedBox(
-                        height: bannerAd!.size.height.toDouble(),
-                        width: bannerAd!.size.width.toDouble(),
-                        child: AdWidget(ad: bannerAd!),
+                      child: Column(
+                        children: [
+                          _buildAttractiveTile(
+                            icon: Icons.person_2,
+                            title: "Profile",
+                            subtitle: "Update your profile details",
+                            onTap: () {},
+                          ),
+                          SizedBox(height: 8.h),
+                          _buildAttractiveTile(
+                            icon: Icons.star,
+                            title: "Buy Premium Subscription",
+                            subtitle: "Access all songs without ads",
+                            onTap: () {
+                              modalBottomSheetMenu();
+                            },
+                          ),
+                          SizedBox(height: 8.h),
+                          _buildAttractiveTile(
+                            icon: Icons.music_note,
+                            title: "Unlock Music Downloads",
+                            subtitle: "Save your favorites offline",
+                            onTap: () {},
+                          ),
+                          SizedBox(height: 8.h),
+                          _buildAttractiveTile(
+                            icon: Icons.music_note,
+                            title: "Unlock Music Downloads",
+                            subtitle: "Save your favorites offline",
+                            onTap: () {},
+                          ),
+                        ],
                       ),
                     ),
-                ],
+
+                    SizedBox(height: 80.h),
+                    if (bannerAd != null)
+                      RotatedBox(
+                        quarterTurns: 0,
+                        child: SizedBox(
+                          height: bannerAd!.size.height.toDouble(),
+                          width: bannerAd!.size.width.toDouble(),
+                          child: AdWidget(ad: bannerAd!),
+                        ),
+                      ),
+                  ],
+                ),
               ),
             ),
           ),
         );
       },
       loading: () => Center(child: appLoader()),
-      error: (e, _) => Center(child: Text("Error: $e")),
+      error: (e, _) => Center(child: AppText(textName: "Error: $e")),
+    );
+  }
+
+  Widget _buildAttractiveTile({
+    required IconData icon,
+    required String title,
+    String? subtitle,
+    VoidCallback? onTap,
+  }) {
+    return Material(
+      borderRadius: BorderRadius.circular(12.sp),
+      color: Colors.black.withOpacity(0.1),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(12.sp),
+        onTap: onTap,
+        child: ListTile(
+          contentPadding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
+          leading: CircleAvatar(
+            backgroundColor: Colors.white.withOpacity(0.2),
+            child: Icon(icon, color: Colors.white),
+          ),
+          title: AppText(
+            textName: title,
+            fontSize: 16.sp,
+            fontWeight: FontWeight.bold,
+            textColor: Color(AppColors.whiteBackground),
+          ),
+          subtitle:
+              subtitle != null
+                  ? AppText(
+                    textName: subtitle,
+                    fontSize: 12.sp,
+                    textColor: Color(
+                      AppColors.whiteBackground,
+                    ).withOpacity(0.8),
+                  )
+                  : null,
+          trailing: Icon(
+            Icons.arrow_forward_ios,
+            size: 16,
+            color: Colors.white70,
+          ),
+        ),
+      ),
     );
   }
 }

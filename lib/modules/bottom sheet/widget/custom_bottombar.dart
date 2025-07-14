@@ -88,7 +88,8 @@
 // }
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
- import 'package:lyrica/core/constant/app_colors.dart';
+import 'package:lyrica/common/widget/app_text.dart';
+import 'package:lyrica/core/constant/app_colors.dart';
 
 class CustomBottomBar extends StatelessWidget {
   final int currentIndex;
@@ -103,9 +104,9 @@ class CustomBottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
-      backgroundColor: const Color.fromARGB(255, 1, 29, 29),
+      backgroundColor: const Color.fromARGB(255, 0, 33, 43),
       type: BottomNavigationBarType.fixed,
-      elevation: 1,
+      elevation: 0,
       selectedItemColor: Colors.white,
       unselectedItemColor: Colors.white60,
       showSelectedLabels: false,
@@ -138,27 +139,43 @@ class CustomBottomBar extends StatelessWidget {
         shape: BoxShape.circle,
         gradient:
             isSelected
-                ? RadialGradient(
-                  colors: [Colors.white.withOpacity(0.9), Colors.transparent],
-                )
+                ? RadialGradient(colors: [Colors.white, Colors.transparent])
                 : null,
         boxShadow:
             isSelected
                 ? [
                   BoxShadow(
-                    color: Color(AppColors.secondaryColor).withOpacity(0.7),
+                    color: Color(AppColors.secondaryColor).withOpacity(0.5),
                     blurRadius: 25,
-                    spreadRadius: 7,
-                    offset: const Offset(0, 5),
+                    spreadRadius: 8,
+                    offset: const Offset(0, 0),
                   ),
                 ]
                 : [],
       ),
-      padding: const EdgeInsets.all(10),
-      child: Icon(
-        icon,
-        size: isSelected ? 30 : 25,
-        color: isSelected ? Colors.white70 : Colors.white54,
+      padding: const EdgeInsets.only(top: 8),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Icon(
+            icon,
+            size: isSelected ? 30 : 25,
+            color: isSelected ? Colors.white70 : Colors.white54,
+          ),
+          SizedBox(height: 4),
+          AppText(
+            textName:
+                index == 0
+                    ? 'Home'
+                    : index == 1
+                    ? 'Explore'
+                    : 'Library',
+            textColor: isSelected ? Colors.white70 : Colors.white54,
+            fontSize: isSelected ? 16 : 12,
+            fontWeight: FontWeight.w500,
+          ),
+        ],
       ),
     );
   }

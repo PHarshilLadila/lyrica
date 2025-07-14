@@ -48,7 +48,7 @@ class _HindiMusicListState extends ConsumerState<HindiMusicList> {
           data: (hindiSong) {
             return ListView.builder(
               shrinkWrap: true,
-
+              padding: EdgeInsets.all(8.sp),
               physics: ScrollPhysics(),
               itemCount: hindiSong.length,
               itemBuilder: (context, index) {
@@ -65,12 +65,15 @@ class _HindiMusicListState extends ConsumerState<HindiMusicList> {
                 String? imageUrl = track.albumImage;
 
                 if (track.albumImage == "") {
-                  imageUrl =
-                      "https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg";
+                  imageUrl = AppString.defaultImageLogo;
+                  // "https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg";
                 } else {
                   imageUrl = track.albumImage;
                 }
                 return Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12.sp),
+                  ),
                   color: Colors.transparent,
                   child: Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.0),
@@ -160,9 +163,7 @@ class _HindiMusicListState extends ConsumerState<HindiMusicList> {
           },
           loading: () => Center(child: appLoader()),
           error:
-              (err, stack) => Center(
-                child: Text('Error: $err', style: GoogleFonts.poppins()),
-              ),
+              (err, stack) => Center(child: AppText(textName: 'Error: $err')),
         ),
       ),
     );

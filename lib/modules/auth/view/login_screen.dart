@@ -3,10 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:lyrica/common/utils/utils.dart';
 import 'package:lyrica/common/widget/app_main_button.dart';
+import 'package:lyrica/common/widget/app_text.dart';
 import 'package:lyrica/common/widget/app_text_form_field.dart';
 import 'package:lyrica/core/constant/app_colors.dart';
 import 'package:lyrica/core/constant/app_images.dart';
@@ -90,13 +90,38 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     }
   }
 
+  Future<void> facebookLogin(BuildContext context) async {
+    showLoader(context);
+    final auth = ref.read(authControllerProvider);
+    final user = await auth.facebookLogin();
+    hideLoader(context);
+
+    if (user != null) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const BottomSheetScreen()),
+      );
+      showSnackBar(
+        context,
+        'Facebook sign-in successfully..!',
+        Color(AppColors.successColor),
+      );
+    } else {
+      showSnackBar(
+        context,
+        'Facebook sign-in failed. Please try again.',
+        Color(AppColors.errorColor),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(gradient: backgroundGradient()),
 
       child: Scaffold(
-        backgroundColor: const Color.fromARGB(221, 39, 39, 39),
+        backgroundColor: const Color.fromARGB(197, 0, 43, 53),
         body: Form(
           autovalidateMode: AutovalidateMode.onUnfocus,
           key: loginScreenKey,
@@ -121,30 +146,24 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   SizedBox(height: 10.h),
                   Column(
                     children: [
-                      Text(
-                        AppString.appName,
-                        style: GoogleFonts.hiMelody(
-                          fontSize: 40.sp,
-                          fontWeight: FontWeight.bold,
-                          color: Color(AppColors.primaryColor),
-                        ),
+                      AppText(
+                        fontSize: 40.sp,
+                        fontWeight: FontWeight.bold,
+                        textName: AppString.appName,
+                        textColor: Color(AppColors.primaryColor),
                       ),
-                      Text(
-                        AppString.appTagline,
-                        style: GoogleFonts.poppins(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Color(AppColors.blueExtraLight),
-                        ),
+                      AppText(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                        textName: AppString.appTagline,
+                        textColor: Color(AppColors.blueExtraLight),
                       ),
                       SizedBox(height: 20.h),
-                      Text(
-                        AppString.loginTitle,
-                        style: GoogleFonts.poppins(
-                          fontSize: 25.sp,
-                          fontWeight: FontWeight.bold,
-                          color: Color(AppColors.lightText),
-                        ),
+                      AppText(
+                        fontSize: 25.sp,
+                        fontWeight: FontWeight.bold,
+                        textName: AppString.loginTitle,
+                        textColor: Color(AppColors.lightText),
                       ),
                     ],
                   ),
@@ -251,13 +270,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           });
                         },
                       ),
-                      Text(
-                        AppString.remember,
-                        style: GoogleFonts.poppins(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Color(AppColors.whiteBackground),
-                        ),
+                      AppText(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                        textName: AppString.remember,
+                        textColor: Color(AppColors.whiteBackground),
                       ),
                     ],
                   ),
@@ -278,27 +295,23 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       login(context, ref);
                     },
 
-                    child: Text(
-                      AppString.loginWithPassword,
-                      style: GoogleFonts.poppins(
-                        color: Color(AppColors.lightText),
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    child: AppText(
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.bold,
+                      textName: AppString.loginWithPassword,
+                      textColor: Color(AppColors.lightText),
                     ),
                   ),
                   SizedBox(height: 10.h),
                   Align(
                     alignment: Alignment.center,
-                    child: Text(
-                      AppString.forgotPassword,
-                      style: GoogleFonts.poppins(
-                        fontSize: 14.sp,
-                        decoration: TextDecoration.underline,
-                        decorationColor: Color(AppColors.secondaryColor),
-                        fontWeight: FontWeight.w500,
-                        color: Color(AppColors.secondaryColor),
-                      ),
+                    child: AppText(
+                      fontSize: 14.sp,
+                      textUnderline: TextDecoration.underline,
+                      textColor: Color(AppColors.secondaryColor),
+                      fontWeight: FontWeight.w500,
+                      textName: AppString.forgotPassword,
+                      underlineColor: Color(AppColors.secondaryColor),
                     ),
                   ),
 
@@ -313,13 +326,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 12.w),
-                        child: Text(
-                          "or Continue with",
-                          style: GoogleFonts.poppins(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w500,
-                            color: Colors.white54,
-                          ),
+                        child: AppText(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                          textName: "or Continue with",
+                          textColor: Colors.white54,
                         ),
                       ),
                       Expanded(
@@ -355,18 +366,23 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         ),
                       ),
                       SizedBox(width: 20.w),
-                      Container(
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Color(AppColors.whiteBackground),
-                        ),
-                        child: GestureDetector(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Image.asset(
-                              AppImages.facebookLogo,
-                              height: 25.h,
-                              width: 25.w,
+                      GestureDetector(
+                        onTap: () {
+                          facebookLogin(context);
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Color(AppColors.whiteBackground),
+                          ),
+                          child: GestureDetector(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Image.asset(
+                                AppImages.facebookLogo,
+                                height: 25.h,
+                                width: 25.w,
+                              ),
                             ),
                           ),
                         ),
@@ -378,13 +394,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
-                        AppString.dontHaveAccount,
-                        style: GoogleFonts.poppins(
-                          color: Color(AppColors.lightText),
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w500,
-                        ),
+                      AppText(
+                        textName: AppString.dontHaveAccount,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                        textColor: Color(AppColors.lightText),
                       ),
                       TextButton(
                         onPressed: () {
@@ -400,13 +414,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             Colors.transparent,
                           ),
                         ),
-                        child: Text(
-                          AppString.signUp,
-                          style: GoogleFonts.poppins(
-                            color: Color(AppColors.secondaryColor),
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w500,
-                          ),
+                        child: AppText(
+                          textName: AppString.signUp,
+                          fontSize: 14.sp,
+                          textColor: Color(AppColors.secondaryColor),
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                     ],

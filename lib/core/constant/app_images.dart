@@ -21,4 +21,5 @@ class AppImages {
   static const String logout3 = 'assets/icons/logout3.png';
   static const String logout4 = 'assets/icons/logout4.png';
   static const String instagram = 'assets/icons/insta.png';
+  static const String personImage = 'assets/icons/person.png';
 }

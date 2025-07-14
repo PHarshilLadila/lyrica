@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lyrica/common/utils/utils.dart';
 import 'package:lyrica/common/widget/app_main_button.dart';
+import 'package:lyrica/common/widget/app_text.dart';
 import 'package:lyrica/core/constant/app_colors.dart';
 import 'package:lyrica/core/constant/app_images.dart';
 import 'package:lyrica/core/constant/app_string.dart';
@@ -28,7 +29,7 @@ class _GoogleLoginScreenState extends ConsumerState<GoogleLoginScreen> {
     return Container(
       decoration: BoxDecoration(gradient: backgroundGradient()),
       child: Scaffold(
-        backgroundColor: const Color.fromARGB(221, 39, 39, 39),
+        backgroundColor: const Color.fromARGB(197, 0, 43, 53),
         body: SafeArea(
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
@@ -44,30 +45,24 @@ class _GoogleLoginScreenState extends ConsumerState<GoogleLoginScreen> {
                     child: Image.asset(AppImages.logoWithoutBG, height: 130.h),
                   ),
                   SizedBox(height: 8.h),
-                  Text(
-                    AppString.appName,
-                    style: GoogleFonts.hiMelody(
-                      fontSize: 40.sp,
-                      fontWeight: FontWeight.bold,
-                      color: const Color(AppColors.primaryColor),
-                    ),
+                  AppText(
+                    textName: AppString.appName,
+                    fontSize: 40.sp,
+                    textColor: Color(AppColors.primaryColor),
+                    fontWeight: FontWeight.bold,
                   ),
-                  Text(
-                    AppString.appTagline,
-                    style: GoogleFonts.poppins(
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w500,
-                      color: const Color(AppColors.blueExtraLight),
-                    ),
+                  AppText(
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w500,
+                    textColor: Color(AppColors.blueExtraLight),
+                    textName: AppString.appTagline,
                   ),
                   SizedBox(height: 25.h),
-                  Text(
-                    AppString.loginSlogun,
-                    style: GoogleFonts.poppins(
-                      fontSize: 25.sp,
-                      fontWeight: FontWeight.bold,
-                      color: const Color(AppColors.lightText),
-                    ),
+                  AppText(
+                    fontSize: 25.sp,
+                    textName: AppString.loginSlogun,
+                    fontWeight: FontWeight.bold,
+                    textColor: Color(AppColors.lightText),
                   ),
                   SizedBox(height: 20.h),
                   AppMainButton(
@@ -85,13 +80,11 @@ class _GoogleLoginScreenState extends ConsumerState<GoogleLoginScreen> {
                       children: [
                         Image.asset(AppImages.googleLogo, height: 30.h),
                         SizedBox(width: 10.w),
-                        Text(
-                          AppString.loginWithGoogle,
-                          style: GoogleFonts.poppins(
-                            color: const Color(AppColors.lightText),
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w500,
-                          ),
+                        AppText(
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14.sp,
+                          textName: AppString.loginWithGoogle,
+                          textColor: Color(AppColors.lightText),
                         ),
                       ],
                     ),
@@ -144,13 +137,11 @@ class _GoogleLoginScreenState extends ConsumerState<GoogleLoginScreen> {
                       children: [
                         Image.asset(AppImages.instagram, height: 30.h),
                         SizedBox(width: 10.w),
-                        Text(
-                          "Login with Instagram",
-                          style: GoogleFonts.poppins(
-                            color: const Color(AppColors.lightText),
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w500,
-                          ),
+                        AppText(
+                          fontSize: 14.sp,
+                          textName: "Login with Instagram",
+                          fontWeight: FontWeight.w500,
+                          textColor: Color(AppColors.lightText),
                         ),
                       ],
                     ),
@@ -167,13 +158,11 @@ class _GoogleLoginScreenState extends ConsumerState<GoogleLoginScreen> {
                       ),
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 12.w),
-                        child: Text(
-                          "or",
-                          style: GoogleFonts.poppins(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w500,
-                            color: const Color(AppColors.whiteBackground),
-                          ),
+                        child: AppText(
+                          fontSize: 14.sp,
+                          textName: "or",
+                          textColor: Color(AppColors.whiteBackground),
+                          fontWeight: FontWeight.w500,
                         ),
                       ),
                       const Expanded(
@@ -217,13 +206,11 @@ class _GoogleLoginScreenState extends ConsumerState<GoogleLoginScreen> {
                           ),
                         );
                       },
-                      child: Text(
-                        AppString.loginWithPassword,
-                        style: GoogleFonts.poppins(
-                          color: const Color(AppColors.lightText),
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      child: AppText(
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.bold,
+                        textName: AppString.loginWithPassword,
+                        textColor: Color(AppColors.lightText),
                       ),
                     ),
                   ),
@@ -231,13 +218,11 @@ class _GoogleLoginScreenState extends ConsumerState<GoogleLoginScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        AppString.dontHaveAccount,
-                        style: GoogleFonts.poppins(
-                          color: const Color(AppColors.lightText),
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w500,
-                        ),
+                      AppText(
+                        textName: AppString.dontHaveAccount,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500,
+                        textColor: Color(AppColors.lightText),
                       ),
                       TextButton(
                         onPressed: () {
@@ -253,13 +238,11 @@ class _GoogleLoginScreenState extends ConsumerState<GoogleLoginScreen> {
                             Colors.transparent,
                           ),
                         ),
-                        child: Text(
-                          AppString.signUp,
-                          style: GoogleFonts.poppins(
-                            color: const Color(AppColors.secondaryColor),
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w500,
-                          ),
+                        child: AppText(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w500,
+                          textName: AppString.signUp,
+                          textColor: Color(AppColors.secondaryColor),
                         ),
                       ),
                     ],

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:lyrica/common/widget/app_text.dart';
 import 'package:lyrica/core/constant/app_colors.dart';
 import 'package:lyrica/core/constant/app_images.dart';
 import 'package:lyrica/core/constant/app_string.dart';
@@ -23,23 +23,19 @@ class _SplashScreenState extends State<SplashScreen> {
         children: [
           Center(child: Image.asset(AppImages.logoWithoutBG, height: 180.h)),
           SizedBox(height: 20.h),
-          Text(
-            AppString.appName,
-            style: GoogleFonts.hiMelody(
-              fontSize: 26.sp,
-              fontWeight: FontWeight.bold,
-              color: Color(AppColors.primaryColor),
-            ),
+          AppText(
+            fontSize: 26.sp,
+            fontWeight: FontWeight.bold,
+            textColor: Color(AppColors.primaryColor),
+            textName: AppString.appName,
           ),
           SizedBox(height: 2.h),
 
-          Text(
-            AppString.appTagline,
-            style: GoogleFonts.poppins(
-              fontSize: 20.sp,
-              fontWeight: FontWeight.w500,
-              color: Color(AppColors.blueExtraLight),
-            ),
+          AppText(
+            textName: AppString.appTagline,
+            fontSize: 20.sp,
+            fontWeight: FontWeight.w500,
+            textColor: Color(AppColors.blueExtraLight),
           ),
         ],
       ),

@@ -8,6 +8,8 @@ class AppText extends StatelessWidget {
   final FontWeight? fontWeight;
   final TextDecoration? textUnderline;
   final Color? underlineColor;
+  final TextAlign? align;
+  final int? maxLines;
 
   const AppText({
     super.key,
@@ -17,6 +19,8 @@ class AppText extends StatelessWidget {
     this.fontWeight,
     this.textUnderline,
     this.underlineColor,
+    this.align,
+    this.maxLines = 1,
   });
 
   @override
@@ -31,7 +35,8 @@ class AppText extends StatelessWidget {
         decorationColor: underlineColor,
       ),
       overflow: TextOverflow.ellipsis,
-      maxLines: 1,
+      maxLines: maxLines,
+      textAlign: align,
     );
   }
 }
