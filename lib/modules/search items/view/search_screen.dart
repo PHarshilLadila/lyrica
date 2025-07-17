@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously, deprecated_member_use
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -14,9 +15,11 @@ import 'package:lyrica/core/providers/provider.dart';
 import 'package:lyrica/modules/auth/view/google_login_screen.dart';
 import 'package:lyrica/modules/music%20player/view/music_player.dart';
 import 'package:lyrica/modules/music%20track/view/music_track_list.dart';
+import 'package:lyrica/modules/playlist/provider/playlist_provider.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {
-  const SearchScreen({super.key});
+  final bool fromPlaylist;
+  const SearchScreen(this.fromPlaylist, {super.key});
 
   @override
   ConsumerState<SearchScreen> createState() => _SearchScreenState();
@@ -28,12 +31,52 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   Widget build(BuildContext context) {
     final auth = ref.read(authControllerProvider);
     final resultsAsync = ref.watch(searchResultsProvider);
+    final playlist = ref.watch(playlistProvider);
 
     return DefaultTabController(
       length: 2,
       child: Container(
         decoration: BoxDecoration(gradient: backgroundGradient()),
         child: Scaffold(
+          floatingActionButton:
+              widget.fromPlaylist
+                  ? ScaleTransition(
+                    scale: AlwaysStoppedAnimation(1),
+                    child: FloatingActionButton.extended(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      backgroundColor: Color(AppColors.primaryColor),
+                      foregroundColor: Color(AppColors.whiteBackground),
+                      elevation: 6,
+                      hoverElevation: 12,
+                      focusElevation: 8,
+                      highlightElevation: 12,
+                      shape: StadiumBorder(
+                        side: BorderSide(
+                          color: Color(
+                            AppColors.whiteBackground,
+                          ).withOpacity(0.3),
+                          width: 1.5,
+                        ),
+                      ),
+                      icon: Padding(
+                        padding: EdgeInsets.only(right: 4.w),
+                        child: Icon(
+                          Icons.playlist_add_check_rounded,
+                          size: 24.sp,
+                        ),
+                      ),
+                      label: AppText(
+                        textName: "Back to Playlist",
+                        fontSize: 16.sp,
+                        textColor: Color(AppColors.whiteBackground),
+                        fontWeight: FontWeight.w600,
+                      ),
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
+                  )
+                  : SizedBox.shrink(),
           backgroundColor: const Color.fromARGB(197, 0, 43, 53),
           appBar: AppBar(
             leading: Padding(
@@ -439,21 +482,152 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   ),
                 ),
               ),
+              // SingleChildScrollView(
+              //   child: Padding(
+              //     padding: const EdgeInsets.all(8.0),
+              //     child: Column(
+              //       mainAxisAlignment: MainAxisAlignment.start,
+              //       crossAxisAlignment: CrossAxisAlignment.start,
+              //       children: [
+              //         SizedBox(height: 10.h),
+              //         AppText(
+              //           textColor: Color(AppColors.lightText),
+              //           textName: "Find Songs",
+              //           fontSize: 20.sp,
+              //           fontWeight: FontWeight.bold,
+              //         ),
+              //         SizedBox(height: 15.h),
+              //         AppCustomTextFormField(
+              //           keyboradType: TextInputType.text,
+              //           borderColor: Color(AppColors.primaryColor),
+              //           enabledColor: Color(AppColors.secondaryColor),
+              //           fillColor: Colors.white10,
+              //           focusedColor: Color(AppColors.primaryColor),
+              //           disabledColor: Color(AppColors.whiteBackground),
+              //           hintText: "Search Music",
+              //           maxline: 1,
+              //           hintcolors: Color(AppColors.whiteBackground),
+              //           prefixIcon: Padding(
+              //             padding: EdgeInsets.only(left: 10.w, top: 8.h),
+              //             child: FaIcon(
+              //               FontAwesomeIcons.search,
+              //               color: Color(AppColors.blueExtraLight),
+              //             ),
+              //           ),
+              //           obscureText: false,
+              //           onChanged: (val) {
+              //             ref.read(searchQueryProvider.notifier).state = val;
+              //             isSearched = true;
+              //           },
+              //         ),
+              //         SizedBox(height: 10.h),
+              //         isSearched
+              //             ? SizedBox(
+              //               height: 500.h,
+              //               child: resultsAsync.when(
+              //                 data:
+              //                     (tracks) => ListView.builder(
+              //                       physics: ScrollPhysics(),
+              //                       itemCount: tracks.length,
+              //                       itemBuilder: (context, index) {
+              //                         final track = tracks[index];
+              //                         return Card(
+              //                           color: Colors.white,
+              //                           child: ListTile(
+              //                             leading: ClipRRect(
+              //                               borderRadius: BorderRadius.circular(
+              //                                 12,
+              //                               ),
+              //                               child: Image.network(
+              //                                 track.albumImage ?? "",
+              //                                 width: 50,
+              //                                 errorBuilder:
+              //                                     (_, __, ___) => const Icon(
+              //                                       Icons.music_note,
+              //                                     ),
+              //                               ),
+              //                             ),
+              //                             title: AppText(
+              //                               textName: track.name ?? "",
+              //                             ),
+              //                             subtitle: AppText(
+              //                               textName: track.artistName ?? "",
+              //                             ),
+              //                             trailing: SizedBox(
+              //                               width: 100.w,
+              //                               child: Row(
+              //                                 mainAxisAlignment:
+              //                                     MainAxisAlignment.end,
+              //                                 children: [
+              //                                   IconButton(
+              //                                     icon: Icon(
+              //                                       CupertinoIcons.add_circled,
+              //                                       color: Colors.blueGrey,
+              //                                     ),
+              //                                     onPressed: () {},
+              //                                   ),
+              //                                   IconButton(
+              //                                     icon: FaIcon(
+              //                                       FontAwesomeIcons.play,
+              //                                       color: Color(
+              //                                         AppColors.primaryColor,
+              //                                       ),
+              //                                       size: 18.sp,
+              //                                     ),
+              //                                     onPressed: () {
+              //                                       myPushNavigator(
+              //                                         context,
+              //                                         MusicPlayer(
+              //                                           songList: tracks,
+              //                                           initialIndex: index,
+              //                                         ),
+              //                                       );
+              //                                     },
+              //                                   ),
+              //                                 ],
+              //                               ),
+              //                             ),
+              //                           ),
+              //                         );
+              //                       },
+              //                     ),
+              //                 loading: () => Center(child: appLoader()),
+              //                 error:
+              //                     (e, _) => Center(
+              //                       child: AppText(textName: 'Error: $e'),
+              //                     ),
+              //               ),
+              //             )
+              //             : Center(
+              //               child: Column(
+              //                 children: [
+              //                   SizedBox(height: 160.h),
+
+              //                   Image.asset(
+              //                     AppImages.logoWithoutBG,
+              //                     height: 70.h,
+              //                   ),
+              //                   SizedBox(height: 8.h),
+              //                   AppText(
+              //                     textName: "Find Your Fevorite Music..🤩",
+              //                     textColor: Color(AppColors.primaryColor),
+              //                     fontSize: 14.sp,
+              //                     fontWeight: FontWeight.w500,
+              //                   ),
+              //                 ],
+              //               ),
+              //             ),
+              //       ],
+              //     ),
+              //   ),
+              // ),
               SingleChildScrollView(
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: EdgeInsets.all(16.sp),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(height: 10.h),
-                      AppText(
-                        textColor: Color(AppColors.lightText),
-                        textName: "Find Songs",
-                        fontSize: 20.sp,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      SizedBox(height: 15.h),
                       AppCustomTextFormField(
                         keyboradType: TextInputType.text,
                         borderColor: Color(AppColors.primaryColor),
@@ -461,7 +635,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                         fillColor: Colors.white10,
                         focusedColor: Color(AppColors.primaryColor),
                         disabledColor: Color(AppColors.whiteBackground),
-                        hintText: "Search Music",
+                        hintText: "Search for songs...",
                         maxline: 1,
                         hintcolors: Color(AppColors.whiteBackground),
                         prefixIcon: Padding(
@@ -477,77 +651,189 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                           isSearched = true;
                         },
                       ),
-                      SizedBox(height: 10.h),
+                      SizedBox(height: 20.h),
                       isSearched
-                          ? SizedBox(
-                            height: 500.h,
-                            child: resultsAsync.when(
-                              data:
-                                  (tracks) => ListView.builder(
-                                    physics: ScrollPhysics(),
-                                    itemCount: tracks.length,
-                                    itemBuilder: (context, index) {
-                                      final track = tracks[index];
-                                      return Card(
-                                        color: Colors.white,
-                                        child: ListTile(
-                                          leading: ClipRRect(
-                                            borderRadius: BorderRadius.circular(
-                                              12,
-                                            ),
-                                            child: Image.network(
-                                              track.albumImage ?? "",
-                                              width: 50,
-                                              errorBuilder:
-                                                  (_, __, ___) => const Icon(
-                                                    Icons.music_note,
+                          ? resultsAsync.when(
+                            data:
+                                (tracks) =>
+                                    tracks.isEmpty
+                                        ? Center(
+                                          child: Column(
+                                            children: [
+                                              SizedBox(height: 100.h),
+                                              Icon(
+                                                Icons.search_off,
+                                                size: 50.sp,
+                                                color: Colors.grey,
+                                              ),
+                                              SizedBox(height: 16.h),
+                                              AppText(
+                                                textName: "No results found",
+                                                fontSize: 16.sp,
+                                                textColor: Colors.grey,
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                        : ListView.builder(
+                                          shrinkWrap: true,
+                                          physics:
+                                              NeverScrollableScrollPhysics(),
+                                          itemCount: tracks.length,
+                                          itemBuilder: (context, index) {
+                                            final track = tracks[index];
+                                            final isInPlaylist = playlist.any(
+                                              (song) => song.id == track.id,
+                                            );
+
+                                            return Card(
+                                              margin: EdgeInsets.only(
+                                                bottom: 12.h,
+                                              ),
+                                              color: Colors.white.withOpacity(
+                                                0.1,
+                                              ),
+                                              child: ListTile(
+                                                leading: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                        8.r,
+                                                      ),
+                                                  child: Image.network(
+                                                    track.albumImage ?? "",
+                                                    width: 50.w,
+                                                    height: 50.h,
+                                                    fit: BoxFit.cover,
+                                                    errorBuilder:
+                                                        (_, __, ___) => Icon(
+                                                          Icons.music_note,
+                                                          size: 30.sp,
+                                                          color: Colors.white,
+                                                        ),
                                                   ),
-                                            ),
-                                          ),
-                                          title: AppText(
-                                            textName: track.name ?? "",
-                                          ),
-                                          subtitle: AppText(
-                                            textName: track.artistName ?? "",
-                                          ),
-                                          trailing: IconButton(
-                                            icon: const Icon(Icons.play_arrow),
-                                            onPressed: () {
-                                              myPushNavigator(
-                                                context,
-                                                MusicPlayer(
-                                                  songList: tracks,
-                                                  initialIndex: index,
                                                 ),
-                                              );
-                                            },
-                                          ),
+                                                title: AppText(
+                                                  textName:
+                                                      track.name ?? "Unknown",
+                                                  fontSize: 14.sp,
+                                                  fontWeight: FontWeight.bold,
+                                                  textColor: Color(
+                                                    AppColors.whiteBackground,
+                                                  ),
+                                                ),
+                                                subtitle: AppText(
+                                                  textName:
+                                                      track.artistName ??
+                                                      "Unknown artist",
+                                                  fontSize: 12.sp,
+                                                  textColor: Color(
+                                                    AppColors.whiteBackground,
+                                                  ).withOpacity(0.7),
+                                                ),
+                                                trailing: Row(
+                                                  mainAxisSize:
+                                                      MainAxisSize.min,
+                                                  children: [
+                                                    widget.fromPlaylist
+                                                        ? IconButton(
+                                                          icon: Icon(
+                                                            isInPlaylist
+                                                                ? Icons
+                                                                    .check_circle
+                                                                : CupertinoIcons
+                                                                    .add_circled,
+                                                            color:
+                                                                isInPlaylist
+                                                                    ? Colors
+                                                                        .green
+                                                                    : Colors
+                                                                        .blue,
+                                                            size: 24.sp,
+                                                          ),
+                                                          onPressed: () {
+                                                            if (isInPlaylist) {
+                                                              showSnackBar(
+                                                                context,
+                                                                "${track.name} is already in playlist",
+                                                                Colors.orange,
+                                                              );
+                                                            } else {
+                                                              ref
+                                                                  .read(
+                                                                    playlistProvider
+                                                                        .notifier,
+                                                                  )
+                                                                  .addSong(
+                                                                    track,
+                                                                  );
+                                                              showSnackBar(
+                                                                context,
+                                                                "${track.name} added to playlist",
+                                                                Color(
+                                                                  AppColors
+                                                                      .successColor,
+                                                                ),
+                                                              );
+                                                            }
+                                                          },
+                                                        )
+                                                        : SizedBox.shrink(),
+                                                    IconButton(
+                                                      icon: FaIcon(
+                                                        FontAwesomeIcons.play,
+                                                        color: Color(
+                                                          AppColors
+                                                              .primaryColor,
+                                                        ),
+                                                        size: 18.sp,
+                                                      ),
+                                                      onPressed: () {
+                                                        myPushNavigator(
+                                                          context,
+                                                          MusicPlayer(
+                                                            songList: tracks,
+                                                            initialIndex: index,
+                                                          ),
+                                                        );
+                                                      },
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          },
                                         ),
-                                      );
-                                    },
+                            loading: () => Center(child: appLoader()),
+                            error:
+                                (e, _) => Center(
+                                  child: AppText(
+                                    textName: 'Error: ${e.toString()}',
+                                    textColor: Colors.red,
                                   ),
-                              loading: () => Center(child: appLoader()),
-                              error:
-                                  (e, _) => Center(
-                                    child: AppText(textName: 'Error: $e'),
-                                  ),
-                            ),
+                                ),
                           )
                           : Center(
                             child: Column(
                               children: [
                                 SizedBox(height: 160.h),
-
                                 Image.asset(
                                   AppImages.logoWithoutBG,
                                   height: 70.h,
                                 ),
+                                SizedBox(height: 16.h),
+                                AppText(
+                                  textName: "Search for your favorite music",
+                                  textColor: Color(AppColors.primaryColor),
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w500,
+                                ),
                                 SizedBox(height: 8.h),
                                 AppText(
-                                  textName: "Find Your Fevorite Music..🤩",
-                                  textColor: Color(AppColors.primaryColor),
+                                  textName: "Add songs to your playlist",
+                                  textColor: Color(
+                                    AppColors.whiteBackground,
+                                  ).withOpacity(0.7),
                                   fontSize: 14.sp,
-                                  fontWeight: FontWeight.w500,
                                 ),
                               ],
                             ),

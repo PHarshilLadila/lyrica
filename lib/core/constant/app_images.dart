@@ -11,6 +11,7 @@ class AppImages {
   static const String cat4 = 'assets/image/music_categories/night.png';
   static const String cat5 = 'assets/image/music_categories/pop.png';
   static const String cat6 = 'assets/image/music_categories/rNb.png';
+  static const String avatar = 'assets/image/avatar.png';
 
   // icons
   static const String barIcon = 'assets/icons/bar.png';

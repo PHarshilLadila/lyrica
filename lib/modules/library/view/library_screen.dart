@@ -15,6 +15,10 @@ import 'package:lyrica/core/providers/provider.dart';
 import 'package:lyrica/modules/auth/view/google_login_screen.dart';
 import 'package:lyrica/modules/in%20app%20purchase/view/in_app_purchase.dart';
 import 'package:lyrica/modules/library/service/ad_mob_service.dart';
+import 'package:lyrica/modules/playlist/music_playlist_screen.dart';
+import 'package:lyrica/modules/playlist/widget/enter_playlist_name.dart';
+import 'package:lyrica/modules/playlist/widget/playlist_bottomsheet.dart';
+import 'package:lyrica/modules/profile/view/profile_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 final rewardPointsProvider = StreamProvider<int>((ref) async* {
@@ -507,7 +511,24 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                             icon: Icons.person_2,
                             title: "Profile",
                             subtitle: "Update your profile details",
-                            onTap: () {},
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ProfileScreen(),
+                                ),
+                              );
+                            },
+                          ),
+                          SizedBox(height: 8.h),
+
+                          _buildAttractiveTile(
+                            icon: Icons.music_note,
+                            title: "Playlist",
+                            subtitle: "Build your own music collection",
+                            onTap: () {
+                              showPlaylistOptionsSheet(context);
+                            },
                           ),
                           SizedBox(height: 8.h),
                           _buildAttractiveTile(
@@ -519,13 +540,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                             },
                           ),
                           SizedBox(height: 8.h),
-                          _buildAttractiveTile(
-                            icon: Icons.music_note,
-                            title: "Unlock Music Downloads",
-                            subtitle: "Save your favorites offline",
-                            onTap: () {},
-                          ),
-                          SizedBox(height: 8.h),
+
                           _buildAttractiveTile(
                             icon: Icons.music_note,
                             title: "Unlock Music Downloads",

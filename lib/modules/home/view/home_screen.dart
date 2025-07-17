@@ -594,7 +594,6 @@
 //     );
 //   }
 // }
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -625,17 +624,6 @@ class HomeScreen extends ConsumerStatefulWidget {
 class _HomeScreenState extends ConsumerState<HomeScreen> {
   String userLocalId = "";
   String userLocalName = "";
-  void getUserId() async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
-    final id = preferences.getString("userUID");
-    final name = preferences.getString("userName");
-    setState(() {
-      userLocalId = id ?? "N/A";
-      userLocalName = name ?? "N/A";
-      debugPrint("User Local Name: $userLocalName");
-      debugPrint("User Local ID: $userLocalId");
-    });
-  }
 
   @override
   void initState() {
@@ -647,67 +635,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     });
   }
 
-  Future<void> checkDeviceConnectivity() async {
-    final result = await Connectivity().checkConnectivity();
-    setState(() => "Internet Checking..");
-    switch (result as ConnectivityResult) {
-      case ConnectivityResult.mobile:
-        setState(() {
-          showSnackBar(
-            context,
-            "Connected to mobile network",
-            Color(AppColors.darkYellow),
-          );
-        });
-        break;
-
-      case ConnectivityResult.bluetooth:
-        setState(() {
-          showSnackBar(
-            context,
-            "Connected to mobile bluetooth",
-            Color(AppColors.errorColor),
-          );
-        });
-        break;
-      case ConnectivityResult.wifi:
-        setState(() {
-          showSnackBar(
-            context,
-            "Connected to mobile wifi",
-            Color(AppColors.errorColor),
-          );
-        });
-        break;
-      case ConnectivityResult.ethernet:
-        setState(() {
-          showSnackBar(
-            context,
-            "Connected to mobile ethernet",
-            Color(AppColors.errorColor),
-          );
-        });
-        break;
-      case ConnectivityResult.none:
-        showSnackBar(
-          context,
-          "Please Connect with your Internet..!",
-          Color(AppColors.successColor),
-        );
-        break;
-      case ConnectivityResult.vpn:
-        debugPrint("Connected to mobile vpn");
-        break;
-      case ConnectivityResult.other:
-        setState(() {
-          showSnackBar(
-            context,
-            "error in connectivity",
-            Color(AppColors.errorColor),
-          );
-        });
-        break;
-    }
+  void getUserId() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    final id = preferences.getString("userUID");
+    final name = preferences.getString("userName");
+    setState(() {
+      userLocalId = id ?? "N/A";
+      userLocalName = name ?? "N/A";
+      debugPrint("User Local Name: $userLocalName");
+      debugPrint("User Local ID: $userLocalId");
+    });
   }
 
   @override
@@ -731,7 +668,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               leading: Padding(
                 padding: const EdgeInsets.only(left: 10.0),
                 child: CircleAvatar(
-                  backgroundColor: Color(AppColors.primaryColor),
+                  backgroundColor: Color.fromARGB(197, 0, 43, 53),
                   child: userModelAsync.when(
                     data: (userModel) {
                       // final displayInitial =
@@ -742,7 +679,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       //         ? userModel!.username[0].toUpperCase()
                       //         : "N";
                       final profileInitial =
-                          userModel?.image ?? AppImages.personImage;
+                          userModel?.image ?? AppImages.avatar;
                       debugPrint("user Profile Image$profileInitial");
                       return ClipRRect(
                         borderRadius: BorderRadius.circular(100),
@@ -754,7 +691,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                   fit: BoxFit.cover,
                                   errorBuilder: (context, error, stackTrace) {
                                     return Image.asset(
-                                      AppImages.personImage,
+                                      AppImages.avatar,
                                       fit: BoxFit.cover,
                                     );
                                   },
@@ -762,7 +699,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 : Image.asset(
                                   profileInitial.isNotEmpty
                                       ? profileInitial
-                                      : AppImages.personImage,
+                                      : AppImages.avatar,
                                   fit: BoxFit.cover,
                                 ),
                       );
