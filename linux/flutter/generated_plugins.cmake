@@ -5,6 +5,9 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   desktop_webview_window
   file_saver
+  file_selector_linux
+  flutter_localization
+  flutter_timezone
   url_launcher_linux
   window_to_front
 )

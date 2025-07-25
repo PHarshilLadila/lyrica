@@ -6,6 +6,7 @@ import 'package:lyrica/common/widget/app_text.dart';
 import 'package:lyrica/core/constant/app_colors.dart';
 import 'package:lyrica/modules/playlist/view%20playlist/view_playlist_screen.dart';
 import 'package:lyrica/modules/playlist/widget/enter_playlist_name.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AppBottomSheet extends StatelessWidget {
   final String title;
@@ -70,7 +71,7 @@ void showPlaylistOptionsSheet(BuildContext context) {
     backgroundColor: Colors.transparent,
     builder: (context) {
       return AppBottomSheet(
-        title: "My Playlist",
+        title: AppLocalizations.of(context)!.myPlayList,
         child: Row(
           children: [
             Flexible(
@@ -100,7 +101,7 @@ void showPlaylistOptionsSheet(BuildContext context) {
                       ),
                       SizedBox(height: 8.h),
                       AppText(
-                        textName: "Create Playlist",
+                        text: AppLocalizations.of(context)!.createPlaylist,
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w700,
                         textColor: const Color(AppColors.whiteBackground),
@@ -140,7 +141,7 @@ void showPlaylistOptionsSheet(BuildContext context) {
                       ),
                       SizedBox(height: 8.h),
                       AppText(
-                        textName: "Play Playlist",
+                        text: AppLocalizations.of(context)!.playPlaylist,
                         fontSize: 16.sp,
                         fontWeight: FontWeight.w700,
                         textColor: const Color(AppColors.whiteBackground),

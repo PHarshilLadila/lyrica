@@ -16,6 +16,7 @@ import 'package:lyrica/modules/auth/view/google_login_screen.dart';
 import 'package:lyrica/modules/music%20player/view/music_player.dart';
 import 'package:lyrica/modules/music%20track/view/music_track_list.dart';
 import 'package:lyrica/modules/playlist/provider/playlist_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {
   final bool fromPlaylist;
@@ -68,7 +69,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                         ),
                       ),
                       label: AppText(
-                        textName: "Back to Playlist",
+                        text: AppLocalizations.of(context)!.backToPlaylist,
                         fontSize: 16.sp,
                         textColor: Color(AppColors.whiteBackground),
                         fontWeight: FontWeight.w600,
@@ -90,7 +91,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             toolbarHeight: 90,
             backgroundColor: Colors.transparent,
             title: AppText(
-              textName: "Search & Explore",
+              text: AppLocalizations.of(context)!.searchAndExplore,
               fontSize: 22.sp,
               fontWeight: FontWeight.w500,
               textColor: Color(AppColors.lightText),
@@ -98,18 +99,18 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             actions: [
               IconButton(
                 onPressed: () async {
-                  await auth.signOut();
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => const GoogleLoginScreen(),
-                    ),
-                  );
-                  showSnackBar(
-                    context,
-                    "Sign out Successfully..!",
-                    Color(AppColors.successColor),
-                  );
+                  // await auth.signOut();
+                  // Navigator.pushReplacement(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (_) => const GoogleLoginScreen(),
+                  //   ),
+                  // );
+                  // showAppSnackBar(
+                  //   context,
+                  //   "Sign out Successfully..!",
+                  //   Color(AppColors.successColor),
+                  // );
                 },
                 icon: Image.asset(AppImages.barIcon, width: 25.w),
               ),
@@ -156,7 +157,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                     color: Color(AppColors.lightText),
                   ),
                   child: AppText(
-                    textName: "Categories",
+                    text: AppLocalizations.of(context)!.categories,
                     fontWeight: FontWeight.w600,
                     textColor: Color(AppColors.lightText),
                   ),
@@ -164,7 +165,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                 Tab(
                   icon: Icon(Icons.search, color: Color(AppColors.lightText)),
                   child: AppText(
-                    textName: "Explore Music",
+                    text: AppLocalizations.of(context)!.exploreMusic,
                     fontWeight: FontWeight.w600,
                     textColor: Color(AppColors.lightText),
                   ),
@@ -184,7 +185,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
 
                       AppText(
                         textColor: Color(AppColors.lightText),
-                        textName: "Your Top Genres",
+                        text: AppLocalizations.of(context)!.yourTopGenres,
                         fontSize: 20.sp,
                         fontWeight: FontWeight.bold,
                       ),
@@ -192,7 +193,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                       GridView.builder(
                         shrinkWrap: true,
                         physics: ScrollPhysics(),
-                        itemCount: categorieBox.length,
+                        itemCount: categorieBox(context).length,
                         scrollDirection: Axis.vertical,
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2,
@@ -202,16 +203,16 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                         ),
                         itemBuilder: (context, index) {
                           var mainColor = int.parse(
-                            "${categorieBox[index]["color"]}",
+                            "${categorieBox(context)[index]["color"]}",
                           );
                           return GestureDetector(
                             onTap: () {
-                              // String selectedGenre = categorieBox[index]['pop'];
+                              // String selectedGenre = categorieBox(context)[index]['pop'];
                               if (index == 0) {
                                 myPushNavigator(
                                   context,
                                   MusicTrackList(
-                                    "${categorieBox[index]['name']}",
+                                    "${categorieBox(context)[index]['name']}",
                                     musicType: -1,
                                     genre: "format=json&tags=rock&limit=200",
                                   ),
@@ -220,7 +221,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                 myPushNavigator(
                                   context,
                                   MusicTrackList(
-                                    "${categorieBox[index]['name']}",
+                                    "${categorieBox(context)[index]['name']}",
                                     musicType: -1,
                                     genre: "format=json&tags=pop&limit=200",
                                   ),
@@ -229,7 +230,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                 myPushNavigator(
                                   context,
                                   MusicTrackList(
-                                    "${categorieBox[index]['name']}",
+                                    "${categorieBox(context)[index]['name']}",
                                     musicType: -1,
                                     genre: "format=json&tags=jazz&limit=200",
                                   ),
@@ -238,7 +239,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                 myPushNavigator(
                                   context,
                                   MusicTrackList(
-                                    "${categorieBox[index]['name']}",
+                                    "${categorieBox(context)[index]['name']}",
                                     musicType: -1,
                                     genre: "format=json&tags=hiphop&limit=200",
                                   ),
@@ -247,7 +248,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                 myPushNavigator(
                                   context,
                                   MusicTrackList(
-                                    "${categorieBox[index]['name']}",
+                                    "${categorieBox(context)[index]['name']}",
                                     musicType: -1,
                                     genre: "format=json&tags=funk&limit=200",
                                   ),
@@ -256,7 +257,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                 myPushNavigator(
                                   context,
                                   MusicTrackList(
-                                    "${categorieBox[index]['name']}",
+                                    "${categorieBox(context)[index]['name']}",
                                     musicType: -1,
                                     genre: "format=json&tags=dance&limit=200",
                                   ),
@@ -265,7 +266,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                 myPushNavigator(
                                   context,
                                   MusicTrackList(
-                                    "${categorieBox[index]['name']}",
+                                    "${categorieBox(context)[index]['name']}",
                                     musicType: -1,
                                     genre:
                                         "format=json&tags=romantic&limit=200",
@@ -275,7 +276,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                 myPushNavigator(
                                   context,
                                   MusicTrackList(
-                                    "${categorieBox[index]['name']}",
+                                    "${categorieBox(context)[index]['name']}",
                                     musicType: -1,
                                     genre: "format=json&tags=lofi&limit=200",
                                   ),
@@ -284,7 +285,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                 myPushNavigator(
                                   context,
                                   MusicTrackList(
-                                    "${categorieBox[index]['name']}",
+                                    "${categorieBox(context)[index]['name']}",
                                     musicType: -1,
                                     genre: "format=json&tags=disco&limit=200",
                                   ),
@@ -293,7 +294,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                 myPushNavigator(
                                   context,
                                   MusicTrackList(
-                                    "${categorieBox[index]['name']}",
+                                    "${categorieBox(context)[index]['name']}",
                                     musicType: -1,
                                     genre: "format=json&tags=sad&limit=200",
                                   ),
@@ -302,7 +303,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                 myPushNavigator(
                                   context,
                                   MusicTrackList(
-                                    "${categorieBox[index]['name']}",
+                                    "${categorieBox(context)[index]['name']}",
                                     musicType: -1,
                                     genre: "format=json&tags=gospel&limit=200",
                                   ),
@@ -311,7 +312,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                 myPushNavigator(
                                   context,
                                   MusicTrackList(
-                                    "${categorieBox[index]['name']}",
+                                    "${categorieBox(context)[index]['name']}",
                                     musicType: -1,
                                     genre: "format=json&tags=love&limit=200",
                                   ),
@@ -320,7 +321,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                 myPushNavigator(
                                   context,
                                   MusicTrackList(
-                                    "${categorieBox[index]['name']}",
+                                    "${categorieBox(context)[index]['name']}",
                                     musicType: -1,
                                     genre:
                                         "format=json&tags=electronic&limit=200",
@@ -330,7 +331,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                 myPushNavigator(
                                   context,
                                   MusicTrackList(
-                                    "${categorieBox[index]['name']}",
+                                    "${categorieBox(context)[index]['name']}",
                                     musicType: -1,
                                     genre: "format=json&tags=latin&limit=200",
                                   ),
@@ -339,7 +340,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                 myPushNavigator(
                                   context,
                                   MusicTrackList(
-                                    "${categorieBox[index]['name']}",
+                                    "${categorieBox(context)[index]['name']}",
                                     musicType: -1,
                                     genre:
                                         "format=json&tags=classical&limit=200",
@@ -349,7 +350,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                 myPushNavigator(
                                   context,
                                   MusicTrackList(
-                                    "${categorieBox[index]['name']}",
+                                    "${categorieBox(context)[index]['name']}",
                                     musicType: -1,
                                     genre: "format=json&tags=ambient&limit=200",
                                   ),
@@ -358,7 +359,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                 myPushNavigator(
                                   context,
                                   MusicTrackList(
-                                    "${categorieBox[index]['name']}",
+                                    "${categorieBox(context)[index]['name']}",
                                     musicType: -1,
                                     genre: "format=json&tags=metal&limit=200",
                                   ),
@@ -367,7 +368,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                 myPushNavigator(
                                   context,
                                   MusicTrackList(
-                                    "${categorieBox[index]['name']}",
+                                    "${categorieBox(context)[index]['name']}",
                                     musicType: -1,
                                     genre:
                                         "format=json&tags=acoustic&limit=200",
@@ -377,7 +378,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                 myPushNavigator(
                                   context,
                                   MusicTrackList(
-                                    "${categorieBox[index]['name']}",
+                                    "${categorieBox(context)[index]['name']}",
                                     musicType: -1,
                                     genre: "format=json&tags=reggae&limit=200",
                                   ),
@@ -386,7 +387,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                 myPushNavigator(
                                   context,
                                   MusicTrackList(
-                                    "${categorieBox[index]['name']}",
+                                    "${categorieBox(context)[index]['name']}",
                                     musicType: -1,
                                     genre: "format=json&tags=techno&limit=200",
                                   ),
@@ -395,7 +396,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                 myPushNavigator(
                                   context,
                                   MusicTrackList(
-                                    "${categorieBox[index]['name']}",
+                                    "${categorieBox(context)[index]['name']}",
                                     musicType: -1,
                                     genre: "format=json&tags=dubstep&limit=200",
                                   ),
@@ -404,7 +405,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                 myPushNavigator(
                                   context,
                                   MusicTrackList(
-                                    "${categorieBox[index]['name']}",
+                                    "${categorieBox(context)[index]['name']}",
                                     musicType: -1,
                                     genre:
                                         "format=json&tags=chillout&limit=200",
@@ -414,7 +415,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                 myPushNavigator(
                                   context,
                                   MusicTrackList(
-                                    "${categorieBox[index]['name']}",
+                                    "${categorieBox(context)[index]['name']}",
                                     musicType: -1,
                                     genre:
                                         "format=json&tags=instrumental&limit=200",
@@ -424,7 +425,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                 myPushNavigator(
                                   context,
                                   MusicTrackList(
-                                    "${categorieBox[index]['name']}",
+                                    "${categorieBox(context)[index]['name']}",
                                     musicType: -1,
                                     genre: "format=json&tags=indie&limit=200",
                                   ),
@@ -433,7 +434,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                 myPushNavigator(
                                   context,
                                   MusicTrackList(
-                                    "${categorieBox[index]['name']}",
+                                    "${categorieBox(context)[index]['name']}",
                                     musicType: -1,
                                     genre: "format=json&tags=world&limit=200",
                                   ),
@@ -455,7 +456,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                     right: -30,
                                     bottom: -30,
                                     child: Image.asset(
-                                      "${categorieBox[index]['image']}",
+                                      "${categorieBox(context)[index]['image']}",
                                       width: 120.w,
                                     ),
                                   ),
@@ -465,8 +466,8 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                       top: 15,
                                     ),
                                     child: AppText(
-                                      textName:
-                                          "${categorieBox[index]['name']}",
+                                      text:
+                                          "${categorieBox(context)[index]['name']}",
                                       fontSize: 20.sp,
                                       textColor: Color(AppColors.lightText),
                                       fontWeight: FontWeight.bold,
@@ -635,7 +636,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                         fillColor: Colors.white10,
                         focusedColor: Color(AppColors.primaryColor),
                         disabledColor: Color(AppColors.whiteBackground),
-                        hintText: "Search for songs...",
+                        hintText: AppLocalizations.of(context)!.searchForSongs,
                         maxline: 1,
                         hintcolors: Color(AppColors.whiteBackground),
                         prefixIcon: Padding(
@@ -668,7 +669,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                               ),
                                               SizedBox(height: 16.h),
                                               AppText(
-                                                textName: "No results found",
+                                                text: "No results found",
                                                 fontSize: 16.sp,
                                                 textColor: Colors.grey,
                                               ),
@@ -713,22 +714,40 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                                   ),
                                                 ),
                                                 title: AppText(
-                                                  textName:
-                                                      track.name ?? "Unknown",
+                                                  text: track.name ?? "Unknown",
                                                   fontSize: 14.sp,
                                                   fontWeight: FontWeight.bold,
                                                   textColor: Color(
                                                     AppColors.whiteBackground,
                                                   ),
                                                 ),
-                                                subtitle: AppText(
-                                                  textName:
-                                                      track.artistName ??
-                                                      "Unknown artist",
-                                                  fontSize: 12.sp,
-                                                  textColor: Color(
-                                                    AppColors.whiteBackground,
-                                                  ).withOpacity(0.7),
+                                                subtitle: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    AppText(
+                                                      text:
+                                                          track.albumName ??
+                                                          "Unknown artist",
+                                                      fontSize: 12.sp,
+                                                      textColor: Color(
+                                                        AppColors
+                                                            .whiteBackground,
+                                                      ).withOpacity(0.7),
+                                                    ),
+                                                    AppText(
+                                                      text:
+                                                          track.artistName ??
+                                                          "Unknown artist",
+                                                      fontSize: 12.sp,
+                                                      textColor: Color(
+                                                        AppColors
+                                                            .whiteBackground,
+                                                      ).withOpacity(0.7),
+                                                    ),
+                                                  ],
                                                 ),
                                                 trailing: Row(
                                                   mainAxisSize:
@@ -752,9 +771,9 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                                           ),
                                                           onPressed: () {
                                                             if (isInPlaylist) {
-                                                              showSnackBar(
+                                                              showAppSnackBar(
                                                                 context,
-                                                                "${track.name} is already in playlist",
+                                                                "${track.name} ${AppLocalizations.of(context)!.isAlreadyInPlaylist}",
                                                                 Colors.orange,
                                                               );
                                                             } else {
@@ -766,9 +785,9 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                                                   .addSong(
                                                                     track,
                                                                   );
-                                                              showSnackBar(
+                                                              showAppSnackBar(
                                                                 context,
-                                                                "${track.name} added to playlist",
+                                                                "${track.name} ${AppLocalizations.of(context)!.addedToPlayList}",
                                                                 Color(
                                                                   AppColors
                                                                       .successColor,
@@ -807,7 +826,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                             error:
                                 (e, _) => Center(
                                   child: AppText(
-                                    textName: 'Error: ${e.toString()}',
+                                    text: 'Error: ${e.toString()}',
                                     textColor: Colors.red,
                                   ),
                                 ),
@@ -822,14 +841,20 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                 ),
                                 SizedBox(height: 16.h),
                                 AppText(
-                                  textName: "Search for your favorite music",
+                                  text:
+                                      AppLocalizations.of(
+                                        context,
+                                      )!.searchForYourFavoriteMusic,
                                   textColor: Color(AppColors.primaryColor),
                                   fontSize: 16.sp,
                                   fontWeight: FontWeight.w500,
                                 ),
                                 SizedBox(height: 8.h),
                                 AppText(
-                                  textName: "Add songs to your playlist",
+                                  text:
+                                      AppLocalizations.of(
+                                        context,
+                                      )!.addSongsToYourPlaylist,
                                   textColor: Color(
                                     AppColors.whiteBackground,
                                   ).withOpacity(0.7),

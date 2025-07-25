@@ -45,7 +45,7 @@ class MusicTrackList extends ConsumerWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AppText(
-                textName: "$appBarTitle Songs",
+                text: "$appBarTitle Songs",
                 fontSize: 20.sp,
                 textColor: Color(AppColors.lightText),
                 fontWeight: FontWeight.w500,
@@ -61,7 +61,7 @@ class MusicTrackList extends ConsumerWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   AppText(
-                    textName: "Item Songs",
+                    text: "Item Songs",
                     fontSize: 18.sp,
                     fontWeight: FontWeight.w500,
                     textColor: Color(AppColors.lightText),
@@ -117,7 +117,7 @@ class MusicTrackList extends ConsumerWidget {
                                       )
                                       : const Icon(Icons.music_note),
                               title: AppText(
-                                textName: track.name ?? 'N/A',
+                                text: track.name ?? 'N/A',
                                 fontSize: 14.sp,
                                 fontWeight: FontWeight.bold,
                                 textColor: Color(AppColors.blueThird),
@@ -140,7 +140,7 @@ class MusicTrackList extends ConsumerWidget {
                                               CrossAxisAlignment.start,
                                           children: [
                                             AppText(
-                                              textName:
+                                              text:
                                                   track.albumName ??
                                                   'Unknown album name',
                                               fontSize: 12.sp,
@@ -149,7 +149,7 @@ class MusicTrackList extends ConsumerWidget {
                                               ),
                                             ),
                                             AppText(
-                                              textName:
+                                              text:
                                                   track.artistName ??
                                                   "Unknown artist name",
                                               fontSize: 12.sp,
@@ -161,7 +161,7 @@ class MusicTrackList extends ConsumerWidget {
                                         ),
                                       ),
                                       AppText(
-                                        textName: formattedTime(
+                                        text: formattedTime(
                                           timeInSecond:
                                               track.duration?.toInt() ?? 0,
                                         ),
@@ -195,8 +195,7 @@ class MusicTrackList extends ConsumerWidget {
             );
           },
           loading: () => Center(child: appLoader()),
-          error:
-              (err, stack) => Center(child: AppText(textName: 'Error: $err')),
+          error: (err, stack) => Center(child: AppText(text: 'Error: $err')),
         ),
       ),
     );

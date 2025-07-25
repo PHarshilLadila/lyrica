@@ -14,6 +14,7 @@ import 'package:lyrica/core/constant/app_string.dart';
 import 'package:lyrica/core/providers/provider.dart';
 import 'package:lyrica/modules/auth/view/login_screen.dart';
 import 'package:lyrica/modules/bottom%20sheet/view/bottom_sheet_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
   const RegisterScreen({super.key});
@@ -52,15 +53,15 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         context,
         MaterialPageRoute(builder: (_) => BottomSheetScreen()),
       );
-      showSnackBar(
+      showAppSnackBar(
         context,
-        'Registration successfully..!',
+        AppLocalizations.of(context)!.registerSuccess,
         Color(AppColors.successColor),
       );
     } else {
-      showSnackBar(
+      showAppSnackBar(
         context,
-        'Registration faield, try again..',
+        AppLocalizations.of(context)!.registerFailed,
         Color(AppColors.errorColor),
       );
     }
@@ -83,20 +84,20 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   Image.asset(AppImages.logoWithoutBG, height: 130.h),
                   SizedBox(height: 10.h),
                   AppText(
-                    textName: AppString.appName,
+                    text: AppString.appName,
                     fontSize: 40.sp,
                     fontWeight: FontWeight.bold,
                     textColor: Color(AppColors.primaryColor),
                   ),
                   AppText(
-                    textName: AppString.appTagline,
+                    text: AppLocalizations.of(context)!.appSlogun,
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w500,
                     textColor: Color(AppColors.blueExtraLight),
                   ),
                   SizedBox(height: 20.h),
                   AppText(
-                    textName: AppString.registerTitle,
+                    text: AppLocalizations.of(context)!.createAccountForFree,
                     fontSize: 25.sp,
                     fontWeight: FontWeight.bold,
                     textColor: Color(AppColors.lightText),
@@ -113,7 +114,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     focusedColor: Color(AppColors.primaryColor),
                     hintcolors: Color(AppColors.whiteBackground),
                     disabledColor: Color(AppColors.whiteBackground),
-                    hintText: AppString.userName,
+                    hintText: AppLocalizations.of(context)!.userName,
                     prefixIcon: Padding(
                       padding: EdgeInsets.only(left: 10.w, top: 8.h),
                       child: FaIcon(
@@ -135,7 +136,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     focusedColor: Color(AppColors.primaryColor),
                     hintcolors: Color(AppColors.whiteBackground),
                     disabledColor: Color(AppColors.whiteBackground),
-                    hintText: AppString.email,
+                    hintText: AppLocalizations.of(context)!.email,
                     prefixIcon: Padding(
                       padding: EdgeInsets.only(left: 10.w, top: 8.h),
                       child: FaIcon(
@@ -155,7 +156,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     focusedColor: Color(AppColors.primaryColor),
                     hintcolors: Color(AppColors.whiteBackground),
                     disabledColor: Color(AppColors.whiteBackground),
-                    hintText: AppString.mobileNumber,
+                    hintText: AppLocalizations.of(context)!.mobileNumner,
                     prefixIcon: Padding(
                       padding: EdgeInsets.only(left: 10.w, top: 8.h),
                       child: FaIcon(
@@ -176,7 +177,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     focusedColor: Color(AppColors.primaryColor),
                     hintcolors: Color(AppColors.whiteBackground),
                     disabledColor: Color(AppColors.whiteBackground),
-                    hintText: AppString.password,
+                    hintText: AppLocalizations.of(context)!.password,
                     obscureText: !showPassword,
                     maxline: 1,
                     sufixIcon: IconButton(
@@ -215,7 +216,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                         },
                       ),
                       AppText(
-                        textName: AppString.remember,
+                        text: AppLocalizations.of(context)!.rememberMe,
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w500,
                         textColor: Color(AppColors.whiteBackground),
@@ -241,7 +242,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     },
 
                     child: AppText(
-                      textName: AppString.createAccount,
+                      text: AppLocalizations.of(context)!.createYourAccount,
                       fontSize: 14.sp,
                       fontWeight: FontWeight.bold,
                       textColor: Color(AppColors.lightText),
@@ -254,7 +255,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       AppText(
-                        textName: AppString.haveAccount,
+                        text: AppLocalizations.of(context)!.doYouHaveAnAccount,
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w500,
                         textColor: Color(AppColors.lightText),
@@ -269,7 +270,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           );
                         },
                         child: AppText(
-                          textName: AppString.signIn,
+                          text: AppLocalizations.of(context)!.signin,
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w500,
                           textColor: Color(AppColors.secondaryColor),

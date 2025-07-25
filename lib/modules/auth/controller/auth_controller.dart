@@ -51,6 +51,28 @@ class AuthController {
     }
   }
 
+  Future<bool> saveUserToFirestore(UserModel user) async {
+    try {
+      await _firestore.collection("users").doc(user.uid).set(user.toMap());
+      return true;
+    } catch (e) {
+      debugPrint("Error saving user: $e");
+      return false;
+    }
+  }
+
+  Future<bool> saveUserToLocal(UserModel user) async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString("userUID", user.uid);
+      await prefs.setString("userName", user.username);
+      return true;
+    } catch (e) {
+      debugPrint("Error saving user locally: $e");
+      return false;
+    }
+  }
+
   Future<User?> login(String email, String password) async {
     try {
       final userCredential = await _auth.signInWithEmailAndPassword(
@@ -161,6 +183,7 @@ class AuthController {
     await FacebookAuth.instance.logOut();
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove("notifications_enabled");
     await prefs.clear();
 
     debugPrint("User signed out successfully");

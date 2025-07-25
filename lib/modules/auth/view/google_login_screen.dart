@@ -15,6 +15,7 @@ import 'package:lyrica/modules/auth/instagram/instagram_login.dart';
 import 'package:lyrica/modules/auth/view/login_screen.dart';
 import 'package:lyrica/modules/auth/view/register_screen.dart';
 import 'package:lyrica/modules/bottom%20sheet/view/bottom_sheet_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GoogleLoginScreen extends ConsumerStatefulWidget {
   const GoogleLoginScreen({super.key});
@@ -46,7 +47,7 @@ class _GoogleLoginScreenState extends ConsumerState<GoogleLoginScreen> {
                   ),
                   SizedBox(height: 8.h),
                   AppText(
-                    textName: AppString.appName,
+                    text: AppString.appName,
                     fontSize: 40.sp,
                     textColor: Color(AppColors.primaryColor),
                     fontWeight: FontWeight.bold,
@@ -55,12 +56,12 @@ class _GoogleLoginScreenState extends ConsumerState<GoogleLoginScreen> {
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w500,
                     textColor: Color(AppColors.blueExtraLight),
-                    textName: AppString.appTagline,
+                    text: AppLocalizations.of(context)!.appSlogun,
                   ),
                   SizedBox(height: 25.h),
                   AppText(
                     fontSize: 25.sp,
-                    textName: AppString.loginSlogun,
+                    text: AppLocalizations.of(context)!.letsGetYouIn,
                     fontWeight: FontWeight.bold,
                     textColor: Color(AppColors.lightText),
                   ),
@@ -83,7 +84,7 @@ class _GoogleLoginScreenState extends ConsumerState<GoogleLoginScreen> {
                         AppText(
                           fontWeight: FontWeight.w500,
                           fontSize: 14.sp,
-                          textName: AppString.loginWithGoogle,
+                          text: AppLocalizations.of(context)!.loginWithGoogle,
                           textColor: Color(AppColors.lightText),
                         ),
                       ],
@@ -106,7 +107,7 @@ class _GoogleLoginScreenState extends ConsumerState<GoogleLoginScreen> {
                         Image.asset(AppImages.facebookLogo, height: 30.h),
                         SizedBox(width: 10.w),
                         Text(
-                          AppString.loginWithFacebook,
+                          AppLocalizations.of(context)!.loginWithFacebook,
                           style: GoogleFonts.poppins(
                             color: const Color(AppColors.lightText),
                             fontSize: 14.sp,
@@ -139,7 +140,8 @@ class _GoogleLoginScreenState extends ConsumerState<GoogleLoginScreen> {
                         SizedBox(width: 10.w),
                         AppText(
                           fontSize: 14.sp,
-                          textName: "Login with Instagram",
+                          text:
+                              AppLocalizations.of(context)!.loginWithInstagram,
                           fontWeight: FontWeight.w500,
                           textColor: Color(AppColors.lightText),
                         ),
@@ -160,7 +162,7 @@ class _GoogleLoginScreenState extends ConsumerState<GoogleLoginScreen> {
                         padding: EdgeInsets.symmetric(horizontal: 12.w),
                         child: AppText(
                           fontSize: 14.sp,
-                          textName: "or",
+                          text: "or",
                           textColor: Color(AppColors.whiteBackground),
                           fontWeight: FontWeight.w500,
                         ),
@@ -209,7 +211,7 @@ class _GoogleLoginScreenState extends ConsumerState<GoogleLoginScreen> {
                       child: AppText(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.bold,
-                        textName: AppString.loginWithPassword,
+                        text: AppLocalizations.of(context)!.loginWithPassword,
                         textColor: Color(AppColors.lightText),
                       ),
                     ),
@@ -219,7 +221,7 @@ class _GoogleLoginScreenState extends ConsumerState<GoogleLoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       AppText(
-                        textName: AppString.dontHaveAccount,
+                        text: AppLocalizations.of(context)!.dontHaveAnAccount,
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w500,
                         textColor: Color(AppColors.lightText),
@@ -241,7 +243,7 @@ class _GoogleLoginScreenState extends ConsumerState<GoogleLoginScreen> {
                         child: AppText(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w500,
-                          textName: AppString.signUp,
+                          text: AppLocalizations.of(context)!.signUp,
                           textColor: Color(AppColors.secondaryColor),
                         ),
                       ),
@@ -267,13 +269,13 @@ class _GoogleLoginScreenState extends ConsumerState<GoogleLoginScreen> {
         context,
         MaterialPageRoute(builder: (_) => const BottomSheetScreen()),
       );
-      showSnackBar(
+      showAppSnackBar(
         context,
         'Google sign-in successfully..!',
         Color(AppColors.successColor),
       );
     } else {
-      showSnackBar(
+      showAppSnackBar(
         context,
         'Google sign-in failed. Please try again.',
         Color(AppColors.errorColor),
@@ -292,13 +294,13 @@ class _GoogleLoginScreenState extends ConsumerState<GoogleLoginScreen> {
         context,
         MaterialPageRoute(builder: (_) => const BottomSheetScreen()),
       );
-      showSnackBar(
+      showAppSnackBar(
         context,
         'Facebook sign-in successfully..!',
         Color(AppColors.successColor),
       );
     } else {
-      showSnackBar(
+      showAppSnackBar(
         context,
         'Facebook sign-in failed. Please try again.',
         Color(AppColors.errorColor),
@@ -306,60 +308,3 @@ class _GoogleLoginScreenState extends ConsumerState<GoogleLoginScreen> {
     }
   }
 }
-
-// Future<void> signInWithFacebook(BuildContext context) async {
-//   try {
-//     final LoginResult loginResult = await FacebookAuth.instance.login(
-//       permissions: ['public_profile', 'email'],
-//     );
-
-//     if (loginResult.status == LoginStatus.success) {
-//       final accessToken = loginResult.accessToken!;
-//       debugPrint("✅ Facebook Access Token: ${accessToken.token}");
-
-//       final OAuthCredential credential = FacebookAuthProvider.credential(
-//         accessToken.token,
-//       );
-
-//       final UserCredential userCredential = await FirebaseAuth.instance
-//           .signInWithCredential(credential);
-
-//       final userData = await FacebookAuth.instance.getUserData(
-//         fields: "name,email,picture.width(200)",
-//       );
-//       SharedPreferences preferences = await SharedPreferences.getInstance();
-
-//       await preferences.setString("userUID", userCredential.user?.uid ?? "N/A");
-//       await preferences.setString(
-//         "userName",
-//         userCredential.user?.displayName ?? "N/A",
-//       );
-//       debugPrint("👤 User: ${userCredential.user?.displayName}");
-//       debugPrint("📧 Email: ${userData['email']}");
-//       debugPrint("🖼️ Picture: ${userData['picture']['data']['url']}");
-
-//       // Navigate to BottomNavBarScreen
-//       Navigator.pushReplacement(
-//         context,
-//         MaterialPageRoute(builder: (_) => const BottomSheetScreen()),
-//       );
-
-//       ScaffoldMessenger.of(
-//         context,
-//       ).showSnackBar(SnackBar(content: Text("✅ Facebook login successful!")));
-//     } else {
-//       debugPrint("❌ Facebook login failed: ${loginResult.status}");
-//       debugPrint("ℹ️ Message: ${loginResult.message}");
-//       ScaffoldMessenger.of(context).showSnackBar(
-//         SnackBar(
-//           content: Text("Facebook login failed: ${loginResult.message}"),
-//         ),
-//       );
-//     }
-//   } catch (e) {
-//     debugPrint("🔥 Exception during Facebook login: $e");
-//     ScaffoldMessenger.of(
-//       context,
-//     ).showSnackBar(SnackBar(content: Text("Something went wrong: $e")));
-//   }
-// }

@@ -14,6 +14,7 @@ import 'package:lyrica/core/constant/app_string.dart';
 import 'package:lyrica/core/providers/provider.dart';
 import 'package:lyrica/modules/music%20player/view/music_player.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ArtistDetails extends ConsumerStatefulWidget {
   final String? id;
@@ -87,7 +88,7 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
           toolbarHeight: 90,
           backgroundColor: Colors.transparent,
           title: AppText(
-            textName: widget.name ?? "",
+            text: widget.name ?? "",
             fontSize: 20.sp,
             textColor: Color(AppColors.lightText),
             fontWeight: FontWeight.w500,
@@ -115,7 +116,7 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
                 Align(
                   alignment: Alignment.center,
                   child: AppText(
-                    textName: widget.name ?? "Unknown Artist",
+                    text: widget.name ?? "Unknown Artist",
                     fontSize: 24.sp,
                     textColor: Color(AppColors.lightText),
                     fontWeight: FontWeight.bold,
@@ -125,7 +126,7 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
                 Align(
                   alignment: Alignment.center,
                   child: AppText(
-                    textName: "From : ${widget.date ?? "N/A"}",
+                    text: "From : ${widget.date ?? "N/A"}",
                     fontSize: 16.sp,
                     textColor: Colors.white54,
                     fontWeight: FontWeight.w500,
@@ -149,7 +150,7 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
                           children: [
                             Expanded(
                               child: AppText(
-                                textName: "Website Url ",
+                                text: "Website Url ",
                                 fontSize: 14.sp,
                                 textColor: Colors.white,
                               ),
@@ -160,9 +161,11 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
                                   Clipboard.setData(
                                     ClipboardData(text: widget.website ?? ""),
                                   ).then((value) {
-                                    showSnackBar(
+                                    showAppSnackBar(
                                       context,
-                                      "Website link copied Successfully",
+                                      AppLocalizations.of(
+                                        context,
+                                      )!.webLinkCopied,
                                       Color(AppColors.successColor),
                                     );
                                   });
@@ -178,7 +181,7 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
                                   }
                                 },
                                 child: AppText(
-                                  textName:
+                                  text:
                                       widget.website ??
                                       "No description available.",
                                   fontSize: 14.sp,
@@ -195,7 +198,7 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
                           children: [
                             Expanded(
                               child: AppText(
-                                textName: "Short Url ",
+                                text: "Short Url ",
                                 fontSize: 14.sp,
                                 textColor: Colors.white,
                               ),
@@ -206,9 +209,11 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
                                   Clipboard.setData(
                                     ClipboardData(text: widget.short ?? ""),
                                   ).then((value) {
-                                    showSnackBar(
+                                    showAppSnackBar(
                                       context,
-                                      "Short link copied Successfully",
+                                      AppLocalizations.of(
+                                        context,
+                                      )!.shortLinkCopied,
                                       Color(AppColors.successColor),
                                     );
                                   });
@@ -222,7 +227,7 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
                                   }
                                 },
                                 child: AppText(
-                                  textName:
+                                  text:
                                       widget.short ??
                                       "No description available.",
                                   fontSize: 14.sp,
@@ -239,7 +244,7 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
                           children: [
                             Expanded(
                               child: AppText(
-                                textName: "Share Url ",
+                                text: "Share Url ",
                                 fontSize: 14.sp,
                                 textColor: Colors.white,
                               ),
@@ -250,9 +255,11 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
                                   Clipboard.setData(
                                     ClipboardData(text: widget.share ?? ""),
                                   ).then((value) {
-                                    showSnackBar(
+                                    showAppSnackBar(
                                       context,
-                                      "Share link copied Successfully",
+                                      AppLocalizations.of(
+                                        context,
+                                      )!.shareLinkCopied,
                                       Color(AppColors.successColor),
                                     );
                                   });
@@ -266,7 +273,7 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
                                   }
                                 },
                                 child: AppText(
-                                  textName:
+                                  text:
                                       widget.share ??
                                       "No description available.",
                                   fontSize: 14.sp,
@@ -283,7 +290,7 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
                 SizedBox(height: 16.h),
                 // Artist Songs Section
                 AppText(
-                  textName: "${widget.name}'s Songs",
+                  text: "${widget.name}'s Songs",
                   fontSize: 20.sp,
                   textColor: Color(AppColors.lightText),
                   fontWeight: FontWeight.bold,
@@ -305,7 +312,7 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
                               ),
                               SizedBox(height: 8.h),
                               AppText(
-                                textName: "No songs available for this artist.",
+                                text: "No songs available for this artist.",
                                 fontSize: 16.sp,
                                 textColor: Colors.white54,
                               ),
@@ -317,12 +324,7 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
                     return Container(
                       padding: EdgeInsets.all(4.sp),
                       decoration: BoxDecoration(
-                        color: Color.fromARGB(
-                          153,
-                          167,
-                          251,
-                          255,
-                        ).withOpacity(0.2),
+                        color: Colors.black.withOpacity(0.3),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: ListView.builder(
@@ -335,16 +337,16 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
                           return Padding(
                             padding: EdgeInsets.only(
                               bottom: 12.h,
-                              left: 2.w,
-                              right: 2.w,
+                              left: 8.w,
+                              right: 8.w,
                             ),
                             child: Container(
                               decoration: BoxDecoration(
-                                color: Colors.black.withOpacity(0.15),
-                                borderRadius: BorderRadius.circular(18),
+                                color: Colors.white.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(12.r),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.black26,
+                                    color: Colors.transparent,
                                     blurRadius: 6,
                                     offset: Offset(0, 3),
                                   ),
@@ -361,8 +363,8 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
                                     borderRadius: BorderRadius.circular(10),
                                     child: Image.network(
                                       song.image ?? AppString.defaultImageLogo,
-                                      width: 60.w,
-                                      height: 75.h,
+                                      width: 50.w,
+                                      height: 55.h,
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -370,76 +372,78 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
 
                                   Expanded(
                                     child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
                                         AppText(
-                                          textName: song.name ?? "Unknown Song",
+                                          text: song.name ?? "Unknown Song",
                                           fontSize: 16.sp,
                                           fontWeight: FontWeight.bold,
                                           textColor: Color(AppColors.lightText),
                                         ),
-                                        SizedBox(height: 4.h),
+                                        // SizedBox(height: 2.h),
                                         AppText(
-                                          textName: song.albumName ?? "N/A",
+                                          text: song.albumName ?? "N/A",
                                           fontSize: 12.sp,
                                           textColor: Colors.white54,
                                         ),
                                         SizedBox(height: 12.h),
 
-                                        Container(
-                                          decoration: BoxDecoration(
-                                            gradient: LinearGradient(
-                                              colors: [
-                                                Color(
-                                                  AppColors.primaryColor,
-                                                ).withOpacity(0.3),
-                                                Color(
-                                                  AppColors.blueThird,
-                                                ).withOpacity(0.3),
-                                              ],
-                                              begin: Alignment.centerLeft,
-                                              end: Alignment.centerRight,
-                                            ),
-                                            borderRadius: BorderRadius.circular(
-                                              30,
-                                            ),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Color(
-                                                  AppColors.primaryColor,
-                                                ).withOpacity(0.18),
-                                                blurRadius: 8,
-                                                offset: Offset(0, 4),
-                                              ),
-                                            ],
-                                          ),
-                                          padding: EdgeInsets.symmetric(
-                                            horizontal: 8.w,
-                                            vertical: 6.h,
-                                          ),
-                                          child: Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              FaIcon(
-                                                FontAwesomeIcons.arrowDown,
-                                                color: Color(
-                                                  AppColors.lightText,
-                                                ),
-                                                size: 13.sp,
-                                              ),
-                                              SizedBox(width: 6),
-                                              AppText(
-                                                textName: "Download",
-                                                fontSize: 10.sp,
-                                                fontWeight: FontWeight.bold,
-                                                textColor: Color(
-                                                  AppColors.lightText,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
+                                        // Container(
+                                        //   decoration: BoxDecoration(
+                                        //     gradient: LinearGradient(
+                                        //       colors: [
+                                        //         Color(
+                                        //           AppColors.primaryColor,
+                                        //         ).withOpacity(0.3),
+                                        //         Color(
+                                        //           AppColors.blueThird,
+                                        //         ).withOpacity(0.3),
+                                        //       ],
+                                        //       begin: Alignment.centerLeft,
+                                        //       end: Alignment.centerRight,
+                                        //     ),
+                                        //     borderRadius: BorderRadius.circular(
+                                        //       30,
+                                        //     ),
+                                        //     boxShadow: [
+                                        //       BoxShadow(
+                                        //         color: Color(
+                                        //           AppColors.primaryColor,
+                                        //         ).withOpacity(0.18),
+                                        //         blurRadius: 8,
+                                        //         offset: Offset(0, 4),
+                                        //       ),
+                                        //     ],
+                                        //   ),
+                                        //   padding: EdgeInsets.symmetric(
+                                        //     horizontal: 8.w,
+                                        //     vertical: 6.h,
+                                        //   ),
+                                        //   child: Row(
+                                        //     mainAxisSize: MainAxisSize.min,
+                                        //     children: [
+                                        //       FaIcon(
+                                        //         FontAwesomeIcons.arrowDown,
+                                        //         color: Color(
+                                        //           AppColors.lightText,
+                                        //         ),
+                                        //         size: 13.sp,
+                                        //       ),
+                                        //       SizedBox(width: 6),
+                                        //       AppText(
+                                        //         text: "Download",
+                                        //         fontSize: 10.sp,
+                                        //         fontWeight: FontWeight.bold,
+                                        //         textColor: Color(
+                                        //           AppColors.lightText,
+                                        //         ),
+                                        //       ),
+                                        //     ],
+                                        //   ),
+                                        // ),
                                       ],
                                     ),
                                   ),

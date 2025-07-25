@@ -88,8 +88,10 @@
 // }
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:lyrica/common/widget/app_text.dart';
 import 'package:lyrica/core/constant/app_colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CustomBottomBar extends StatelessWidget {
   final int currentIndex;
@@ -115,22 +117,22 @@ class CustomBottomBar extends StatelessWidget {
       onTap: onTap,
       items: [
         BottomNavigationBarItem(
-          icon: _buildIcon(CupertinoIcons.home, 0),
-          label: 'Home',
+          icon: _buildIcon(context, CupertinoIcons.home, 0),
+          label: AppLocalizations.of(context)!.home,
         ),
         BottomNavigationBarItem(
-          icon: _buildIcon(CupertinoIcons.search, 1),
-          label: 'Explore',
+          icon: _buildIcon(context, CupertinoIcons.search, 1),
+          label: AppLocalizations.of(context)!.explore,
         ),
         BottomNavigationBarItem(
-          icon: _buildIcon(CupertinoIcons.book, 2),
-          label: 'Library',
+          icon: _buildIcon(context, CupertinoIcons.book, 2),
+          label: AppLocalizations.of(context)!.library,
         ),
       ],
     );
   }
 
-  Widget _buildIcon(IconData icon, int index) {
+  Widget _buildIcon(BuildContext context, IconData icon, int index) {
     bool isSelected = currentIndex == index;
 
     return Container(
@@ -146,9 +148,9 @@ class CustomBottomBar extends StatelessWidget {
                 ? [
                   BoxShadow(
                     color: Color(AppColors.secondaryColor).withOpacity(0.5),
-                    blurRadius: 25,
-                    spreadRadius: 8,
-                    offset: const Offset(0, 0),
+                    blurRadius: 28,
+                    spreadRadius: 1,
+                    offset: Offset(0, 5.h),
                   ),
                 ]
                 : [],
@@ -163,14 +165,14 @@ class CustomBottomBar extends StatelessWidget {
             size: isSelected ? 30 : 25,
             color: isSelected ? Colors.white70 : Colors.white54,
           ),
-          SizedBox(height: 4),
+          SizedBox(height: 3.h),
           AppText(
-            textName:
+            text:
                 index == 0
-                    ? 'Home'
+                    ? AppLocalizations.of(context)!.home
                     : index == 1
-                    ? 'Explore'
-                    : 'Library',
+                    ? AppLocalizations.of(context)!.explore
+                    : AppLocalizations.of(context)!.library,
             textColor: isSelected ? Colors.white70 : Colors.white54,
             fontSize: isSelected ? 16 : 12,
             fontWeight: FontWeight.w500,

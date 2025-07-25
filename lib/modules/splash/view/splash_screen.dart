@@ -27,12 +27,12 @@ class _SplashScreenState extends State<SplashScreen> {
             fontSize: 26.sp,
             fontWeight: FontWeight.bold,
             textColor: Color(AppColors.primaryColor),
-            textName: AppString.appName,
+            text: AppString.appName,
           ),
           SizedBox(height: 2.h),
 
           AppText(
-            textName: AppString.appTagline,
+            text: AppString.appTagline,
             fontSize: 20.sp,
             fontWeight: FontWeight.w500,
             textColor: Color(AppColors.blueExtraLight),

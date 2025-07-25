@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously, deprecated_member_use
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -12,14 +13,19 @@ import 'package:lyrica/common/widget/app_text.dart';
 import 'package:lyrica/core/constant/app_colors.dart';
 import 'package:lyrica/core/constant/app_images.dart';
 import 'package:lyrica/core/providers/provider.dart';
+import 'package:lyrica/modules/albums/album%20tracks/album_tracks_screen.dart';
+import 'package:lyrica/modules/albums/albums_screen.dart';
 import 'package:lyrica/modules/auth/view/google_login_screen.dart';
 import 'package:lyrica/modules/in%20app%20purchase/view/in_app_purchase.dart';
+import 'package:lyrica/modules/library/languages/app_language.dart';
+import 'package:lyrica/modules/library/notification/music_notification_screen.dart';
 import 'package:lyrica/modules/library/service/ad_mob_service.dart';
 import 'package:lyrica/modules/playlist/music_playlist_screen.dart';
 import 'package:lyrica/modules/playlist/widget/enter_playlist_name.dart';
 import 'package:lyrica/modules/playlist/widget/playlist_bottomsheet.dart';
 import 'package:lyrica/modules/profile/view/profile_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 final rewardPointsProvider = StreamProvider<int>((ref) async* {
   final user = ref.watch(authStateProvider).asData?.value;
@@ -122,16 +128,20 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
       _rewardedAd?.show(
         onUserEarnedReward: (ad, reward) async {
           await _addRewardPoints(2);
-          showSnackBar(
+          showAppSnackBar(
             context,
-            '🎉 You earned 2 points!',
+            '🎉 ${AppLocalizations.of(context)!.youEarnedTwoPoints}',
             Color(AppColors.successColor),
           );
         },
       );
       _rewardedAd = null;
     } else {
-      showSnackBar(context, "Rewarded ad not ready", Colors.red);
+      showAppSnackBar(
+        context,
+        AppLocalizations.of(context)!.rewardADNotReady,
+        Colors.red,
+      );
     }
   }
 
@@ -193,7 +203,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
     return userAsync.when(
       data: (user) {
         if (user == null) {
-          return const Center(child: AppText(textName: "User not found"));
+          return const Center(child: AppText(text: "User not found"));
         }
 
         return Container(
@@ -214,7 +224,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                 child: Image.asset(AppImages.logoWithoutBG),
               ),
               title: AppText(
-                textName: "Your Library",
+                text: AppLocalizations.of(context)!.yourLibraries,
                 fontSize: 22.sp,
                 fontWeight: FontWeight.w500,
                 textColor: Color(AppColors.lightText),
@@ -237,9 +247,9 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                         builder: (_) => const GoogleLoginScreen(),
                       ),
                     );
-                    showSnackBar(
+                    showAppSnackBar(
                       context,
-                      "Signed out successfully!",
+                      AppLocalizations.of(context)!.signOutSuccess,
                       Color(AppColors.successColor),
                     );
                   },
@@ -317,7 +327,8 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                                       children: [
                                         AppText(
                                           maxLines: 2,
-                                          textName: "Hey $userLocalName,",
+                                          text:
+                                              "${AppLocalizations.of(context)!.hey} $userLocalName,",
                                           fontSize: 26,
                                           textColor: Color(
                                             AppColors.whiteBackground,
@@ -327,8 +338,10 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                                         SizedBox(height: 8),
                                         AppText(
                                           maxLines: 2,
-                                          textName:
-                                              "Do you know about rewards?",
+                                          text:
+                                              AppLocalizations.of(
+                                                context,
+                                              )!.doYouKnowAboutReward,
                                           fontSize: 18,
                                           textColor: Color(
                                             AppColors.whiteBackground,
@@ -353,7 +366,10 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                                             color: Colors.white,
                                           ),
                                           label: AppText(
-                                            textName: "Earn Now",
+                                            text:
+                                                AppLocalizations.of(
+                                                  context,
+                                                )!.earnNow,
                                             fontWeight: FontWeight.bold,
                                             textColor: Colors.white,
                                           ),
@@ -467,7 +483,8 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                                     ),
                                     SizedBox(width: 8),
                                     AppText(
-                                      textName: "$points Points",
+                                      text:
+                                          "$points ${AppLocalizations.of(context)!.points}",
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18,
                                       textColor: Colors.white,
@@ -477,14 +494,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                               ),
                             );
                           },
-                          loading:
-                              () => Padding(
-                                padding: EdgeInsets.only(top: 16),
-                                child: CircularProgressIndicator(
-                                  color: Color(AppColors.primaryColor),
-                                  strokeWidth: 2,
-                                ),
-                              ),
+                          loading: () => Center(child: appLoader()),
                           error: (e, _) => SizedBox.shrink(),
                         ),
                       ],
@@ -509,8 +519,9 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                         children: [
                           _buildAttractiveTile(
                             icon: Icons.person_2,
-                            title: "Profile",
-                            subtitle: "Update your profile details",
+                            title: AppLocalizations.of(context)!.profile,
+                            subtitle:
+                                AppLocalizations.of(context)!.profileSubTitle,
                             onTap: () {
                               Navigator.push(
                                 context,
@@ -524,28 +535,97 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
 
                           _buildAttractiveTile(
                             icon: Icons.music_note,
-                            title: "Playlist",
-                            subtitle: "Build your own music collection",
+                            title: AppLocalizations.of(context)!.playList,
+                            subtitle:
+                                AppLocalizations.of(context)!.playListSubTitle,
                             onTap: () {
                               showPlaylistOptionsSheet(context);
                             },
                           ),
                           SizedBox(height: 8.h),
                           _buildAttractiveTile(
+                            icon: Icons.notifications,
+                            title: AppLocalizations.of(context)!.notification,
+                            subtitle:
+                                AppLocalizations.of(
+                                  context,
+                                )!.notificationSubTitle,
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MusicReminderScreen(),
+                                ),
+                              );
+                            },
+                          ),
+                          SizedBox(height: 8.h),
+                          _buildAttractiveTile(
+                            icon: Icons.translate,
+                            title: AppLocalizations.of(context)!.language,
+                            subtitle:
+                                AppLocalizations.of(context)!.languageSubTitle,
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => AppLanguagesScreen(),
+                                ),
+                              );
+                            },
+                          ),
+                          SizedBox(height: 8.h),
+                          _buildAttractiveTile(
                             icon: Icons.star,
-                            title: "Buy Premium Subscription",
-                            subtitle: "Access all songs without ads",
+                            title:
+                                AppLocalizations.of(context)!.buySubscription,
+                            subtitle:
+                                AppLocalizations.of(
+                                  context,
+                                )!.buySubscriptionSubTitle,
                             onTap: () {
                               modalBottomSheetMenu();
                             },
                           ),
                           SizedBox(height: 8.h),
-
                           _buildAttractiveTile(
-                            icon: Icons.music_note,
-                            title: "Unlock Music Downloads",
-                            subtitle: "Save your favorites offline",
-                            onTap: () {},
+                            icon: Icons.star,
+                            title: "Albums",
+                            //   AppLocalizations.of(context)!.buySubscription,
+                            subtitle:
+                                AppLocalizations.of(
+                                  context,
+                                )!.buySubscriptionSubTitle,
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => AlbumScreen(),
+                                ),
+                              ); // modalBottomSheetMenu();
+                            },
+                          ),
+                          SizedBox(height: 8.h),
+                          _buildAttractiveTile(
+                            icon: Icons.star,
+                            title:
+                                "Album Tracks", // AppLocalizations.of(context)!.buySubscription,
+                            subtitle:
+                                AppLocalizations.of(
+                                  context,
+                                )!.buySubscriptionSubTitle,
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder:
+                                      (context) => AlbumTracksScreen(
+                                        albumId: '63OVAw3XKXePV928emHvUa',
+                                        albumName: 'Album Name',
+                                      ),
+                                ),
+                              ); // modalBottomSheetMenu();
+                            },
                           ),
                         ],
                       ),
@@ -569,7 +649,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
         );
       },
       loading: () => Center(child: appLoader()),
-      error: (e, _) => Center(child: AppText(textName: "Error: $e")),
+      error: (e, _) => Center(child: AppText(text: "Error: $e")),
     );
   }
 
@@ -592,7 +672,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
             child: Icon(icon, color: Colors.white),
           ),
           title: AppText(
-            textName: title,
+            text: title,
             fontSize: 16.sp,
             fontWeight: FontWeight.bold,
             textColor: Color(AppColors.whiteBackground),
@@ -600,7 +680,7 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
           subtitle:
               subtitle != null
                   ? AppText(
-                    textName: subtitle,
+                    text: subtitle,
                     fontSize: 12.sp,
                     textColor: Color(
                       AppColors.whiteBackground,

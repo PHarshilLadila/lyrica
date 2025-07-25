@@ -7,6 +7,7 @@ import 'package:lyrica/common/widget/app_main_button.dart';
 import 'package:lyrica/common/widget/app_text.dart';
 import 'package:lyrica/core/constant/app_colors.dart';
 import 'package:lyrica/modules/playlist/music_playlist_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EnterPlayListName extends StatefulWidget {
   const EnterPlayListName({super.key});
@@ -42,7 +43,7 @@ class _EnterPlayListNameState extends State<EnterPlayListName> {
               children: [
                 AppText(
                   maxLines: 2,
-                  textName: "Give your Playlist Name",
+                  text: AppLocalizations.of(context)!.giveYourPlaylistName,
                   fontSize: 20.sp,
                   textColor: Color(AppColors.whiteBackground).withOpacity(0.7),
                   fontWeight: FontWeight.bold,
@@ -93,7 +94,7 @@ class _EnterPlayListNameState extends State<EnterPlayListName> {
                           ),
                           child: AppText(
                             maxLines: 2,
-                            textName: "Cancle",
+                            text: AppLocalizations.of(context)!.cancel,
                             fontSize: 16.sp,
                             textColor: Color(
                               AppColors.whiteBackground,
@@ -126,7 +127,7 @@ class _EnterPlayListNameState extends State<EnterPlayListName> {
                           ),
                           child: AppText(
                             maxLines: 2,
-                            textName: "Create Playlist",
+                            text: AppLocalizations.of(context)!.createPlaylist,
                             fontSize: 16.sp,
                             textColor: Color(
                               AppColors.whiteBackground,

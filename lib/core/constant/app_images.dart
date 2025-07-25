@@ -23,4 +23,7 @@ class AppImages {
   static const String logout4 = 'assets/icons/logout4.png';
   static const String instagram = 'assets/icons/insta.png';
   static const String personImage = 'assets/icons/person.png';
+  static const String musicPixel = 'assets/icons/music_pixel.png';
+  static const String musicPlaylistPixel = 'assets/icons/music_playlist.png';
+  static const String favoritePixel = 'assets/icons/favorite_icon_pixel.png';
 }

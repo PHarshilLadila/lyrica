@@ -149,7 +149,7 @@ class _InAppState extends State<InApp> {
                     Container(
                       margin: EdgeInsets.only(bottom: 5.0),
                       child: AppText(
-                        textName: item.toString(),
+                        text: item.toString(),
                         fontSize: 18.0,
                         textColor: Colors.black,
                       ),
@@ -166,7 +166,7 @@ class _InAppState extends State<InApp> {
                             child: Container(
                               height: 48.0,
                               alignment: Alignment(-1.0, 0.0),
-                              child: AppText(textName: 'Buy Item'),
+                              child: AppText(text: 'Buy Item'),
                             ),
                           ),
                         ],
@@ -191,7 +191,7 @@ class _InAppState extends State<InApp> {
                     Container(
                       margin: EdgeInsets.only(bottom: 5.0),
                       child: AppText(
-                        textName: item.toString(),
+                        text: item.toString(),
                         fontSize: 18.0,
                         textColor: Colors.black,
                       ),
@@ -218,7 +218,7 @@ class _InAppState extends State<InApp> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               AppText(
-                textName:
+                text:
                     'Running on: ${Platform.operatingSystem} - ${Platform.operatingSystemVersion}\n',
                 fontSize: 18.0,
               ),
@@ -244,7 +244,7 @@ class _InAppState extends State<InApp> {
                             padding: EdgeInsets.symmetric(horizontal: 20.0),
                             alignment: Alignment(0.0, 0.0),
                             child: AppText(
-                              textName: 'Connect Billing',
+                              text: 'Connect Billing',
                               fontSize: 16.0,
                             ),
                           ),
@@ -279,7 +279,7 @@ class _InAppState extends State<InApp> {
                             padding: EdgeInsets.symmetric(horizontal: 20.0),
                             alignment: Alignment(0.0, 0.0),
                             child: AppText(
-                              textName: 'End Connection',
+                              text: 'End Connection',
                               fontSize: 16.0,
                             ),
                           ),
@@ -304,10 +304,7 @@ class _InAppState extends State<InApp> {
                           child: Container(
                             padding: EdgeInsets.symmetric(horizontal: 20.0),
                             alignment: Alignment(0.0, 0.0),
-                            child: AppText(
-                              textName: 'Get Items',
-                              fontSize: 16.0,
-                            ),
+                            child: AppText(text: 'Get Items', fontSize: 16.0),
                           ),
                         ),
                       ),
@@ -328,7 +325,7 @@ class _InAppState extends State<InApp> {
                             padding: EdgeInsets.symmetric(horizontal: 20.0),
                             alignment: Alignment(0.0, 0.0),
                             child: AppText(
-                              textName: 'Get Purchases',
+                              text: 'Get Purchases',
                               fontSize: 16.0,
                             ),
                           ),
@@ -351,7 +348,7 @@ class _InAppState extends State<InApp> {
                             padding: EdgeInsets.symmetric(horizontal: 20.0),
                             alignment: Alignment(0.0, 0.0),
                             child: AppText(
-                              textName: 'Get Purchase History',
+                              text: 'Get Purchase History',
                               fontSize: 16.0,
                             ),
                           ),

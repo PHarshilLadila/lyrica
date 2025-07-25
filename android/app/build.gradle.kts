@@ -14,10 +14,11 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+        isCoreLibraryDesugaringEnabled = true
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17.toString()
+        jvmTarget = "17" //JavaVersion.VERSION_1_8.toString()
     }
 
     defaultConfig {
@@ -56,6 +57,8 @@ dependencies {
   // When using the BoM, don't specify versions in Firebase dependencies
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.facebook.android:facebook-android-sdk:16.1.3")
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
+
 
 
 

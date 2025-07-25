@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppText extends StatelessWidget {
-  final String? textName;
+  final String? text;
   final Color? textColor;
   final double? fontSize;
   final FontWeight? fontWeight;
@@ -13,7 +13,7 @@ class AppText extends StatelessWidget {
 
   const AppText({
     super.key,
-    this.textName,
+    this.text,
     this.textColor,
     this.fontSize,
     this.fontWeight,
@@ -26,7 +26,7 @@ class AppText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      textName ?? "",
+      text ?? "",
       style: GoogleFonts.poppins(
         color: textColor,
         fontSize: fontSize,

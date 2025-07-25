@@ -36,7 +36,7 @@ class _HindiMusicListState extends ConsumerState<HindiMusicList> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               AppText(
-                textName: "Hindi Songs",
+                text: "Hindi Songs",
                 fontSize: 20.sp,
                 textColor: Color(AppColors.lightText),
                 fontWeight: FontWeight.w500,
@@ -91,7 +91,7 @@ class _HindiMusicListState extends ConsumerState<HindiMusicList> {
                               )
                               : const Icon(Icons.music_note),
                       title: AppText(
-                        textName: track.name ?? 'N/A',
+                        text: track.name ?? 'N/A',
                         fontSize: 14.sp,
                         fontWeight: FontWeight.bold,
                         textColor: Color(AppColors.blueThird),
@@ -112,7 +112,7 @@ class _HindiMusicListState extends ConsumerState<HindiMusicList> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     AppText(
-                                      textName:
+                                      text:
                                           track.albumName ??
                                           'Unknown album name',
                                       fontSize: 12.sp,
@@ -121,7 +121,7 @@ class _HindiMusicListState extends ConsumerState<HindiMusicList> {
                                       ),
                                     ),
                                     AppText(
-                                      textName:
+                                      text:
                                           track.artistName ??
                                           "Unknown artist name",
                                       fontSize: 12.sp,
@@ -133,7 +133,7 @@ class _HindiMusicListState extends ConsumerState<HindiMusicList> {
                                 ),
                               ),
                               AppText(
-                                textName: formattedTime(
+                                text: formattedTime(
                                   timeInSecond: track.duration?.toInt() ?? 0,
                                 ),
                                 fontSize: 14.sp,
@@ -162,8 +162,7 @@ class _HindiMusicListState extends ConsumerState<HindiMusicList> {
             );
           },
           loading: () => Center(child: appLoader()),
-          error:
-              (err, stack) => Center(child: AppText(textName: 'Error: $err')),
+          error: (err, stack) => Center(child: AppText(text: 'Error: $err')),
         ),
       ),
     );

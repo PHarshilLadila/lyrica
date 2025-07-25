@@ -38,4 +38,21 @@ class UserModel {
       createdAt: (map['createdAt'] as Timestamp).toDate(),
     );
   }
+  UserModel copyWith({
+    String? uid,
+    String? username,
+    String? email,
+    String? mobile,
+    String? image,
+    DateTime? createdAt,
+  }) {
+    return UserModel(
+      uid: uid ?? this.uid,
+      username: username ?? this.username,
+      email: email ?? this.email,
+      mobile: mobile ?? this.mobile,
+      image: image ?? this.image,
+      createdAt: createdAt ?? this.createdAt,
+    );
+  }
 }

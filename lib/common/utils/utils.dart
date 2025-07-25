@@ -3,6 +3,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:lyrica/common/widget/app_text.dart';
 import 'package:lyrica/core/constant/app_colors.dart';
@@ -49,7 +50,7 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason> mySnackBar(
       duration: Duration(seconds: 4),
       margin: EdgeInsets.all(10),
       backgroundColor: bgColor,
-      content: AppText(textName: message, fontWeight: FontWeight.bold),
+      content: AppText(text: message, fontWeight: FontWeight.bold),
     ),
   );
 }
@@ -66,14 +67,14 @@ void hideLoader(BuildContext context) {
   Navigator.of(context).pop();
 }
 
-void showSnackBar(BuildContext context, String msg, Color bgColor) {
+void showAppSnackBar(BuildContext context, String msg, Color bgColor) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       behavior: SnackBarBehavior.floating,
       elevation: 30,
       duration: Duration(seconds: 4),
-      margin: EdgeInsets.all(10),
-      content: AppText(textName: msg),
+      margin: EdgeInsets.all(10.sp),
+      content: AppText(text: msg, maxLines: 2),
       backgroundColor: bgColor,
     ),
   );
@@ -126,7 +127,7 @@ class _ScrollAwareScaffoldState extends State<ScrollAwareScaffold> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: AppText(textName: widget.title),
+        title: AppText(text: widget.title),
         backgroundColor: _isScrolled ? Colors.black : Colors.transparent,
         elevation: 0,
       ),

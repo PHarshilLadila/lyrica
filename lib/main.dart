@@ -70,6 +70,8 @@
 // // // https://api.jamendo.com/v3.0/albums?client_id=540fd4db&format=json&limit=200
 // // https://api.jamendo.com/v3.0/albums?client_id=540fd4db&format=json&limit=200
 
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -79,9 +81,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:lyrica/common/utils/utils.dart';
+import 'package:lyrica/modules/albums/album%20tracks/album_tracks_provider.dart';
+import 'package:lyrica/modules/albums/albums_provider.dart';
+import 'package:provider/provider.dart' as provider;
+import 'package:lyrica/l10n/locale_provider.dart';
 import 'package:lyrica/modules/auth/view/google_login_screen.dart';
 import 'package:lyrica/modules/bottom%20sheet/view/bottom_sheet_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 String? userUid;
 Future<void> main() async {
@@ -102,7 +110,24 @@ Future<void> main() async {
 
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
-  runApp(const ProviderScope(child: MyApp()));
+  runApp(
+    ProviderScope(
+      child: provider.MultiProvider(
+        providers: [
+          provider.ChangeNotifierProvider<LocaleProvider>(
+            create: (_) => LocaleProvider(),
+          ),
+          provider.ChangeNotifierProvider<AlbumProvider>(
+            create: (_) => AlbumProvider(),
+          ),
+          provider.ChangeNotifierProvider<AlbumsTracksProvider>(
+            create: (_) => AlbumsTracksProvider(),
+          ),
+        ],
+        child: MyApp(),
+      ),
+    ),
+  );
 }
 
 Future<String?> _getUserIdFromPrefs() async {
@@ -115,15 +140,40 @@ class MyApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final localeProvider = provider.Provider.of<LocaleProvider>(context);
     return ScreenUtilInit(
       designSize: const Size(360, 690),
       minTextAdapt: true,
       splitScreenMode: true,
       builder: (context, child) {
         return MaterialApp(
+          scrollBehavior: NoGlowScrollBehavior(),
+          locale: localeProvider.locale,
+          supportedLocales: const [
+            Locale('en'),
+            Locale('hi'),
+            Locale('gu'),
+            Locale('es'),
+            Locale('de'),
+            Locale('pt'),
+            Locale('fr'),
+            Locale('ru'),
+            Locale('zh'),
+            Locale('ko'),
+            Locale('ar', 'EG'),
+          ],
+          localizationsDelegates: [
+            AppLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+
           debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
           theme: ThemeData(
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
             useMaterial3: false,
             colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
           ),
@@ -135,5 +185,16 @@ class MyApp extends ConsumerWidget {
         );
       },
     );
+  }
+}
+
+class NoGlowScrollBehavior extends ScrollBehavior {
+  @override
+  Widget buildOverscrollIndicator(
+    BuildContext context,
+    Widget child,
+    ScrollableDetails details,
+  ) {
+    return child; // No glow effect
   }
 }

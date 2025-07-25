@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:lyrica/common/utils/utils.dart';
 import 'package:lyrica/common/widget/app_text.dart';
+import 'package:lyrica/core/constant/app_colors.dart';
 import 'package:lyrica/modules/auth/instagram/constraint/instagram_constraint.dart';
 import 'package:lyrica/modules/auth/instagram/model/instagram_model.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -88,12 +90,14 @@ class _InstagramViewState extends State<InstagramView> {
     }
 
     final gotToken = await _instagramModel.getTokenAndUserID();
+    debugPrint("Instagram User Token ==> $gotToken");
     if (!gotToken) {
       _showError(_instagramModel.error ?? 'Failed to get access token');
       return;
     }
 
     final gotProfile = await _instagramModel.getUserProfile();
+    debugPrint("Instagram User Token ==> ${gotProfile.toString()}");
     if (!gotProfile) {
       _showError(_instagramModel.error ?? 'Failed to get user profile');
       return;
@@ -125,16 +129,14 @@ class _InstagramViewState extends State<InstagramView> {
   }
 
   void _showError(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(message), duration: const Duration(seconds: 5)),
-    );
+    showAppSnackBar(context, message, Color(AppColors.errorColor));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: AppText(textName: 'Instagram Login'),
+        title: AppText(text: 'Instagram Login'),
         actions: [
           IconButton(
             icon: const Icon(Icons.delete_forever),
@@ -159,13 +161,13 @@ class _InstagramViewState extends State<InstagramView> {
                 children: [
                   AppText(
                     textColor: Colors.red,
-                    textName: 'Failed to load Instagram',
+                    text: 'Failed to load Instagram',
                     fontSize: 18,
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: _reloadWebView,
-                    child: AppText(textName: 'Try Again'),
+                    child: AppText(text: 'Try Again'),
                   ),
                 ],
               ),
@@ -197,11 +199,11 @@ class AuthSuccessScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            AppText(textName: 'Username: $username', fontSize: 18),
+            AppText(text: 'Username: $username', fontSize: 18),
             const SizedBox(height: 10),
-            AppText(textName: 'User ID: $userId', fontSize: 18),
+            AppText(text: 'User ID: $userId', fontSize: 18),
             const SizedBox(height: 20),
-            const AppText(textName: 'Access Token:', fontSize: 18),
+            const AppText(text: 'Access Token:', fontSize: 18),
             SelectableText(
               accessToken,
               style: const TextStyle(fontSize: 14, color: Colors.grey),

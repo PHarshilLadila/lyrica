@@ -14,6 +14,7 @@ import 'package:lyrica/core/constant/app_string.dart';
 import 'package:lyrica/core/providers/provider.dart';
 import 'package:lyrica/modules/auth/view/register_screen.dart';
 import 'package:lyrica/modules/bottom%20sheet/view/bottom_sheet_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -51,15 +52,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         context,
         MaterialPageRoute(builder: (_) => const BottomSheetScreen()),
       );
-      showSnackBar(
+      showAppSnackBar(
         context,
-        'Login successfully..!',
+        AppLocalizations.of(context)!.loginSuccess,
         Color(AppColors.successColor),
       );
     } else {
-      showSnackBar(
+      showAppSnackBar(
         context,
-        'Login failed. Please check your credentials.',
+        AppLocalizations.of(context)!.loginFailed,
         Color(AppColors.errorColor),
       );
     }
@@ -76,15 +77,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         context,
         MaterialPageRoute(builder: (_) => const BottomSheetScreen()),
       );
-      showSnackBar(
+      showAppSnackBar(
         context,
-        'Google sign-in successfully..!',
+        AppLocalizations.of(context)!.googleSignInSuccess,
         Color(AppColors.successColor),
       );
     } else {
-      showSnackBar(
+      showAppSnackBar(
         context,
-        'Google sign-in failed. Please try again.',
+        AppLocalizations.of(context)!.googleSignInFailed,
         Color(AppColors.errorColor),
       );
     }
@@ -101,15 +102,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         context,
         MaterialPageRoute(builder: (_) => const BottomSheetScreen()),
       );
-      showSnackBar(
+      showAppSnackBar(
         context,
-        'Facebook sign-in successfully..!',
+        AppLocalizations.of(context)!.facebookSignInSuccess,
         Color(AppColors.successColor),
       );
     } else {
-      showSnackBar(
+      showAppSnackBar(
         context,
-        'Facebook sign-in failed. Please try again.',
+        AppLocalizations.of(context)!.facebookSignInFailed,
         Color(AppColors.errorColor),
       );
     }
@@ -149,20 +150,20 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       AppText(
                         fontSize: 40.sp,
                         fontWeight: FontWeight.bold,
-                        textName: AppString.appName,
+                        text: AppString.appName,
                         textColor: Color(AppColors.primaryColor),
                       ),
                       AppText(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w500,
-                        textName: AppString.appTagline,
+                        text: AppLocalizations.of(context)!.appSlogun,
                         textColor: Color(AppColors.blueExtraLight),
                       ),
                       SizedBox(height: 20.h),
                       AppText(
                         fontSize: 25.sp,
                         fontWeight: FontWeight.bold,
-                        textName: AppString.loginTitle,
+                        text: AppLocalizations.of(context)!.loginToYOurAccount,
                         textColor: Color(AppColors.lightText),
                       ),
                     ],
@@ -176,7 +177,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     fillColor: Colors.white10,
                     focusedColor: Color(AppColors.primaryColor),
                     disabledColor: Color(AppColors.whiteBackground),
-                    hintText: AppString.email,
+                    hintText: AppLocalizations.of(context)!.email,
                     hintcolors: Color(AppColors.whiteBackground),
                     prefixIcon: Padding(
                       padding: EdgeInsets.only(left: 10.w, top: 8.h),
@@ -207,7 +208,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     hintcolors: Color(AppColors.whiteBackground),
                     focusedColor: Color(AppColors.primaryColor),
                     disabledColor: Color(AppColors.whiteBackground),
-                    hintText: AppString.password,
+                    hintText: AppLocalizations.of(context)!.password,
                     obscureText: !showPassword,
                     maxline: 1,
                     sufixIcon: IconButton(
@@ -273,7 +274,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       AppText(
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w500,
-                        textName: AppString.remember,
+                        text: AppLocalizations.of(context)!.rememberMe,
                         textColor: Color(AppColors.whiteBackground),
                       ),
                     ],
@@ -298,7 +299,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     child: AppText(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.bold,
-                      textName: AppString.loginWithPassword,
+                      text: AppLocalizations.of(context)!.loginWithPassword,
                       textColor: Color(AppColors.lightText),
                     ),
                   ),
@@ -310,7 +311,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                       textUnderline: TextDecoration.underline,
                       textColor: Color(AppColors.secondaryColor),
                       fontWeight: FontWeight.w500,
-                      textName: AppString.forgotPassword,
+                      text: AppLocalizations.of(context)!.forGotYourPassword,
                       underlineColor: Color(AppColors.secondaryColor),
                     ),
                   ),
@@ -329,7 +330,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         child: AppText(
                           fontSize: 14.sp,
                           fontWeight: FontWeight.w500,
-                          textName: "or Continue with",
+                          text: AppLocalizations.of(context)!.orCountinueWith,
                           textColor: Colors.white54,
                         ),
                       ),
@@ -395,7 +396,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       AppText(
-                        textName: AppString.dontHaveAccount,
+                        text: AppLocalizations.of(context)!.dontHaveAnAccount,
                         fontSize: 14.sp,
                         fontWeight: FontWeight.w500,
                         textColor: Color(AppColors.lightText),
@@ -415,7 +416,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           ),
                         ),
                         child: AppText(
-                          textName: AppString.signUp,
+                          text: AppLocalizations.of(context)!.signUp,
                           fontSize: 14.sp,
                           textColor: Color(AppColors.secondaryColor),
                           fontWeight: FontWeight.w500,
