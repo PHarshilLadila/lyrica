@@ -83,6 +83,8 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:lyrica/common/utils/utils.dart';
 import 'package:lyrica/modules/albums/album%20tracks/album_tracks_provider.dart';
 import 'package:lyrica/modules/albums/albums_provider.dart';
+import 'package:lyrica/modules/music%20player/provider/music_player_provider.dart';
+import 'package:lyrica/services/mongodb_service.dart';
 import 'package:provider/provider.dart' as provider;
 import 'package:lyrica/l10n/locale_provider.dart';
 import 'package:lyrica/modules/auth/view/google_login_screen.dart';
@@ -107,6 +109,7 @@ Future<void> main() async {
   }
 
   userUid = await _getUserIdFromPrefs();
+  await MongoDatabaseService.connect();
 
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
@@ -122,6 +125,9 @@ Future<void> main() async {
           ),
           provider.ChangeNotifierProvider<AlbumsTracksProvider>(
             create: (_) => AlbumsTracksProvider(),
+          ),
+          provider.ChangeNotifierProvider<FavoriteProvider>(
+            create: (_) => FavoriteProvider()..fetchFavorites(),
           ),
         ],
         child: MyApp(),

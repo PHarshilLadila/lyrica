@@ -14,6 +14,7 @@ import 'package:lyrica/modules/home/music/view/hindi_music_list.dart';
 import 'package:lyrica/modules/home/view/artist_details.dart';
 import 'package:lyrica/modules/home/view/artist_list.dart';
 import 'package:lyrica/modules/home/widget/three_d_card.dart';
+import 'package:lyrica/modules/music%20player/view/favorite_music_screen.dart';
 import 'package:lyrica/modules/music%20player/view/music_player.dart';
 import 'package:lyrica/modules/music%20track/view/music_track_list.dart';
 import 'package:lyrica/modules/playlist/view%20playlist/view_playlist_screen.dart';
@@ -82,6 +83,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     var onButtonPress = [
       () {
         debugPrint("Play Fevorite Music");
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => FavoriteMusicScreen()),
+        );
       },
       () {
         debugPrint("Create your PlayList");
@@ -216,8 +221,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
               ),
               actions: [
                 IconButton(
-                  onPressed: () {},
-                  icon: Image.asset(AppImages.barIcon, width: 25.w),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => const FavoriteMusicScreen(),
+                      ),
+                    );
+                  },
+                  icon: Image.asset(
+                    AppImages.likeIconPixel,
+                    color: Color(AppColors.primaryColor),
+                    width: 25.w,
+                    // color: Color.fromARGB(255, 116, 215, 240),
+                  ),
                 ),
                 IconButton(
                   onPressed: () {},

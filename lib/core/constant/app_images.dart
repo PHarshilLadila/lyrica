@@ -26,4 +26,5 @@ class AppImages {
   static const String musicPixel = 'assets/icons/music_pixel.png';
   static const String musicPlaylistPixel = 'assets/icons/music_playlist.png';
   static const String favoritePixel = 'assets/icons/favorite_icon_pixel.png';
+  static const String likeIconPixel = 'assets/icons/blue_heart_icon.png';
 }

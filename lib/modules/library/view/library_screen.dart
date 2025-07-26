@@ -1,7 +1,6 @@
 // ignore_for_file: use_build_context_synchronously, deprecated_member_use
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -20,8 +19,8 @@ import 'package:lyrica/modules/in%20app%20purchase/view/in_app_purchase.dart';
 import 'package:lyrica/modules/library/languages/app_language.dart';
 import 'package:lyrica/modules/library/notification/music_notification_screen.dart';
 import 'package:lyrica/modules/library/service/ad_mob_service.dart';
-import 'package:lyrica/modules/playlist/music_playlist_screen.dart';
-import 'package:lyrica/modules/playlist/widget/enter_playlist_name.dart';
+import 'package:lyrica/modules/music%20player/view/favorite_music_screen.dart';
+
 import 'package:lyrica/modules/playlist/widget/playlist_bottomsheet.dart';
 import 'package:lyrica/modules/profile/view/profile_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -231,12 +230,23 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
               ),
               actions: [
                 IconButton(
-                  icon: Image.asset(AppImages.barIcon, width: 25.w),
-                  onPressed: () => _showInterstitialAd(),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => const FavoriteMusicScreen(),
+                      ),
+                    );
+                  },
+                  icon: Image.asset(
+                    AppImages.likeIconPixel,
+                    color: Color(AppColors.primaryColor),
+                    width: 25.w,
+                    // color: Color.fromARGB(255, 116, 215, 240),
+                  ),
                 ),
                 IconButton(
                   icon: Image.asset(AppImages.settingIcon, width: 25.w),
-                  onPressed: () {},
+                  onPressed: () => _showInterstitialAd(),
                 ),
                 GestureDetector(
                   onTap: () async {

@@ -248,6 +248,8 @@
 //           data: (playlists) {
 //             final sortedPlaylists = _sortPlaylists(playlists);
 
+// ignore_for_file: deprecated_member_use, use_build_context_synchronously
+
 //             return sortedPlaylists.isEmpty
 //                 ? Center(
 //                   child: Column(
@@ -569,7 +571,7 @@ class _ViewPlaylistScreenState extends ConsumerState<ViewPlaylistScreen> {
   }
 
   Widget _buildSortDropdown() {
-    final locale = AppLocalizations.of(context)!;
+    // final locale = AppLocalizations.of(context)!;
     return PopupMenuButton<String>(
       color: Colors.black45,
       icon: Icon(Icons.sort, color: Colors.white, size: 28.sp),

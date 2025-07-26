@@ -8,20 +8,18 @@ import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:lyrica/model/music_model.dart';
+import 'package:lyrica/services/mongodb_service.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:lyrica/core/providers/provider.dart';
 
-// --- Download Callback (must be top-level/static) ---
 @pragma('vm:entry-point')
 void downloadCallback(String? id, DownloadTaskStatus status, int progress) {
-  // Use Riverpod's container to update the provider
   if (id == null) return;
   final container = ProviderContainer();
   container.read(downloadProgressProvider(id).notifier).state = progress;
 }
 
-// --- Download Progress Provider ---
 final downloadProgressProvider = StateProvider.family<int, String>(
   (ref, taskId) => 0,
 );
@@ -106,11 +104,10 @@ class MusicPlayerNotifier extends StateNotifier<MusicPlayerState> {
     playerStateStream = state.audioPlayer.playerStateStream;
     _initializePlayer();
     _listenRewardPoints();
-    // Register the download callback ONCE
-    FlutterDownloader.registerCallback(
-      (id, status, progress) =>
-          downloadCallback(id, "" as DownloadTaskStatus, progress),
-    );
+    // FlutterDownloader.registerCallback(
+    //   (id, status, progress) =>
+    //       downloadCallback(id, "" as DownloadTaskStatus, progress),
+    // );
   }
 
   Stream<Duration> get positionStream => state.audioPlayer.positionStream;
@@ -451,24 +448,39 @@ class Amplitude {
 }
 // favorite provider
 
-final favoriteProvider = StateNotifierProvider<FavoriteNotifier, Set<String>>((
-  ref,
-) {
-  return FavoriteNotifier();
-});
+// final favoriteProvider = StateNotifierProvider<FavoriteNotifier, Set<String>>((
+//   ref,
+// ) {
+//   return FavoriteNotifier();
+// });
 
-class FavoriteNotifier extends StateNotifier<Set<String>> {
-  FavoriteNotifier() : super({});
+class FavoriteProvider with ChangeNotifier {
+  List<Map<String, dynamic>> _favorites = [];
 
-  void toggleFavorite(String songId) {
-    if (state.contains(songId)) {
-      state = {...state}..remove(songId);
-    } else {
-      state = {...state, songId};
-    }
+  List<Map<String, dynamic>> get favorites => _favorites;
+
+  Future<void> fetchFavorites() async {
+    _favorites = await MongoDatabaseService.getFavorites();
+    notifyListeners();
   }
 
-  bool isFavorite(String songId) {
-    return state.contains(songId);
+  Future<void> toggleFavorite(Map<String, dynamic> song) async {
+    if (MongoDatabaseService.favoriteCollection == null) return;
+
+    final exists = _favorites.any((s) => s["id"] == song["id"]);
+    if (exists) {
+      await MongoDatabaseService.removeFavorite(song["id"]);
+      _favorites.removeWhere((s) => s["id"] == song["id"]);
+      debugPrint("Remove Song in to Favorite: ${song["id"]}");
+    } else {
+      await MongoDatabaseService.addFavorite(song);
+      _favorites.add(song);
+      debugPrint("Add Song in to Favorite: $song");
+    }
+    notifyListeners();
+  }
+
+  bool isFavorite(String id) {
+    return _favorites.any((s) => s["id"] == id);
   }
 }

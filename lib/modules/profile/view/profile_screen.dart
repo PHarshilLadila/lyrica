@@ -221,6 +221,8 @@
 //     );
 //   }
 
+// ignore_for_file: use_build_context_synchronously, deprecated_member_use
+
 //   Widget _buildInfoTile(String title, String value) {
 //     return Column(
 //       crossAxisAlignment: CrossAxisAlignment.start,
@@ -350,7 +352,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
 
       if (mounted) {
         if (firestoreSuccess && localSuccess) {
-          ref.refresh(userModelProvider);
+          // ref.refresh(userModelProvider);
           mySnackBar(
             context,
             'Profile updated successfully!',

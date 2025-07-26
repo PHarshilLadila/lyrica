@@ -12,7 +12,9 @@ import 'package:lyrica/core/constant/app_colors.dart';
 import 'package:lyrica/core/constant/app_images.dart';
 import 'package:lyrica/core/constant/app_string.dart';
 import 'package:lyrica/core/providers/provider.dart';
+import 'package:lyrica/modules/music%20player/provider/music_player_provider.dart';
 import 'package:lyrica/modules/music%20player/view/music_player.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -336,7 +338,7 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
                           final song = artistDetails[index];
                           return Padding(
                             padding: EdgeInsets.only(
-                              bottom: 12.h,
+                              bottom: 8.h,
                               left: 8.w,
                               right: 8.w,
                             ),
@@ -353,8 +355,8 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
                                 ],
                               ),
                               padding: EdgeInsets.symmetric(
-                                vertical: 10.h,
-                                horizontal: 12.w,
+                                vertical: 8.h,
+                                horizontal: 8.w,
                               ),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -364,7 +366,7 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
                                     child: Image.network(
                                       song.image ?? AppString.defaultImageLogo,
                                       width: 50.w,
-                                      height: 55.h,
+                                      height: 50.h,
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -453,51 +455,96 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      GestureDetector(
-                                        onTap: () {
-                                          debugPrint(
-                                            "Song tapped: ${song.name}",
-                                          );
-                                          myPushNavigator(
-                                            context,
-                                            MusicPlayer(
-                                              songList: artistDetails,
-                                              initialIndex: index,
+                                      Row(
+                                        children: [
+                                          IconButton(
+                                            icon: FaIcon(
+                                              context
+                                                      .watch<FavoriteProvider>()
+                                                      .isFavorite(song.id ?? "")
+                                                  ? FontAwesomeIcons.solidHeart
+                                                  : FontAwesomeIcons.heart,
                                             ),
-                                          );
-                                        },
-                                        child: Container(
-                                          width: 35.w,
-                                          height: 35.h,
-                                          decoration: BoxDecoration(
-                                            gradient: LinearGradient(
-                                              colors: [
-                                                Color(AppColors.primaryColor),
-                                                Color(AppColors.blueLight),
-                                              ],
-                                              begin: Alignment.topLeft,
-                                              end: Alignment.bottomRight,
-                                            ),
-                                            shape: BoxShape.circle,
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Color(
-                                                  AppColors.primaryColor,
-                                                ).withOpacity(0.4),
-                                                blurRadius: 16,
-                                                spreadRadius: 2,
-                                                offset: Offset(0, 6),
+                                            iconSize: 20.sp,
+                                            color:
+                                                context
+                                                        .watch<
+                                                          FavoriteProvider
+                                                        >()
+                                                        .isFavorite(
+                                                          song.id ?? "",
+                                                        )
+                                                    ? Color(AppColors.blueLight)
+                                                    : Color(
+                                                      AppColors.primaryColor,
+                                                    ),
+
+                                            onPressed: () {
+                                              final songData = {
+                                                "id": song.id,
+                                                "name": song.name,
+                                                "artistName": song.artistName,
+                                                "image": song.image,
+                                                "audio": song.audio,
+                                                "audioDuration": song.duration,
+                                                "albumImage": song.albumImage,
+                                                "albumName": song.albumName,
+                                                "position": song.position,
+                                              };
+                                              context
+                                                  .read<FavoriteProvider>()
+                                                  .toggleFavorite(songData);
+                                            },
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              debugPrint(
+                                                "Song tapped: ${song.name}",
+                                              );
+                                              myPushNavigator(
+                                                context,
+                                                MusicPlayer(
+                                                  songList: artistDetails,
+                                                  initialIndex: index,
+                                                ),
+                                              );
+                                            },
+                                            child: Container(
+                                              width: 35.w,
+                                              height: 35.h,
+                                              decoration: BoxDecoration(
+                                                gradient: LinearGradient(
+                                                  colors: [
+                                                    Color(
+                                                      AppColors.primaryColor,
+                                                    ),
+                                                    Color(AppColors.blueLight),
+                                                  ],
+                                                  begin: Alignment.topLeft,
+                                                  end: Alignment.bottomRight,
+                                                ),
+                                                shape: BoxShape.circle,
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Color(
+                                                      AppColors.primaryColor,
+                                                    ).withOpacity(0.4),
+                                                    blurRadius: 14,
+                                                    spreadRadius: 0,
+                                                    offset: Offset(0, 6),
+                                                  ),
+                                                ],
                                               ),
-                                            ],
-                                          ),
-                                          child: Center(
-                                            child: FaIcon(
-                                              FontAwesomeIcons.play,
-                                              color: Colors.white,
-                                              size: 16.sp,
+                                              child: Center(
+                                                child: FaIcon(
+                                                  FontAwesomeIcons.play,
+                                                  color: Colors.white,
+                                                  size: 16.sp,
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        ),
+                                        ],
                                       ),
                                     ],
                                   ),

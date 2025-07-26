@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -88,7 +90,7 @@ class _AlbumScreenState extends State<AlbumScreen> {
 
   Widget _buildAlbumHeader(AlbumsModel album) {
     final coverImage = album.images.isNotEmpty ? album.images[0].url : '';
-    final smallestImage = album.images.isNotEmpty ? album.images.last.url : '';
+    // final smallestImage = album.images.isNotEmpty ? album.images.last.url : '';
 
     return Stack(
       children: [

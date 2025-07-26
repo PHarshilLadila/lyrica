@@ -12,11 +12,13 @@ import 'package:lyrica/common/widget/app_text_form_field.dart';
 import 'package:lyrica/core/constant/app_colors.dart';
 import 'package:lyrica/core/constant/app_images.dart';
 import 'package:lyrica/core/providers/provider.dart';
-import 'package:lyrica/modules/auth/view/google_login_screen.dart';
+import 'package:lyrica/modules/music%20player/provider/music_player_provider.dart';
+import 'package:lyrica/modules/music%20player/view/favorite_music_screen.dart';
 import 'package:lyrica/modules/music%20player/view/music_player.dart';
 import 'package:lyrica/modules/music%20track/view/music_track_list.dart';
 import 'package:lyrica/modules/playlist/provider/playlist_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {
   final bool fromPlaylist;
@@ -30,9 +32,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   bool isSearched = false;
   @override
   Widget build(BuildContext context) {
-    final auth = ref.read(authControllerProvider);
+    // final auth = ref.read(authControllerProvider);
     final resultsAsync = ref.watch(searchResultsProvider);
     final playlist = ref.watch(playlistProvider);
+    // final currentSong = widget.songList[musicPlayerState.currentIndex];
 
     return DefaultTabController(
       length: 2,
@@ -98,21 +101,19 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             ),
             actions: [
               IconButton(
-                onPressed: () async {
-                  // await auth.signOut();
-                  // Navigator.pushReplacement(
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (_) => const GoogleLoginScreen(),
-                  //   ),
-                  // );
-                  // showAppSnackBar(
-                  //   context,
-                  //   "Sign out Successfully..!",
-                  //   Color(AppColors.successColor),
-                  // );
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => const FavoriteMusicScreen(),
+                    ),
+                  );
                 },
-                icon: Image.asset(AppImages.barIcon, width: 25.w),
+                icon: Image.asset(
+                  AppImages.likeIconPixel,
+                  color: Color(AppColors.primaryColor),
+                  width: 25.w,
+                  // color: Color.fromARGB(255, 116, 215, 240),
+                ),
               ),
               IconButton(
                 onPressed: () {},
@@ -688,13 +689,28 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                             );
 
                                             return Card(
+                                              shape: ContinuousRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(12.r),
+                                              ),
                                               margin: EdgeInsets.only(
                                                 bottom: 12.h,
                                               ),
+
                                               color: Colors.white.withOpacity(
                                                 0.1,
                                               ),
                                               child: ListTile(
+                                                shape:
+                                                    ContinuousRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                            12.r,
+                                                          ),
+                                                    ),
+                                                contentPadding: EdgeInsets.all(
+                                                  8.sp,
+                                                ),
                                                 leading: ClipRRect(
                                                   borderRadius:
                                                       BorderRadius.circular(
@@ -753,6 +769,66 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                                   mainAxisSize:
                                                       MainAxisSize.min,
                                                   children: [
+                                                    IconButton(
+                                                      icon: FaIcon(
+                                                        context
+                                                                .watch<
+                                                                  FavoriteProvider
+                                                                >()
+                                                                .isFavorite(
+                                                                  track.id ??
+                                                                      "",
+                                                                )
+                                                            ? FontAwesomeIcons
+                                                                .solidHeart
+                                                            : FontAwesomeIcons
+                                                                .heart,
+                                                      ),
+                                                      iconSize: 20.sp,
+                                                      color:
+                                                          context
+                                                                  .watch<
+                                                                    FavoriteProvider
+                                                                  >()
+                                                                  .isFavorite(
+                                                                    track.id ??
+                                                                        "",
+                                                                  )
+                                                              ? Color(
+                                                                AppColors
+                                                                    .blueLight,
+                                                              )
+                                                              : Color(
+                                                                AppColors
+                                                                    .primaryColor,
+                                                              ),
+
+                                                      onPressed: () {
+                                                        final songData = {
+                                                          "id": track.id,
+                                                          "name": track.name,
+                                                          "artistName":
+                                                              track.artistName,
+                                                          "image": track.image,
+                                                          "audio": track.audio,
+                                                          "audioDuration":
+                                                              track.duration,
+                                                          "albumImage":
+                                                              track.albumImage,
+                                                          "albumName":
+                                                              track.albumName,
+                                                          "position":
+                                                              track.position,
+                                                        };
+                                                        context
+                                                            .read<
+                                                              FavoriteProvider
+                                                            >()
+                                                            .toggleFavorite(
+                                                              songData,
+                                                            );
+                                                      },
+                                                    ),
                                                     widget.fromPlaylist
                                                         ? IconButton(
                                                           icon: Icon(
@@ -797,16 +873,8 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                                           },
                                                         )
                                                         : SizedBox.shrink(),
-                                                    IconButton(
-                                                      icon: FaIcon(
-                                                        FontAwesomeIcons.play,
-                                                        color: Color(
-                                                          AppColors
-                                                              .primaryColor,
-                                                        ),
-                                                        size: 18.sp,
-                                                      ),
-                                                      onPressed: () {
+                                                    GestureDetector(
+                                                      onTap: () {
                                                         myPushNavigator(
                                                           context,
                                                           MusicPlayer(
@@ -815,6 +883,56 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                                           ),
                                                         );
                                                       },
+                                                      child: Container(
+                                                        width: 35.w,
+                                                        height: 35.h,
+                                                        decoration: BoxDecoration(
+                                                          gradient: LinearGradient(
+                                                            colors: [
+                                                              Color(
+                                                                AppColors
+                                                                    .primaryColor,
+                                                              ),
+                                                              Color(
+                                                                AppColors
+                                                                    .blueLight,
+                                                              ),
+                                                            ],
+                                                            begin:
+                                                                Alignment
+                                                                    .topLeft,
+                                                            end:
+                                                                Alignment
+                                                                    .bottomRight,
+                                                          ),
+                                                          shape:
+                                                              BoxShape.circle,
+                                                          boxShadow: [
+                                                            BoxShadow(
+                                                              color: Color(
+                                                                AppColors
+                                                                    .primaryColor,
+                                                              ).withOpacity(
+                                                                0.4,
+                                                              ),
+                                                              blurRadius: 14,
+                                                              spreadRadius: 0,
+                                                              offset: Offset(
+                                                                0,
+                                                                6,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        child: Center(
+                                                          child: FaIcon(
+                                                            FontAwesomeIcons
+                                                                .play,
+                                                            color: Colors.white,
+                                                            size: 16.sp,
+                                                          ),
+                                                        ),
+                                                      ),
                                                     ),
                                                   ],
                                                 ),

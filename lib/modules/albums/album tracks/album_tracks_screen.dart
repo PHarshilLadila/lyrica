@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:lyrica/modules/albums/album%20tracks/album_tracks_model.dart';
 import 'package:lyrica/modules/albums/album%20tracks/album_tracks_provider.dart';
 import 'package:provider/provider.dart';
@@ -11,11 +10,11 @@ class AlbumTracksScreen extends StatefulWidget {
   final String? albumImage;
 
   const AlbumTracksScreen({
-    Key? key,
+    super.key,
     required this.albumId,
     required this.albumName,
     this.albumImage,
-  }) : super(key: key);
+  });
 
   @override
   State<AlbumTracksScreen> createState() => _AlbumTracksScreenState();

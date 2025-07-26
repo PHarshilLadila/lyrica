@@ -16,6 +16,7 @@ import 'package:lyrica/core/constant/app_colors.dart';
 import 'package:lyrica/model/music_model.dart';
 import 'package:lyrica/modules/library/view/library_screen.dart';
 import 'package:lyrica/modules/music%20player/provider/music_player_provider.dart';
+import 'package:provider/provider.dart';
 
 class MusicPlayer extends ConsumerStatefulWidget {
   final List<Results> songList;
@@ -35,8 +36,11 @@ class _MusicPlayerScreenState extends ConsumerState<MusicPlayer> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      FlutterDownloader.initialize();
+    // WidgetsBinding.instance.addPostFrameCallback((_) {
+    //   FlutterDownloader.initialize();
+    // });
+    Future.delayed(Duration.zero, () {
+      context.read<FavoriteProvider>().fetchFavorites();
     });
   }
 
@@ -56,13 +60,13 @@ class _MusicPlayerScreenState extends ConsumerState<MusicPlayer> {
     );
     final rewardPointsAsync = ref.watch(rewardPointsProvider);
     final currentSong = widget.songList[musicPlayerState.currentIndex];
-    final isFavorite = ref.watch(
-      favoriteProvider.select(
-        (favorites) => favorites.contains(
-          widget.songList[musicPlayerState.currentIndex].id,
-        ),
-      ),
-    );
+    // final isFavorite = ref.watch(
+    //   favoriteProvider.select(
+    //     (favorites) => favorites.contains(
+    //       widget.songList[musicPlayerState.currentIndex].id,
+    //     ),
+    //   ),
+    // );
 
     ref.listen<bool>(
       musicPlayerProvider((
@@ -263,6 +267,8 @@ class _MusicPlayerScreenState extends ConsumerState<MusicPlayer> {
                   child: Text(
                     currentSong.name ?? "",
                     textAlign: TextAlign.center,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                     style: GoogleFonts.poppins(
                       fontSize: 28.sp,
                       fontWeight: FontWeight.bold,
@@ -299,20 +305,35 @@ class _MusicPlayerScreenState extends ConsumerState<MusicPlayer> {
                           ),
                           IconButton(
                             icon: FaIcon(
-                              isFavorite
+                              context.watch<FavoriteProvider>().isFavorite(
+                                    currentSong.id ?? "",
+                                  )
                                   ? FontAwesomeIcons.solidHeart
                                   : FontAwesomeIcons.heart,
                             ),
                             iconSize: 20.sp,
                             color:
-                                isFavorite
+                                context.watch<FavoriteProvider>().isFavorite(
+                                      currentSong.id ?? "",
+                                    )
                                     ? Color(AppColors.blueLight)
                                     : Color(AppColors.primaryColor),
 
                             onPressed: () {
-                              ref
-                                  .read(favoriteProvider.notifier)
-                                  .toggleFavorite(currentSong.id ?? "");
+                              final songData = {
+                                "id": currentSong.id,
+                                "name": currentSong.name,
+                                "artistName": currentSong.artistName,
+                                "image": currentSong.image,
+                                "audio": currentSong.audio,
+                                "audioDuration": currentSong.duration,
+                                "albumImage": currentSong.albumImage,
+                                "albumName": currentSong.albumName,
+                                "position": currentSong.position,
+                              };
+                              context.read<FavoriteProvider>().toggleFavorite(
+                                songData,
+                              );
                             },
                           ),
                         ],
