@@ -12,6 +12,7 @@ import 'package:lyrica/services/mongodb_service.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:lyrica/core/providers/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 @pragma('vm:entry-point')
 void downloadCallback(String? id, DownloadTaskStatus status, int progress) {
@@ -446,36 +447,35 @@ class Amplitude {
 
   Amplitude({required this.min, required this.max, this.current});
 }
-// favorite provider
 
-// final favoriteProvider = StateNotifierProvider<FavoriteNotifier, Set<String>>((
-//   ref,
-// ) {
-//   return FavoriteNotifier();
-// });
+// favorite provider
 
 class FavoriteProvider with ChangeNotifier {
   List<Map<String, dynamic>> _favorites = [];
+  String _userId = "";
 
   List<Map<String, dynamic>> get favorites => _favorites;
 
   Future<void> fetchFavorites() async {
-    _favorites = await MongoDatabaseService.getFavorites();
+    final prefs = await SharedPreferences.getInstance();
+    _userId = prefs.getString("userUID") ?? "";
+
+    if (_userId.isEmpty) return;
+
+    _favorites = await MongoDatabaseService.getFavorites(_userId);
     notifyListeners();
   }
 
   Future<void> toggleFavorite(Map<String, dynamic> song) async {
-    if (MongoDatabaseService.favoriteCollection == null) return;
+    if (_userId.isEmpty) return;
 
     final exists = _favorites.any((s) => s["id"] == song["id"]);
     if (exists) {
-      await MongoDatabaseService.removeFavorite(song["id"]);
+      await MongoDatabaseService.removeFavorite(song["id"], _userId);
       _favorites.removeWhere((s) => s["id"] == song["id"]);
-      debugPrint("Remove Song in to Favorite: ${song["id"]}");
     } else {
-      await MongoDatabaseService.addFavorite(song);
+      await MongoDatabaseService.addFavorite(song, _userId);
       _favorites.add(song);
-      debugPrint("Add Song in to Favorite: $song");
     }
     notifyListeners();
   }

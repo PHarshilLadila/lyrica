@@ -15,6 +15,7 @@ import 'package:lyrica/core/providers/provider.dart';
 import 'package:lyrica/modules/music%20player/provider/music_player_provider.dart';
 import 'package:lyrica/modules/music%20player/view/music_player.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -479,8 +480,15 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
                                                       AppColors.primaryColor,
                                                     ),
 
-                                            onPressed: () {
+                                            onPressed: () async {
+                                              final SharedPreferences
+                                              preferences =
+                                                  await SharedPreferences.getInstance();
+                                              final String? userId = preferences
+                                                  .getString("userUID");
                                               final songData = {
+                                                "userId": userId,
+
                                                 "id": song.id,
                                                 "name": song.name,
                                                 "artistName": song.artistName,

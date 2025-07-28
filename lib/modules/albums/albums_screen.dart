@@ -394,23 +394,3 @@ class _AlbumScreenState extends State<AlbumScreen> {
     return '$minutes:${seconds.toString().padLeft(2, '0')}';
   }
 }
-
-class Song {
-  final String id;
-  final String title;
-  final String artist;
-  final int duration;
-  final String albumArt;
-  final String audioUrl;
-  final bool isExplicit;
-
-  Song({
-    required this.id,
-    required this.title,
-    required this.artist,
-    required this.duration,
-    required this.albumArt,
-    required this.audioUrl,
-    required this.isExplicit,
-  });
-}

@@ -19,6 +19,7 @@ import 'package:lyrica/modules/music%20track/view/music_track_list.dart';
 import 'package:lyrica/modules/playlist/provider/playlist_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SearchScreen extends ConsumerStatefulWidget {
   final bool fromPlaylist;
@@ -803,8 +804,17 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                                                     .primaryColor,
                                                               ),
 
-                                                      onPressed: () {
+                                                      onPressed: () async {
+                                                        final SharedPreferences
+                                                        preferences =
+                                                            await SharedPreferences.getInstance();
+                                                        final String? userId =
+                                                            preferences
+                                                                .getString(
+                                                                  "userUID",
+                                                                );
                                                         final songData = {
+                                                          "userId": userId,
                                                           "id": track.id,
                                                           "name": track.name,
                                                           "artistName":

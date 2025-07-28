@@ -2,7 +2,6 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -17,6 +16,7 @@ import 'package:lyrica/model/music_model.dart';
 import 'package:lyrica/modules/library/view/library_screen.dart';
 import 'package:lyrica/modules/music%20player/provider/music_player_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MusicPlayer extends ConsumerStatefulWidget {
   final List<Results> songList;
@@ -319,8 +319,15 @@ class _MusicPlayerScreenState extends ConsumerState<MusicPlayer> {
                                     ? Color(AppColors.blueLight)
                                     : Color(AppColors.primaryColor),
 
-                            onPressed: () {
+                            onPressed: () async {
+                              final SharedPreferences preferences =
+                                  await SharedPreferences.getInstance();
+                              final String? userId = preferences.getString(
+                                "userUID",
+                              );
                               final songData = {
+                                "userId": userId,
+
                                 "id": currentSong.id,
                                 "name": currentSong.name,
                                 "artistName": currentSong.artistName,

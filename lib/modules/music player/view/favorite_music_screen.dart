@@ -13,8 +13,19 @@ import 'package:lyrica/modules/music%20player/view/music_player.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
-class FavoriteMusicScreen extends StatelessWidget {
+class FavoriteMusicScreen extends StatefulWidget {
   const FavoriteMusicScreen({super.key});
+
+  @override
+  State<FavoriteMusicScreen> createState() => _FavoriteMusicScreenState();
+}
+
+class _FavoriteMusicScreenState extends State<FavoriteMusicScreen> {
+  @override
+  void initState() {
+    context.read<FavoriteProvider>().fetchFavorites();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

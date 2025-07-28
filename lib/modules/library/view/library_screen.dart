@@ -202,7 +202,12 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
     return userAsync.when(
       data: (user) {
         if (user == null) {
-          return const Center(child: AppText(text: "User not found"));
+          return Container(
+            height: double.infinity,
+            width: double.infinity,
+            color: Color.fromARGB(255, 0, 33, 43),
+            child: Center(child: appLoader()),
+          );
         }
 
         return Container(
