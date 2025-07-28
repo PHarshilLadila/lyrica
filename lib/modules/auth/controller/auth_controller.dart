@@ -53,7 +53,10 @@ class AuthController {
 
   Future<bool> saveUserToFirestore(UserModel user) async {
     try {
-      await _firestore.collection("users").doc(user.uid).set(user.toMap());
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(user.uid)
+          .set(user.toMap(), SetOptions(merge: true));
       return true;
     } catch (e) {
       debugPrint("Error saving user: $e");

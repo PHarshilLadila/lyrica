@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -57,7 +60,112 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     });
   }
 
-  @override
+  // Add these methods to your class
+  Widget _buildProfileAvatar(String profileImage, String userName) {
+    // 1. Check for network image
+    if (profileImage.startsWith("http") || profileImage.startsWith("https")) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(100.r),
+        child: Image.network(
+          profileImage,
+          fit: BoxFit.cover,
+          loadingBuilder: (context, child, loadingProgress) {
+            if (loadingProgress == null) return child;
+            return Center(
+              child: CircularProgressIndicator(
+                value:
+                    loadingProgress.expectedTotalBytes != null
+                        ? loadingProgress.cumulativeBytesLoaded /
+                            loadingProgress.expectedTotalBytes!
+                        : null,
+              ),
+            );
+          },
+          errorBuilder:
+              (context, error, stackTrace) => _buildInitialsAvatar(userName),
+        ),
+      );
+    }
+    // 2. Check for asset image
+    else if (profileImage.startsWith("assets/") ||
+        profileImage.startsWith("lib/")) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(100.r),
+        child: Image.asset(
+          profileImage.isNotEmpty ? profileImage : AppImages.avatar,
+          fit: BoxFit.cover,
+          errorBuilder:
+              (context, error, stackTrace) => _buildInitialsAvatar(userName),
+        ),
+      );
+    }
+    // 3. Check for base64 encoded image
+    else if (_isBase64Image(profileImage)) {
+      try {
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(100.r),
+          child: Image.memory(
+            base64Decode(profileImage),
+            fit: BoxFit.cover,
+            errorBuilder:
+                (context, error, stackTrace) => _buildInitialsAvatar(userName),
+          ),
+        );
+      } catch (e) {
+        return _buildInitialsAvatar(userName);
+      }
+    }
+    // 4. Check for file path image
+    else if (profileImage.isNotEmpty && File(profileImage).existsSync()) {
+      return ClipRRect(
+        borderRadius: BorderRadius.circular(100.r),
+        child: Image.file(
+          File(profileImage),
+          fit: BoxFit.cover,
+          errorBuilder:
+              (context, error, stackTrace) => _buildInitialsAvatar(userName),
+        ),
+      );
+    } else {
+      return userName.isNotEmpty
+          ? _buildInitialsAvatar(userName)
+          : Image.asset(AppImages.avatar, fit: BoxFit.cover);
+    }
+  }
+
+  Widget _buildInitialsAvatar(String userName) {
+    final initials = _getInitials(userName);
+
+    return Container(
+      color: Color(AppColors.darkBlue),
+      alignment: Alignment.center,
+      child: Text(
+        initials,
+        style: TextStyle(
+          fontSize: 18.sp,
+          fontWeight: FontWeight.bold,
+          color: Color(AppColors.blueExtraLight),
+        ),
+      ),
+    );
+  }
+
+  String _getInitials(String name) {
+    if (name.isEmpty) return '';
+
+    final parts = name.split(' ');
+    if (parts.length == 1) return parts[0][0].toUpperCase();
+
+    return '${parts[0][0]}${parts.last[0]}'.toUpperCase();
+  }
+
+  bool _isBase64Image(String image) {
+    return image.length > 100 &&
+        !image.startsWith('http') &&
+        !image.startsWith('assets/') &&
+        !image.startsWith('lib/');
+  }
+
   @override
   Widget build(BuildContext context) {
     final userAsync = ref.watch(authStateProvider);
@@ -120,46 +228,49 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   backgroundColor: Color.fromARGB(197, 0, 43, 53),
                   child: userModelAsync.when(
                     data: (userModel) {
-                      // final displayInitial =
-                      //     (user.displayName != null &&
-                      //             user.displayName!.isNotEmpty)
-                      //         ? user.displayName![0].toUpperCase()
-                      //         : (userModel?.username.isNotEmpty == true)
-                      //         ? userModel!.username[0].toUpperCase()
-                      //         : "N";
-                      final profileInitial =
-                          userModel?.image ?? AppImages.avatar;
-                      debugPrint("user Profile Image$profileInitial");
+                      final profileImage = userModel?.image ?? '';
+                      final userName = userModel?.username ?? '';
+
+                      // Debug print for checking the image source
+                      debugPrint("User Profile Image: $profileImage");
+
                       return ClipRRect(
                         borderRadius: BorderRadius.circular(100),
-                        child:
-                            (profileInitial.startsWith("http") ||
-                                    profileInitial.startsWith("https"))
-                                ? Image.network(
-                                  profileInitial,
-                                  fit: BoxFit.cover,
-                                  errorBuilder: (context, error, stackTrace) {
-                                    return Image.asset(
-                                      AppImages.avatar,
-                                      fit: BoxFit.cover,
-                                    );
-                                  },
-                                )
-                                : Image.asset(
-                                  profileInitial.isNotEmpty
-                                      ? profileInitial
-                                      : AppImages.avatar,
-                                  fit: BoxFit.cover,
-                                ),
+                        child: SizedBox(
+                          height: 35.h,
+                          width: 40.w,
+                          child: _buildProfileAvatar(profileImage, userName),
+                        ),
                       );
-
-                      // AppText(
-                      //   textName: displayInitial,
-                      //   fontSize: 18.sp,
-                      //   fontWeight: FontWeight.bold,
-                      //   textColor: Color(AppColors.lightText),
-                      // );
                     },
+
+                    // data: (userModel) {
+                    //   final profileInitial =
+                    //       userModel?.image ?? AppImages.avatar;
+                    //   debugPrint("user Profile Image$profileInitial");
+                    //   return ClipRRect(
+                    //     borderRadius: BorderRadius.circular(100),
+                    //     child:
+                    //         (profileInitial.startsWith("http") ||
+                    //                 profileInitial.startsWith("https"))
+                    //             ? Image.network(
+                    //               profileInitial,
+                    //               fit: BoxFit.cover,
+                    //               errorBuilder: (context, error, stackTrace) {
+                    //                 return Image.asset(
+                    //                   AppImages.avatar,
+                    //                   fit: BoxFit.cover,
+                    //                 );
+                    //               },
+                    //             )
+                    //             : Image.asset(
+                    //               profileInitial.isNotEmpty
+                    //                   ? profileInitial
+                    //                   : AppImages.avatar,
+                    //               fit: BoxFit.cover,
+                    //             ),
+                    //   );
+                    // },
                     loading: () => SizedBox(),
                     error:
                         (e, _) => AppText(
