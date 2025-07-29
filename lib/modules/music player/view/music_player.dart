@@ -16,6 +16,7 @@ import 'package:lyrica/model/music_model.dart';
 import 'package:lyrica/modules/library/view/library_screen.dart';
 import 'package:lyrica/modules/music%20player/provider/music_player_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MusicPlayer extends ConsumerStatefulWidget {
@@ -33,6 +34,8 @@ class MusicPlayer extends ConsumerStatefulWidget {
 }
 
 class _MusicPlayerScreenState extends ConsumerState<MusicPlayer> {
+  String musicShareURL = '';
+
   @override
   void initState() {
     super.initState();
@@ -283,68 +286,80 @@ class _MusicPlayerScreenState extends ConsumerState<MusicPlayer> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Expanded(
-                      flex: 1,
-                      child: AppText(
-                        text: "By - ${currentSong.artistName ?? ""}",
-                        textColor: Colors.white54,
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.bold,
-                        maxLines: 2,
-                      ),
+                    AppText(
+                      text: "By - ${currentSong.artistName ?? ""}",
+                      textColor: Colors.white54,
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.bold,
+                      maxLines: 2,
                     ),
-                    Expanded(
-                      flex: 1,
-                      child: Row(
-                        children: [
-                          IconButton(
-                            icon: Icon(CupertinoIcons.share),
-                            iconSize: 22.sp,
-                            color: Color(AppColors.primaryColor),
-                            onPressed: () {},
+                    Spacer(),
+                    Row(
+                      children: [
+                        IconButton(
+                          icon: Icon(CupertinoIcons.share),
+                          iconSize: 22.sp,
+                          color: Color(AppColors.primaryColor),
+                          onPressed: () async {
+                            final String songTitle =
+                                currentSong.name ?? "Unknown Song";
+
+                            SharePlus.instance.share(
+                              ShareParams(
+                                title: songTitle,
+                                previewThumbnail: XFile(
+                                  currentSong.image ??
+                                      "https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg",
+                                ),
+                                uri: Uri.parse(
+                                  currentSong.shareurl ??
+                                      "https://licensing.jamendo.com/en/in-store?jmm=instore",
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                        IconButton(
+                          icon: FaIcon(
+                            context.watch<FavoriteProvider>().isFavorite(
+                                  currentSong.id ?? "",
+                                )
+                                ? FontAwesomeIcons.solidHeart
+                                : FontAwesomeIcons.heart,
                           ),
-                          IconButton(
-                            icon: FaIcon(
+                          iconSize: 20.sp,
+                          color:
                               context.watch<FavoriteProvider>().isFavorite(
                                     currentSong.id ?? "",
                                   )
-                                  ? FontAwesomeIcons.solidHeart
-                                  : FontAwesomeIcons.heart,
-                            ),
-                            iconSize: 20.sp,
-                            color:
-                                context.watch<FavoriteProvider>().isFavorite(
-                                      currentSong.id ?? "",
-                                    )
-                                    ? Color(AppColors.blueLight)
-                                    : Color(AppColors.primaryColor),
+                                  ? Color(AppColors.blueLight)
+                                  : Color(AppColors.primaryColor),
 
-                            onPressed: () async {
-                              final SharedPreferences preferences =
-                                  await SharedPreferences.getInstance();
-                              final String? userId = preferences.getString(
-                                "userUID",
-                              );
-                              final songData = {
-                                "userId": userId,
+                          onPressed: () async {
+                            final SharedPreferences preferences =
+                                await SharedPreferences.getInstance();
+                            final String? userId = preferences.getString(
+                              "userUID",
+                            );
+                            final songData = {
+                              "userId": userId,
 
-                                "id": currentSong.id,
-                                "name": currentSong.name,
-                                "artistName": currentSong.artistName,
-                                "image": currentSong.image,
-                                "audio": currentSong.audio,
-                                "audioDuration": currentSong.duration,
-                                "albumImage": currentSong.albumImage,
-                                "albumName": currentSong.albumName,
-                                "position": currentSong.position,
-                              };
-                              context.read<FavoriteProvider>().toggleFavorite(
-                                songData,
-                              );
-                            },
-                          ),
-                        ],
-                      ),
+                              "id": currentSong.id,
+                              "name": currentSong.name,
+                              "artistName": currentSong.artistName,
+                              "image": currentSong.image,
+                              "audio": currentSong.audio,
+                              "audioDuration": currentSong.duration,
+                              "albumImage": currentSong.albumImage,
+                              "albumName": currentSong.albumName,
+                              "position": currentSong.position,
+                            };
+                            context.read<FavoriteProvider>().toggleFavorite(
+                              songData,
+                            );
+                          },
+                        ),
+                      ],
                     ),
                   ],
                 ),
