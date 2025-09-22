@@ -129,10 +129,7 @@ class _AlbumTracksScreenState extends State<AlbumTracksScreen> {
         ],
       ),
       onTap: () {
-        // Handle track play
-        if (track.previewUrl != null) {
-          // Play preview
-        }
+        if (track.previewUrl != null) {}
       },
     );
   }

@@ -1,3 +1,5 @@
+// ignore_for_file: unused_result
+
 import 'dart:convert';
 import 'dart:io';
 
@@ -43,7 +45,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     super.initState();
     getUserId();
     Future.microtask(() {
-      // ignore: unused_result
       ref.refresh(userModelProvider);
     });
   }
@@ -60,9 +61,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     });
   }
 
-  // Add these methods to your class
   Widget _buildProfileAvatar(String profileImage, String userName) {
-    // 1. Check for network image
+    final safeUserName = userName.isEmpty ? 'User' : userName;
+
     if (profileImage.startsWith("http") || profileImage.startsWith("https")) {
       return ClipRRect(
         borderRadius: BorderRadius.circular(100.r),
@@ -82,12 +83,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
             );
           },
           errorBuilder:
-              (context, error, stackTrace) => _buildInitialsAvatar(userName),
+              (context, error, stackTrace) =>
+                  _buildInitialsAvatar(safeUserName),
         ),
       );
-    }
-    // 2. Check for asset image
-    else if (profileImage.startsWith("assets/") ||
+    } else if (profileImage.startsWith("assets/") ||
         profileImage.startsWith("lib/")) {
       return ClipRRect(
         borderRadius: BorderRadius.circular(100.r),
@@ -95,12 +95,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           profileImage.isNotEmpty ? profileImage : AppImages.avatar,
           fit: BoxFit.cover,
           errorBuilder:
-              (context, error, stackTrace) => _buildInitialsAvatar(userName),
+              (context, error, stackTrace) =>
+                  _buildInitialsAvatar(safeUserName),
         ),
       );
-    }
-    // 3. Check for base64 encoded image
-    else if (_isBase64Image(profileImage)) {
+    } else if (_isBase64Image(profileImage)) {
       try {
         return ClipRRect(
           borderRadius: BorderRadius.circular(100.r),
@@ -114,9 +113,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       } catch (e) {
         return _buildInitialsAvatar(userName);
       }
-    }
-    // 4. Check for file path image
-    else if (profileImage.isNotEmpty && File(profileImage).existsSync()) {
+    } else if (profileImage.isNotEmpty && File(profileImage).existsSync()) {
       return ClipRRect(
         borderRadius: BorderRadius.circular(100.r),
         child: Image.file(
@@ -136,6 +133,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   Widget _buildInitialsAvatar(String userName) {
     final initials = _getInitials(userName);
 
+    // If initials is empty, show a default avatar
+    if (initials.isEmpty) {
+      return Image.asset(AppImages.avatar, fit: BoxFit.cover);
+    }
+
     return Container(
       color: Color(AppColors.darkBlue),
       alignment: Alignment.center,
@@ -153,10 +155,36 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   String _getInitials(String name) {
     if (name.isEmpty) return '';
 
-    final parts = name.split(' ');
-    if (parts.length == 1) return parts[0][0].toUpperCase();
+    // Trim and remove extra spaces
+    final trimmedName = name.trim();
+    if (trimmedName.isEmpty) return '';
 
-    return '${parts[0][0]}${parts.last[0]}'.toUpperCase();
+    final parts =
+        trimmedName.split(' ').where((part) => part.isNotEmpty).toList();
+
+    if (parts.isEmpty) return '';
+
+    // Get first character of first part
+    final firstInitial = parts[0].isNotEmpty ? parts[0][0] : '';
+
+    // If there's only one part, return its first character
+    if (parts.length == 1) {
+      return firstInitial.isNotEmpty ? firstInitial.toUpperCase() : '';
+    }
+
+    // Get first character of last part
+    final lastInitial = parts.last.isNotEmpty ? parts.last[0] : '';
+
+    // Return both initials if available
+    if (firstInitial.isNotEmpty && lastInitial.isNotEmpty) {
+      return '$firstInitial$lastInitial'.toUpperCase();
+    } else if (firstInitial.isNotEmpty) {
+      return firstInitial.toUpperCase();
+    } else if (lastInitial.isNotEmpty) {
+      return lastInitial.toUpperCase();
+    }
+
+    return '';
   }
 
   bool _isBase64Image(String image) {
@@ -228,10 +256,9 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   backgroundColor: Color.fromARGB(197, 0, 43, 53),
                   child: userModelAsync.when(
                     data: (userModel) {
-                      final profileImage = userModel?.image ?? '';
-                      final userName = userModel?.username ?? '';
+                      final profileImage = userModel?.image ?? 'N/A';
+                      final userName = userModel?.username ?? 'N/A';
 
-                      // Debug print for checking the image source
                       debugPrint("User Profile Image: $profileImage");
 
                       return ClipRRect(
@@ -244,33 +271,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                       );
                     },
 
-                    // data: (userModel) {
-                    //   final profileInitial =
-                    //       userModel?.image ?? AppImages.avatar;
-                    //   debugPrint("user Profile Image$profileInitial");
-                    //   return ClipRRect(
-                    //     borderRadius: BorderRadius.circular(100),
-                    //     child:
-                    //         (profileInitial.startsWith("http") ||
-                    //                 profileInitial.startsWith("https"))
-                    //             ? Image.network(
-                    //               profileInitial,
-                    //               fit: BoxFit.cover,
-                    //               errorBuilder: (context, error, stackTrace) {
-                    //                 return Image.asset(
-                    //                   AppImages.avatar,
-                    //                   fit: BoxFit.cover,
-                    //                 );
-                    //               },
-                    //             )
-                    //             : Image.asset(
-                    //               profileInitial.isNotEmpty
-                    //                   ? profileInitial
-                    //                   : AppImages.avatar,
-                    //               fit: BoxFit.cover,
-                    //             ),
-                    //   );
-                    // },
                     loading: () => SizedBox(),
                     error:
                         (e, _) => AppText(
@@ -290,7 +290,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 children: [
                   AppText(
                     text: AppLocalizations.of(context)!.welcome,
-                    // text: "Welcome back!",
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w500,
                     textColor: Color(AppColors.lightText),
@@ -313,7 +312,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                         text: AppLocalizations.of(
                           context,
                         )!.greetingWithName(displayText),
-                        // text: displayText,
                         fontSize: 14.sp,
                         fontWeight: FontWeight.bold,
                         textColor: Color(AppColors.lightText),
@@ -343,7 +341,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                     AppImages.likeIconPixel,
                     color: Color(AppColors.primaryColor),
                     width: 25.w,
-                    // color: Color.fromARGB(255, 116, 215, 240),
                   ),
                 ),
                 IconButton(
@@ -492,7 +489,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                 String? imageUrl = artist[index].image;
                                 if (artist[index].image == "") {
                                   imageUrl = AppString.defaultImageLogo;
-                                  // "https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg";
                                 } else {
                                   imageUrl = artist[index].image;
                                 }
@@ -522,7 +518,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                           child: Image.network(
                                             imageUrl ??
                                                 AppString.defaultImageLogo,
-                                            // "https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg",
                                             fit: BoxFit.cover,
                                             height: 80.h,
                                             width: 90.w,
@@ -641,11 +636,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                               )
                                               : const Icon(Icons.music_note),
                                       title: AppText(
-                                        // text: getLocalizedTextFromAPI(
-                                        //   track.toJson(),
-                                        //   context,
-                                        //   'name',
-                                        // ),
                                         text: track.name ?? 'N/A',
                                         fontSize: 14.sp,
                                         fontWeight: FontWeight.bold,
@@ -714,6 +704,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                                                 (context) => MusicPlayer(
                                                   songList: hindiSong,
                                                   initialIndex: index,
+                                                  onMinimize: () {},
                                                 ),
                                           ),
                                         );

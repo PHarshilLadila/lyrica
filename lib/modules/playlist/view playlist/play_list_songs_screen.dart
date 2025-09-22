@@ -43,7 +43,12 @@ class _PlaylistSongsScreenState extends ConsumerState<PlaylistSongsScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => MusicPlayer(songList: songs, initialIndex: index),
+        builder:
+            (context) => MusicPlayer(
+              songList: songs,
+              initialIndex: index,
+              onMinimize: () {},
+            ),
       ),
     );
   }

@@ -104,7 +104,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   ),
                   SizedBox(height: 15.h),
 
-                  // User Name
                   AppCustomTextFormField(
                     textEditingController: userNameController,
                     keyboradType: TextInputType.name,
@@ -126,7 +125,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   ),
                   SizedBox(height: 15.h),
 
-                  // Email
                   AppCustomTextFormField(
                     textEditingController: emailController,
                     keyboradType: TextInputType.emailAddress,
@@ -167,7 +165,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     obscureText: false,
                   ),
                   SizedBox(height: 15.h),
-                  // Password
                   AppCustomTextFormField(
                     textEditingController: passwordController,
                     keyboradType: TextInputType.visiblePassword,
@@ -197,7 +194,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   ),
                   SizedBox(height: 15.h),
 
-                  // Remember me
                   Row(
                     children: [
                       Checkbox(
@@ -250,7 +246,6 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   ),
                   SizedBox(height: 10.h),
 
-                  // Already have account
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

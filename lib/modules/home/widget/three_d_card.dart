@@ -26,8 +26,8 @@ class Skewed3DCard extends StatelessWidget {
         alignment: Alignment.center,
         transform:
             Matrix4.identity()
-              ..setEntry(3, 2, 0.0091) // perspective
-              ..rotateY(-0.1), // slight Y-axis skew for 3D effect
+              ..setEntry(3, 2, 0.0091)
+              ..rotateY(-0.1),
         child: ClipPath(
           clipper: SkewedRoundedClipper(),
           child: Container(

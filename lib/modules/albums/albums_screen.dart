@@ -90,11 +90,9 @@ class _AlbumScreenState extends State<AlbumScreen> {
 
   Widget _buildAlbumHeader(AlbumsModel album) {
     final coverImage = album.images.isNotEmpty ? album.images[0].url : '';
-    // final smallestImage = album.images.isNotEmpty ? album.images.last.url : '';
 
     return Stack(
       children: [
-        // Album cover image
         SizedBox(
           height: 300,
           width: double.infinity,
@@ -114,7 +112,6 @@ class _AlbumScreenState extends State<AlbumScreen> {
           ),
         ),
 
-        // Gradient overlay
         Container(
           height: 300,
           decoration: BoxDecoration(
@@ -164,10 +161,7 @@ class _AlbumScreenState extends State<AlbumScreen> {
           child: IconButton(
             icon: const Icon(Icons.open_in_new, color: Colors.white),
             onPressed: () {
-              if (album.externalUrls.spotify.isNotEmpty) {
-                // You would typically use url_launcher here
-                // launchUrl(Uri.parse(album.externalUrls.spotify));
-              }
+              if (album.externalUrls.spotify.isNotEmpty) {}
             },
           ),
         ),
@@ -190,9 +184,7 @@ class _AlbumScreenState extends State<AlbumScreen> {
               album.artists
                   .map(
                     (artist) => InkWell(
-                      onTap: () {
-                        // Navigate to artist page
-                      },
+                      onTap: () {},
                       child: Chip(
                         label: Text(artist.name),
                         avatar: const CircleAvatar(
@@ -381,8 +373,11 @@ class _AlbumScreenState extends State<AlbumScreen> {
       context,
       MaterialPageRoute(
         builder:
-            (context) =>
-                MusicPlayer(initialIndex: initialIndex, songList: songs),
+            (context) => MusicPlayer(
+              initialIndex: initialIndex,
+              songList: songs,
+              onMinimize: () {},
+            ),
       ),
     );
   }

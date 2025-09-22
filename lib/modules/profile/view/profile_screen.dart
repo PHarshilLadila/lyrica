@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
@@ -14,6 +16,8 @@ import 'package:lyrica/core/constant/app_images.dart';
 import 'package:lyrica/core/providers/provider.dart';
 import 'package:lyrica/model/user_model.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 
 class ProfileScreen extends ConsumerStatefulWidget {
   const ProfileScreen({super.key});
@@ -36,10 +40,26 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
   late TextEditingController _usernameController;
   late TextEditingController _emailController;
   late TextEditingController _mobileController;
+  String? userUid;
+  Future<void> _getUserIdFromPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    final result = prefs.getString("userUID");
+
+    if (mounted) {
+      setState(() {
+        userUid = result;
+      });
+    }
+
+    debugPrint("==================================> UID => ($result)");
+  }
 
   @override
   void initState() {
     super.initState();
+
+    _getUserIdFromPrefs();
+
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 800),
@@ -77,6 +97,10 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
         fit: BoxFit.cover,
       );
     }
+
+    // Add safety check for userModel.username
+    // final safeUserName =
+    //     userModel.username.isNotEmpty ? userModel.username : 'User';
 
     if (userModel.image.isNotEmpty) {
       if (_isBase64Image(userModel.image)) {
@@ -129,6 +153,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
   Widget _buildInitialsAvatar(UserModel userModel) {
     final initials = _getInitials(userModel.username);
 
+    // Additional safety check
+    final displayInitials = initials.isEmpty ? '?' : initials;
+
     return Container(
       width: 140.w,
       height: 140.w,
@@ -138,7 +165,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
       ),
       alignment: Alignment.center,
       child: Text(
-        initials,
+        displayInitials,
         style: TextStyle(
           fontSize: 40.sp,
           fontWeight: FontWeight.bold,
@@ -150,9 +177,32 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
 
   String _getInitials(String name) {
     if (name.isEmpty) return '?';
-    final parts = name.split(' ');
-    if (parts.length == 1) return parts[0][0].toUpperCase();
-    return '${parts[0][0]}${parts.last[0]}'.toUpperCase();
+
+    // Trim the name to remove any leading/trailing spaces
+    final trimmedName = name.trim();
+    if (trimmedName.isEmpty) return '?';
+
+    final parts =
+        trimmedName.split(' ').where((part) => part.isNotEmpty).toList();
+
+    if (parts.isEmpty) return '?';
+
+    // Safely get first character of first part
+    final firstPart = parts[0];
+    if (firstPart.isEmpty) return '?';
+    final firstInitial = firstPart[0];
+
+    // If there's only one part, return its first character
+    if (parts.length == 1) {
+      return firstInitial.toUpperCase();
+    }
+
+    // Safely get first character of last part
+    final lastPart = parts.last;
+    if (lastPart.isEmpty) return firstInitial.toUpperCase();
+    final lastInitial = lastPart[0];
+
+    return '$firstInitial$lastInitial'.toUpperCase();
   }
 
   bool _isBase64Image(String image) {
@@ -161,15 +211,76 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
         !image.startsWith('assets/');
   }
 
+  // Future<void> _pickImage() async {
+  //   try {
+  //     setState(() => _isImageLoading = true);
+  //     final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+  //     if (pickedFile != null) {
+  //       final bytes = await File(pickedFile.path).readAsBytes();
+  //       setState(() {
+  //         _imageFile = File(pickedFile.path);
+  //         _base64Image = base64Encode(bytes);
+  //       });
+  //     }
+  //   } catch (e) {
+  //     if (mounted) {
+  //       mySnackBar(
+  //         context,
+  //         'Failed to pick image: $e',
+  //         Color(AppColors.errorColor),
+  //       );
+  //     }
+  //   } finally {
+  //     if (mounted) {
+  //       setState(() => _isImageLoading = false);
+  //     }
+  //   }
+  // }
   Future<void> _pickImage() async {
     try {
       setState(() => _isImageLoading = true);
       final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
       if (pickedFile != null) {
-        final bytes = await File(pickedFile.path).readAsBytes();
+        final file = File(pickedFile.path);
+
+        // ✅ Compress image to reduce size before encoding
+        final compressedBytes = await FlutterImageCompress.compressWithFile(
+          file.absolute.path,
+          minWidth: 600, // adjust size as needed
+          minHeight: 600,
+          quality: 70, // 0-100 (lower = more compression)
+        );
+
+        if (compressedBytes == null) {
+          if (mounted) {
+            mySnackBar(
+              context,
+              'Image compression failed',
+              Color(AppColors.errorColor),
+            );
+          }
+          return;
+        }
+
+        // ✅ Check size after compression
+        final compressedSize = compressedBytes.length;
+        final maxSize = 1024 * 1024; // 1 MB
+
+        if (compressedSize > maxSize) {
+          if (mounted) {
+            mySnackBar(
+              context,
+              'Image is still too large even after compression (>${(compressedSize / 1024).toStringAsFixed(1)} KB).',
+              Color(AppColors.errorColor),
+            );
+          }
+          return;
+        }
+
         setState(() {
-          _imageFile = File(pickedFile.path);
-          _base64Image = base64Encode(bytes);
+          _imageFile = file;
+          _base64Image = base64Encode(compressedBytes);
         });
       }
     } catch (e) {
@@ -208,14 +319,30 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen>
       return;
     }
 
+    // ✅ Add image size validation before saving
+    if (_base64Image != null && _base64Image!.length > 1000000) {
+      mySnackBar(
+        context,
+        "Image is too large! Please choose one under 1 MB.",
+        Color(AppColors.errorColor),
+      );
+      return; // stop saving
+    }
+
     setState(() => _isSaving = true);
 
     final updatedUser = user.copyWith(
+      uid: userUid ?? user.uid,
       username: _usernameController.text.trim(),
       email: _emailController.text.trim(),
       mobile: _mobileController.text.trim(),
       image: _base64Image ?? user.image,
     );
+
+    if (userUid == null || userUid == '') {
+      mySnackBar(context, "User ID not found", Color(AppColors.errorColor));
+      return;
+    }
 
     try {
       final success = await ref

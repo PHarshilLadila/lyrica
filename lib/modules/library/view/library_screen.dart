@@ -12,11 +12,10 @@ import 'package:lyrica/common/widget/app_text.dart';
 import 'package:lyrica/core/constant/app_colors.dart';
 import 'package:lyrica/core/constant/app_images.dart';
 import 'package:lyrica/core/providers/provider.dart';
-import 'package:lyrica/modules/albums/album%20tracks/album_tracks_screen.dart';
-import 'package:lyrica/modules/albums/albums_screen.dart';
 import 'package:lyrica/modules/auth/view/google_login_screen.dart';
 import 'package:lyrica/modules/in%20app%20purchase/view/in_app_purchase.dart';
 import 'package:lyrica/modules/library/languages/app_language.dart';
+import 'package:lyrica/modules/library/music_equalizer/music_equalizer_screen.dart';
 import 'package:lyrica/modules/library/notification/music_notification_screen.dart';
 import 'package:lyrica/modules/library/service/ad_mob_service.dart';
 import 'package:lyrica/modules/music%20player/view/favorite_music_screen.dart';
@@ -197,7 +196,6 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
     final auth = ref.read(authControllerProvider);
     final userAsync = ref.watch(authStateProvider);
     final rewardPointsAsync = ref.watch(rewardPointsProvider);
-    // final userModelAsync = ref.watch(userModelProvider);
 
     return userAsync.when(
       data: (user) {
@@ -246,7 +244,6 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                     AppImages.likeIconPixel,
                     color: Color(AppColors.primaryColor),
                     width: 25.w,
-                    // color: Color.fromARGB(255, 116, 215, 240),
                   ),
                 ),
                 IconButton(
@@ -591,6 +588,24 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                           ),
                           SizedBox(height: 8.h),
                           _buildAttractiveTile(
+                            icon: Icons.equalizer,
+
+                            // title: AppLocalizations.of(context)!.language,
+                            title: "Music Equalizer",
+                            subtitle:
+                                "The ultimate tone control to make music sound perfect—for you.",
+                            // AppLocalizations.of(context)!.languageSubTitle,
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MusicEqualizerScreen(),
+                                ),
+                              );
+                            },
+                          ),
+                          SizedBox(height: 8.h),
+                          _buildAttractiveTile(
                             icon: Icons.star,
                             title:
                                 AppLocalizations.of(context)!.buySubscription,
@@ -600,46 +615,6 @@ class _LibraryScreenState extends ConsumerState<LibraryScreen> {
                                 )!.buySubscriptionSubTitle,
                             onTap: () {
                               modalBottomSheetMenu();
-                            },
-                          ),
-                          SizedBox(height: 8.h),
-                          _buildAttractiveTile(
-                            icon: Icons.star,
-                            title: "Albums",
-                            //   AppLocalizations.of(context)!.buySubscription,
-                            subtitle:
-                                AppLocalizations.of(
-                                  context,
-                                )!.buySubscriptionSubTitle,
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => AlbumScreen(),
-                                ),
-                              ); // modalBottomSheetMenu();
-                            },
-                          ),
-                          SizedBox(height: 8.h),
-                          _buildAttractiveTile(
-                            icon: Icons.star,
-                            title:
-                                "Album Tracks", // AppLocalizations.of(context)!.buySubscription,
-                            subtitle:
-                                AppLocalizations.of(
-                                  context,
-                                )!.buySubscriptionSubTitle,
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder:
-                                      (context) => AlbumTracksScreen(
-                                        albumId: '63OVAw3XKXePV928emHvUa',
-                                        albumName: 'Album Name',
-                                      ),
-                                ),
-                              ); // modalBottomSheetMenu();
                             },
                           ),
                         ],

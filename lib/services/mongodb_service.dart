@@ -9,6 +9,7 @@ class MongoDatabaseService {
     try {
       db = await Db.create(
         "mongodb+srv://admin:admin@lyricacluster.lbgxhsq.mongodb.net/?retryWrites=true&w=majority&appName=LyricaCluster",
+        // mongodb+srv://admin:<db_password>@lyricacluster.lbgxhsq.mongodb.net/?retryWrites=true&w=majority&appName=LyricaCluster
         // mongodb+srv://admin:<db_password>@lyricacluster.lbgxhsq.mongodb.net/?retryWrites=true&w=majority&appName=LyricaCluster    // favoriteSongs  // lyricaDB
         // for MongoDB Shell - command to connect mongodb server
         // mongosh "mongodb+srv://lyricacluster.lbgxhsq.mongodb.net/" --apiVersion 1 --username admin

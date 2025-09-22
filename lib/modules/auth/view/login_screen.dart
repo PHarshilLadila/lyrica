@@ -127,7 +127,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           autovalidateMode: AutovalidateMode.onUnfocus,
           key: loginScreenKey,
           child: SingleChildScrollView(
-            // physics: const BouncingScrollPhysics(),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(

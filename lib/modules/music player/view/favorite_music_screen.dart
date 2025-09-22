@@ -23,7 +23,9 @@ class FavoriteMusicScreen extends StatefulWidget {
 class _FavoriteMusicScreenState extends State<FavoriteMusicScreen> {
   @override
   void initState() {
-    context.read<FavoriteProvider>().fetchFavorites();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<FavoriteProvider>().fetchFavorites();
+    });
     super.initState();
   }
 
@@ -33,7 +35,6 @@ class _FavoriteMusicScreenState extends State<FavoriteMusicScreen> {
 
     return Container(
       decoration: BoxDecoration(gradient: backgroundGradient()),
-
       child: Scaffold(
         backgroundColor: const Color.fromARGB(197, 0, 43, 53),
         appBar: AppBar(
@@ -43,12 +44,10 @@ class _FavoriteMusicScreenState extends State<FavoriteMusicScreen> {
             fontWeight: FontWeight.w500,
             textColor: Color(AppColors.lightText),
           ),
-
           leading: AppBackButton(),
           backgroundColor: Colors.transparent,
           elevation: 0,
           centerTitle: false,
-
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(bottom: Radius.circular(20)),
           ),
@@ -151,6 +150,7 @@ class _FavoriteMusicScreenState extends State<FavoriteMusicScreen> {
                                         (context) => MusicPlayer(
                                           songList: resultsList,
                                           initialIndex: index,
+                                          onMinimize: () {},
                                         ),
                                   ),
                                 );
@@ -198,8 +198,6 @@ class _FavoriteMusicScreenState extends State<FavoriteMusicScreen> {
                                       ),
                                     ),
                                     const SizedBox(width: 15),
-
-                                    // Song Details
                                     Expanded(
                                       child: Column(
                                         crossAxisAlignment:
@@ -269,7 +267,6 @@ class _FavoriteMusicScreenState extends State<FavoriteMusicScreen> {
                                         ],
                                       ),
                                     ),
-
                                     Column(
                                       children: [
                                         Text(
@@ -286,7 +283,6 @@ class _FavoriteMusicScreenState extends State<FavoriteMusicScreen> {
                                             ).withOpacity(0.8),
                                           ),
                                         ),
-
                                         IconButton(
                                           icon: FaIcon(
                                             FontAwesomeIcons.solidHeart,

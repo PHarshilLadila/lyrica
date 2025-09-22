@@ -10,7 +10,6 @@ import 'package:lyrica/core/constant/app_string.dart';
 import 'package:lyrica/core/providers/provider.dart';
 import 'package:lyrica/modules/home/view/artist_details.dart';
 
-// Search state provider
 final artistSearchProvider = StateProvider<String>((ref) => '');
 
 class ArtistList extends ConsumerStatefulWidget {
@@ -63,7 +62,6 @@ class _ArtistListState extends ConsumerState<ArtistList> {
         ),
         body: artisAsync.when(
           data: (artist) {
-            // Filter list based on search input
             final filteredArtist =
                 searchText.trim().isEmpty
                     ? artist

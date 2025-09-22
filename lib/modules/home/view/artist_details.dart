@@ -109,7 +109,6 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
                     borderRadius: BorderRadius.circular(12),
                     child: Image.network(
                       widget.image ?? AppString.defaultImageLogo,
-                      // "https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg",
                       height: 200.h,
                       fit: BoxFit.cover,
                     ),
@@ -291,7 +290,6 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
                   ),
                 ),
                 SizedBox(height: 16.h),
-                // Artist Songs Section
                 AppText(
                   text: "${widget.name}'s Songs",
                   fontSize: 20.sp,
@@ -386,67 +384,12 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
                                           fontWeight: FontWeight.bold,
                                           textColor: Color(AppColors.lightText),
                                         ),
-                                        // SizedBox(height: 2.h),
                                         AppText(
                                           text: song.albumName ?? "N/A",
                                           fontSize: 12.sp,
                                           textColor: Colors.white54,
                                         ),
                                         SizedBox(height: 12.h),
-
-                                        // Container(
-                                        //   decoration: BoxDecoration(
-                                        //     gradient: LinearGradient(
-                                        //       colors: [
-                                        //         Color(
-                                        //           AppColors.primaryColor,
-                                        //         ).withOpacity(0.3),
-                                        //         Color(
-                                        //           AppColors.blueThird,
-                                        //         ).withOpacity(0.3),
-                                        //       ],
-                                        //       begin: Alignment.centerLeft,
-                                        //       end: Alignment.centerRight,
-                                        //     ),
-                                        //     borderRadius: BorderRadius.circular(
-                                        //       30,
-                                        //     ),
-                                        //     boxShadow: [
-                                        //       BoxShadow(
-                                        //         color: Color(
-                                        //           AppColors.primaryColor,
-                                        //         ).withOpacity(0.18),
-                                        //         blurRadius: 8,
-                                        //         offset: Offset(0, 4),
-                                        //       ),
-                                        //     ],
-                                        //   ),
-                                        //   padding: EdgeInsets.symmetric(
-                                        //     horizontal: 8.w,
-                                        //     vertical: 6.h,
-                                        //   ),
-                                        //   child: Row(
-                                        //     mainAxisSize: MainAxisSize.min,
-                                        //     children: [
-                                        //       FaIcon(
-                                        //         FontAwesomeIcons.arrowDown,
-                                        //         color: Color(
-                                        //           AppColors.lightText,
-                                        //         ),
-                                        //         size: 13.sp,
-                                        //       ),
-                                        //       SizedBox(width: 6),
-                                        //       AppText(
-                                        //         text: "Download",
-                                        //         fontSize: 10.sp,
-                                        //         fontWeight: FontWeight.bold,
-                                        //         textColor: Color(
-                                        //           AppColors.lightText,
-                                        //         ),
-                                        //       ),
-                                        //     ],
-                                        //   ),
-                                        // ),
                                       ],
                                     ),
                                   ),
@@ -514,6 +457,7 @@ class _ArtistDetailsState extends ConsumerState<ArtistDetails> {
                                                 MusicPlayer(
                                                   songList: artistDetails,
                                                   initialIndex: index,
+                                                  onMinimize: () {},
                                                 ),
                                               );
                                             },

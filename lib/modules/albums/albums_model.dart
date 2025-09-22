@@ -66,8 +66,6 @@ class AlbumsModel {
     label: json["label"],
     popularity: json["popularity"],
   );
-
-  // ... rest of your existing model code (copyWith methods, etc.)
 }
 
 class Artist {
@@ -164,8 +162,6 @@ class Tracks {
     total: json["total"],
     items: List<Item>.from(json["items"].map((x) => Item.fromJson(x))),
   );
-
-  // ... rest of your existing model code
 }
 
 class Item {
@@ -219,6 +215,4 @@ class Item {
     uri: json["uri"],
     isLocal: json["is_local"],
   );
-
-  // ... rest of your existing model code
 }

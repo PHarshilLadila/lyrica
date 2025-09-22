@@ -1,5 +1,9 @@
 // ignore_for_file: deprecated_member_use, use_build_context_synchronously
 
+import 'dart:convert';
+import 'dart:developer';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -244,6 +248,19 @@ class _MusicPlaylistScreenState extends ConsumerState<MusicPlaylistScreen> {
     );
   }
 
+  Uint8List _decodeBase64(String base64String) {
+    try {
+      final cleaned =
+          base64String.contains(",")
+              ? base64String.split(",").last
+              : base64String;
+      return base64Decode(cleaned);
+    } catch (e) {
+      log("Base64 decode error: $e");
+      return Uint8List(0);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final musicAsyncValue = ref.watch(musicDataProvider);
@@ -351,6 +368,89 @@ class _MusicPlaylistScreenState extends ConsumerState<MusicPlaylistScreen> {
                     ),
                   ),
                   SizedBox(width: 16.w),
+                  // Flexible(
+                  //   child: Column(
+                  //     mainAxisAlignment: MainAxisAlignment.center,
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       AppText(
+                  //         text: widget.playListName,
+                  //         textColor: Color(AppColors.whiteBackground),
+                  //         fontSize: 28.sp,
+                  //         fontWeight: FontWeight.bold,
+                  //       ),
+                  //       userModelAsync.when(
+                  //         data: (userModel) {
+                  //           final displayName = userModel?.username;
+                  //           final displayText =
+                  //               (displayName != null && displayName.isNotEmpty)
+                  //                   ? displayName
+                  //                   : "N/A";
+
+                  //           final profileImage = userModel?.image ?? "";
+
+                  //           final bool hasNetworkImage =
+                  //               profileImage.startsWith("http") ||
+                  //               profileImage.startsWith("https");
+                  //           final bool hasValidAsset =
+                  //               profileImage.isNotEmpty && !hasNetworkImage;
+
+                  //           log("Profile Image: $profileImage");
+
+                  //           return Row(
+                  //             children: [
+                  //               ClipRRect(
+                  //                 borderRadius: BorderRadius.circular(100.r),
+                  //                 child:
+                  //                     hasNetworkImage
+                  //                         ? Image.network(
+                  //                           profileImage,
+                  //                           fit: BoxFit.cover,
+                  //                           height: 28.h,
+                  //                           width: 28.w,
+                  //                           errorBuilder: (
+                  //                             context,
+                  //                             error,
+                  //                             stackTrace,
+                  //                           ) {
+                  //                             return _buildInitialAvatar(
+                  //                               displayText,
+                  //                             );
+                  //                           },
+                  //                         )
+                  //                         : hasValidAsset
+                  //                         ? Image.asset(
+                  //                           profileImage,
+                  //                           fit: BoxFit.cover,
+                  //                           height: 28.h,
+                  //                           width: 28.w,
+                  //                         )
+                  //                         : _buildInitialAvatar(displayText),
+                  //               ),
+                  //               SizedBox(width: 6.w),
+                  //               AppText(
+                  //                 text: displayText,
+                  //                 fontSize: 14.sp,
+                  //                 fontWeight: FontWeight.w500,
+                  //                 textColor: Color(
+                  //                   AppColors.lightText,
+                  //                 ).withOpacity(0.8),
+                  //               ),
+                  //             ],
+                  //           );
+                  //         },
+                  //         loading: () => appLoader(),
+                  //         error:
+                  //             (e, _) => AppText(
+                  //               text: "Error loading user",
+                  //               fontSize: 11.sp,
+                  //               fontWeight: FontWeight.w500,
+                  //               textColor: Colors.redAccent,
+                  //             ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                   Flexible(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -372,11 +472,20 @@ class _MusicPlaylistScreenState extends ConsumerState<MusicPlaylistScreen> {
 
                             final profileImage = userModel?.image ?? "";
 
-                            final bool hasNetworkImage =
-                                profileImage.startsWith("http") ||
-                                profileImage.startsWith("https");
+                            final bool hasNetworkImage = profileImage
+                                .startsWith("http");
+                            final bool hasBase64Image =
+                                profileImage.isNotEmpty &&
+                                (profileImage.startsWith("data:image") ||
+                                    RegExp(
+                                      r'^[A-Za-z0-9+/=]+$',
+                                    ).hasMatch(profileImage));
                             final bool hasValidAsset =
-                                profileImage.isNotEmpty && !hasNetworkImage;
+                                profileImage.isNotEmpty &&
+                                !hasNetworkImage &&
+                                !hasBase64Image;
+
+                            log("Profile Image: $profileImage");
 
                             return Row(
                               children: [
@@ -388,6 +497,22 @@ class _MusicPlaylistScreenState extends ConsumerState<MusicPlaylistScreen> {
                                             profileImage,
                                             fit: BoxFit.cover,
                                             height: 28.h,
+                                            width: 28.w,
+                                            errorBuilder: (
+                                              context,
+                                              error,
+                                              stackTrace,
+                                            ) {
+                                              return _buildInitialAvatar(
+                                                displayText,
+                                              );
+                                            },
+                                          )
+                                          : hasBase64Image
+                                          ? Image.memory(
+                                            _decodeBase64(profileImage),
+                                            fit: BoxFit.cover,
+                                            height: 24.h,
                                             width: 28.w,
                                             errorBuilder: (
                                               context,

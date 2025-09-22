@@ -33,10 +33,8 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
   bool isSearched = false;
   @override
   Widget build(BuildContext context) {
-    // final auth = ref.read(authControllerProvider);
     final resultsAsync = ref.watch(searchResultsProvider);
     final playlist = ref.watch(playlistProvider);
-    // final currentSong = widget.songList[musicPlayerState.currentIndex];
 
     return DefaultTabController(
       length: 2,
@@ -113,7 +111,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   AppImages.likeIconPixel,
                   color: Color(AppColors.primaryColor),
                   width: 25.w,
-                  // color: Color.fromARGB(255, 116, 215, 240),
                 ),
               ),
               IconButton(
@@ -209,7 +206,6 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                           );
                           return GestureDetector(
                             onTap: () {
-                              // String selectedGenre = categorieBox(context)[index]['pop'];
                               if (index == 0) {
                                 myPushNavigator(
                                   context,
@@ -485,145 +481,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                   ),
                 ),
               ),
-              // SingleChildScrollView(
-              //   child: Padding(
-              //     padding: const EdgeInsets.all(8.0),
-              //     child: Column(
-              //       mainAxisAlignment: MainAxisAlignment.start,
-              //       crossAxisAlignment: CrossAxisAlignment.start,
-              //       children: [
-              //         SizedBox(height: 10.h),
-              //         AppText(
-              //           textColor: Color(AppColors.lightText),
-              //           textName: "Find Songs",
-              //           fontSize: 20.sp,
-              //           fontWeight: FontWeight.bold,
-              //         ),
-              //         SizedBox(height: 15.h),
-              //         AppCustomTextFormField(
-              //           keyboradType: TextInputType.text,
-              //           borderColor: Color(AppColors.primaryColor),
-              //           enabledColor: Color(AppColors.secondaryColor),
-              //           fillColor: Colors.white10,
-              //           focusedColor: Color(AppColors.primaryColor),
-              //           disabledColor: Color(AppColors.whiteBackground),
-              //           hintText: "Search Music",
-              //           maxline: 1,
-              //           hintcolors: Color(AppColors.whiteBackground),
-              //           prefixIcon: Padding(
-              //             padding: EdgeInsets.only(left: 10.w, top: 8.h),
-              //             child: FaIcon(
-              //               FontAwesomeIcons.search,
-              //               color: Color(AppColors.blueExtraLight),
-              //             ),
-              //           ),
-              //           obscureText: false,
-              //           onChanged: (val) {
-              //             ref.read(searchQueryProvider.notifier).state = val;
-              //             isSearched = true;
-              //           },
-              //         ),
-              //         SizedBox(height: 10.h),
-              //         isSearched
-              //             ? SizedBox(
-              //               height: 500.h,
-              //               child: resultsAsync.when(
-              //                 data:
-              //                     (tracks) => ListView.builder(
-              //                       physics: ScrollPhysics(),
-              //                       itemCount: tracks.length,
-              //                       itemBuilder: (context, index) {
-              //                         final track = tracks[index];
-              //                         return Card(
-              //                           color: Colors.white,
-              //                           child: ListTile(
-              //                             leading: ClipRRect(
-              //                               borderRadius: BorderRadius.circular(
-              //                                 12,
-              //                               ),
-              //                               child: Image.network(
-              //                                 track.albumImage ?? "",
-              //                                 width: 50,
-              //                                 errorBuilder:
-              //                                     (_, __, ___) => const Icon(
-              //                                       Icons.music_note,
-              //                                     ),
-              //                               ),
-              //                             ),
-              //                             title: AppText(
-              //                               textName: track.name ?? "",
-              //                             ),
-              //                             subtitle: AppText(
-              //                               textName: track.artistName ?? "",
-              //                             ),
-              //                             trailing: SizedBox(
-              //                               width: 100.w,
-              //                               child: Row(
-              //                                 mainAxisAlignment:
-              //                                     MainAxisAlignment.end,
-              //                                 children: [
-              //                                   IconButton(
-              //                                     icon: Icon(
-              //                                       CupertinoIcons.add_circled,
-              //                                       color: Colors.blueGrey,
-              //                                     ),
-              //                                     onPressed: () {},
-              //                                   ),
-              //                                   IconButton(
-              //                                     icon: FaIcon(
-              //                                       FontAwesomeIcons.play,
-              //                                       color: Color(
-              //                                         AppColors.primaryColor,
-              //                                       ),
-              //                                       size: 18.sp,
-              //                                     ),
-              //                                     onPressed: () {
-              //                                       myPushNavigator(
-              //                                         context,
-              //                                         MusicPlayer(
-              //                                           songList: tracks,
-              //                                           initialIndex: index,
-              //                                         ),
-              //                                       );
-              //                                     },
-              //                                   ),
-              //                                 ],
-              //                               ),
-              //                             ),
-              //                           ),
-              //                         );
-              //                       },
-              //                     ),
-              //                 loading: () => Center(child: appLoader()),
-              //                 error:
-              //                     (e, _) => Center(
-              //                       child: AppText(textName: 'Error: $e'),
-              //                     ),
-              //               ),
-              //             )
-              //             : Center(
-              //               child: Column(
-              //                 children: [
-              //                   SizedBox(height: 160.h),
 
-              //                   Image.asset(
-              //                     AppImages.logoWithoutBG,
-              //                     height: 70.h,
-              //                   ),
-              //                   SizedBox(height: 8.h),
-              //                   AppText(
-              //                     textName: "Find Your Fevorite Music..🤩",
-              //                     textColor: Color(AppColors.primaryColor),
-              //                     fontSize: 14.sp,
-              //                     fontWeight: FontWeight.w500,
-              //                   ),
-              //                 ],
-              //               ),
-              //             ),
-              //       ],
-              //     ),
-              //   ),
-              // ),
               SingleChildScrollView(
                 child: Padding(
                   padding: EdgeInsets.all(16.sp),
@@ -890,6 +748,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                                                           MusicPlayer(
                                                             songList: tracks,
                                                             initialIndex: index,
+                                                            onMinimize: () {},
                                                           ),
                                                         );
                                                       },

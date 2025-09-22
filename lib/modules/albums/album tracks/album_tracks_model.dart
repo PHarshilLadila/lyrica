@@ -27,8 +27,6 @@ class AlbumsTracksModel {
         previous: json["previous"],
         total: json["total"],
       );
-
-  // ... keep existing copyWith method
 }
 
 class Item {
@@ -82,8 +80,6 @@ class Item {
     uri: json["uri"],
     isLocal: json["is_local"],
   );
-
-  // ... keep existing copyWith method
 }
 
 class Artist {
@@ -111,8 +107,6 @@ class Artist {
     type: json["type"],
     uri: json["uri"],
   );
-
-  // ... keep existing copyWith method
 }
 
 class ExternalUrls {
@@ -122,6 +116,4 @@ class ExternalUrls {
 
   factory ExternalUrls.fromJson(Map<String, dynamic> json) =>
       ExternalUrls(spotify: json["spotify"]);
-
-  // ... keep existing copyWith method
 }

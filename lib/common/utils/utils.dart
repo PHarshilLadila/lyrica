@@ -50,7 +50,7 @@ ScaffoldFeatureController<SnackBar, SnackBarClosedReason> mySnackBar(
       duration: Duration(seconds: 4),
       margin: EdgeInsets.all(10),
       backgroundColor: bgColor,
-      content: AppText(text: message, fontWeight: FontWeight.bold),
+      content: AppText(text: message, fontWeight: FontWeight.bold, maxLines: 3),
     ),
   );
 }
@@ -74,7 +74,7 @@ void showAppSnackBar(BuildContext context, String msg, Color bgColor) {
       elevation: 30,
       duration: Duration(seconds: 4),
       margin: EdgeInsets.all(10.sp),
-      content: AppText(text: msg, maxLines: 2),
+      content: AppText(text: msg, maxLines: 3),
       backgroundColor: bgColor,
     ),
   );
@@ -127,7 +127,7 @@ class _ScrollAwareScaffoldState extends State<ScrollAwareScaffold> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: AppText(text: widget.title),
+        title: AppText(text: widget.title, maxLines: 2),
         backgroundColor: _isScrolled ? Colors.black : Colors.transparent,
         elevation: 0,
       ),

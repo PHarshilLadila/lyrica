@@ -122,8 +122,6 @@ void showPlaylistOptionsSheet(BuildContext context) {
                       builder: (context) => ViewPlaylistScreen(),
                     ),
                   );
-                  // Add your logic here
-                  // Example: navigate to existing playlist screen
                 },
                 child: Container(
                   width: double.infinity,

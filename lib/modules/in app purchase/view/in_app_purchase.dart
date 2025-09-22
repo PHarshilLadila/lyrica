@@ -49,7 +49,6 @@ class _InAppState extends State<InApp> {
     super.dispose();
   }
 
-  // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
     try {
       var result = await FlutterInappPurchase.instance.initialize();

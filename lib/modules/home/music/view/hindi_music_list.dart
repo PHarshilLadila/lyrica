@@ -66,7 +66,6 @@ class _HindiMusicListState extends ConsumerState<HindiMusicList> {
 
                 if (track.albumImage == "") {
                   imageUrl = AppString.defaultImageLogo;
-                  // "https://img.freepik.com/premium-vector/default-image-icon-vector-missing-picture-page-website-design-mobile-app-no-photo-available_87543-11093.jpg";
                 } else {
                   imageUrl = track.albumImage;
                 }
@@ -151,6 +150,7 @@ class _HindiMusicListState extends ConsumerState<HindiMusicList> {
                                 (context) => MusicPlayer(
                                   songList: hindiSong,
                                   initialIndex: index,
+                                  onMinimize: () {},
                                 ),
                           ),
                         );

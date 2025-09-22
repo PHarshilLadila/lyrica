@@ -3,16 +3,19 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:lyrica/core/constant/app_colors.dart';
 
 class AppBackButton extends StatelessWidget {
-  const AppBackButton({super.key});
+  final void Function()? onTap;
+  const AppBackButton({super.key, this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 10.0),
       child: GestureDetector(
-        onTap: () {
-          Navigator.pop(context);
-        },
+        onTap:
+            onTap ??
+            () {
+              Navigator.pop(context);
+            },
         child: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
